@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "195616230432",
+    "project_id": "daikhopk-17b2f",
+    "storage_bucket": "daikhopk-17b2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195616230432:android:2cad12c4a5b649ebf7c045",
+        "android_client_info": {
+          "package_name": "com.engg3sw.daikhopk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195616230432-bq4b071lc7q1k2b6lbm6mjfdjq6096au.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDADFK-nO-YhBTHLRP2pFDIkYmratMWxUk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195616230432-bq4b071lc7q1k2b6lbm6mjfdjq6096au.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
