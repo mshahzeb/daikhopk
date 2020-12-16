@@ -6,6 +6,7 @@ import 'package:daikhopk/screens/play_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:daikhopk/constants.dart';
 
@@ -98,8 +99,10 @@ class _ListScreenState extends State<ListScreen> {
                                   },
                                   child: ListTile(
                                     leading: CachedNetworkImage(
-                                      imageUrl: posterUrl,
+                                      imageUrl: _episodes[index]?.episodeThumbnail ?? posterUrl,
                                       width: $defaultWidth,
+                                      fit: BoxFit.fitHeight,
+                                      alignment: Alignment.topCenter,
                                     ),
                                     title: Text(
                                       'Episode ' + _episodes[index].episodeno.toString(),

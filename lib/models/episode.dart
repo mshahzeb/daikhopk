@@ -4,6 +4,7 @@ class Episode {
   String _episodetitle;
   String _episodeUrl;
   String _episodeVideoId;
+  String _episodeThumbnail;
 
   Episode(this._episodeid, this._episodeno, this._episodetitle, this._episodeUrl);
 
@@ -17,6 +18,8 @@ class Episode {
   set episodeUrl(String episodeUrl) => _episodeUrl = episodeUrl; // ignore: unnecessary_getters_setters
   String get episodeVideoId => _episodeVideoId; // ignore: unnecessary_getters_setters
   set episodeVideoId(String episodeVideoId) => _episodeVideoId = episodeVideoId; // ignore: unnecessary_getters_setters
+  String get episodeThumbnail => _episodeThumbnail; // ignore: unnecessary_getters_setters
+  set episodeThumbnail(String episodeThumbnail) => _episodeThumbnail = episodeThumbnail; // ignore: unnecessary_getters_setters
 
   // named constructor
   Episode.fromJson(Map<String, dynamic> json)
@@ -24,7 +27,8 @@ class Episode {
         _episodeno = json['episodeno'],
         _episodetitle = json['episodetitle'],
         _episodeUrl = json['episodeUrl'],
-        _episodeVideoId = json['episodeVideoId'];
+        _episodeVideoId = json['episodeVideoId'],
+        _episodeThumbnail = json['episodeThumbnail'];
 
   // method
   Map<String, dynamic> toJson() {
@@ -33,7 +37,8 @@ class Episode {
       'episodeno': _episodeno,
       'episodetitle': _episodetitle,
       'episodeUrl': _episodeUrl,
-      'episodeVideoId': _episodeVideoId
+      'episodeVideoId': _episodeVideoId,
+      'episodeThumbnail': _episodeThumbnail
     };
   }
 

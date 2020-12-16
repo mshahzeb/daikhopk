@@ -1,3 +1,4 @@
+import 'package:daikhopk/utils/rethinkdb.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -70,8 +71,7 @@ Future<String> signInWithGoogle() async {
     final User currentUser = _auth.currentUser;
     assert(user.uid == currentUser.uid);
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('auth', true);
+    updateUserDataCache(uid, name, userEmail, imageUrl);
 
     return 'Google sign in successful, User UID: ${user.uid}';
   }
@@ -161,8 +161,7 @@ void signOutGoogle() async {
   await googleSignIn.signOut();
   await _auth.signOut();
 
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool('auth', false);
+  clearUserDataCache();
 
   uid = null;
   name = null;
@@ -170,4 +169,31 @@ void signOutGoogle() async {
   imageUrl = null;
 
   print("User signed out of Google account");
+}
+
+void updateUserDataCache(String uid, String name, String userEmail, String userImageUrl) async {
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setBool('auth', true);
+  prefs.setString('uid', uid);
+  prefs.setString('name', name);
+  prefs.setString('userEmail', userEmail);
+  prefs.setString('userImageUrl', userImageUrl);
+
+  Map <String, String> query = {
+    "id": uid,
+    "name": name,
+    "userEmail": userEmail,
+    "userImageUrl": userImageUrl
+  };
+
+  List rows;
+  rows = await rethinkdb_get('users', uid);
+  print(rows);
+  //rethinkdb_insert('users',query);
+}
+
+void clearUserDataCache() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.clear();
 }
