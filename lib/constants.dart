@@ -1,7 +1,7 @@
 const int $middot = 0x00B7;
 final double $defaultWidth = 150;
 
-final String $serverIP = '34.73.50.111';
+final String $serverIP = 'daikho.pk';
 final String $serverPort = '5002';
 final String $serviceURL = 'http://' + $serverIP + ':' + $serverPort;
 
