@@ -1,8 +1,9 @@
-import 'package:daikhopk/utils/rethinkdb.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:daikhopk/utils/webservice.dart';
+import '../constants.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -180,17 +181,14 @@ void updateUserDataCache(String uid, String name, String userEmail, String userI
   prefs.setString('userEmail', userEmail);
   prefs.setString('userImageUrl', userImageUrl);
 
-  Map <String, String> query = {
-    "id": uid,
+  Map <String, dynamic> Json = {
+    "uid": uid,
     "name": name,
     "userEmail": userEmail,
     "userImageUrl": userImageUrl
   };
 
-  List rows;
-  rows = await rethinkdb_get('users', uid);
-  print(rows);
-  //rethinkdb_insert('users',query);
+  postUrl($serviceURLupdateuserinfo, Json);
 }
 
 void clearUserDataCache() async {

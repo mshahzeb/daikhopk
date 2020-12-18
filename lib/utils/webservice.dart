@@ -60,3 +60,29 @@ Future<String> fetchUrlCached(final int id) async {
 
   return jsonstring;
 }
+
+Future<Response> postUrl(final String url, final Map<String, dynamic> Json) async {
+  Response response;
+  int trycount = 0;
+
+  while (trycount < $maxtrycounthttp) {
+    try {
+      response = await post(Uri.encodeFull(url), headers: {"Content-Type":"application/json"}, body: jsonEncode(Json));
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        trycount++;
+      }
+    } on SocketException {
+      print('No Internet connection');
+      trycount++;
+    } on HttpException {
+      print("Couldn't find the post");
+      trycount++;
+    } on FormatException {
+      print("Bad response format");
+      trycount++;
+    }
+  }
+  throw Exception('Failed to Post');
+}

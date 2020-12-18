@@ -67,7 +67,6 @@ class PlayPauseButtonBar extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.alternate_email, color: Colors.white,),
           onPressed: () {
-
             _launched = _launchYoutubeVideo(playUrl);
           }),
       ],

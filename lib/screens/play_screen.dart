@@ -2,11 +2,20 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:daikhopk/widgets/play_pause_button_bar.dart';
 import 'package:daikhopk/models/episode.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/constants.dart';
+import 'package:daikhopk/utils/webservice.dart';
+import 'package:http/http.dart';
+
+String uid;
+String videoId;
+SharedPreferences prefs;
+
+YoutubePlayerController _controller;
 
 class PlayScreen extends StatefulWidget {
   final String showname;
@@ -28,12 +37,9 @@ class _PlayScreenState extends State<PlayScreen> {
   final Episode episode;
   _PlayScreenState({@required  final this.showname, final this.posterUrl, final this.episode});
 
-  YoutubePlayerController _controller;
-
   @override
   void initState() {
     super.initState();
-    String videoId;
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -46,15 +52,17 @@ class _PlayScreenState extends State<PlayScreen> {
       videoId = YoutubePlayerController.convertUrlToId(episode.episodeUrl);
     else
       videoId = episode.episodeVideoId;
+    UpdateVideoIdStats();
+
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
-      params: const YoutubePlayerParams(
+      params: YoutubePlayerParams(
         showControls: true,
         showFullscreenButton: true,
         desktopMode: kIsWeb,
         autoPlay: true,
         playsInline: true,
-        startAt: const Duration(minutes: 0, seconds: 0),
+        startAt: Duration(seconds: 0),
       ),
     )..listen((value) {
       if (value.isReady && !value.hasPlayed) {
@@ -87,53 +95,58 @@ class _PlayScreenState extends State<PlayScreen> {
   @override
   Widget build(BuildContext context) {
     const player = YoutubePlayerIFrame();
-
     return YoutubePlayerControllerProvider(
-      // Passing controller to widgets below.
       controller: _controller,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Play Video'),
-        ),
-          body: Container(
-            color: Colors.black,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return ListView(
-                  children: [
-                    player,
-                    Controls(
-                      playUrl: episode.episodeUrl,
-                    ),
-                    ListTile(
-                      leading: CachedNetworkImage(
-                        imageUrl: posterUrl,
-                        width: $defaultWidth,
-                      ),
-                      title: Text(
-                        'Episode ' + episode.episodeno.toString(),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      subtitle: Text(
-                        episode.episodetitle,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ],
-              );
-            },
+      child: WillPopScope(
+        onWillPop: ()async {
+          UpdateVideoIdLastPlayTime(_controller.value.position.inSeconds);
+          Navigator.of(context).pop(true);
+          return true;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Play Video'),
           ),
-        )
+            body: Container(
+              color: Colors.black,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return ListView(
+                    children: [
+                      player,
+                      Controls(
+                        playUrl: episode.episodeUrl,
+                      ),
+                      ListTile(
+                        leading: CachedNetworkImage(
+                          imageUrl: posterUrl,
+                          width: $defaultWidth,
+                        ),
+                        title: Text(
+                          'Episode ' + episode.episodeno.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        subtitle: Text(
+                          episode.episodetitle,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ],
+                );
+              },
+            ),
+          )
+        ),
       ),
     );
   }
@@ -167,4 +180,52 @@ class Controls extends StatelessWidget {
   }
 
   Widget get _space => const SizedBox(height: 10);
+}
+
+void UpdateVideoIdStats() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  uid = prefs.getString('uid');
+
+  Map <String, dynamic> Json = {
+    "uid": uid,
+    "stat": "lastplaytime",
+    "videoId": videoId
+  };
+
+  Response result = await postUrl($serviceURLgetvideoidstats, Json);
+  int playtime = (int.parse(result.body) ?? 0);
+  _controller.seekTo(Duration(seconds: playtime));
+
+  Json = {
+    "uid": uid,
+    "stat": "playcounts",
+    "videoId": videoId,
+    "value": 1,
+    "op": 1
+  };
+
+  postUrl($serviceURLupdatevideoidstats, Json);
+
+  DateTime now = new DateTime.now();
+  Json = {
+    "uid": uid,
+    "stat": "lastplayed",
+    "videoId": videoId,
+    "value": now.toString(),
+    "op": 0
+  };
+
+  postUrl($serviceURLupdatevideoidstats, Json);
+}
+
+void UpdateVideoIdLastPlayTime(int duration) async {
+  Map <String, dynamic> Json = {
+    "uid": uid,
+    "stat": "lastplaytime",
+    "videoId": videoId,
+    "value": duration,
+    "op": 0
+  };
+
+  postUrl($serviceURLupdatevideoidstats, Json);
 }
