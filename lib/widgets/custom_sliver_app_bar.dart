@@ -16,12 +16,17 @@ class CustomSliverAppBar extends StatelessWidget {
       pinned: false,
       snap: false,
       backgroundColor: Color(0xff0f0f0f),
-      leading:
-        Image.asset(
+      leading: Container(
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.black
+        ),
+        child: Image.asset(
           $logopath,
           width: 48,
           height: 48,
         ),
+      ),
       flexibleSpace: DecoratedBox(
         decoration: BoxDecoration(
           color: Color(0xff0f0f0f),
@@ -42,13 +47,7 @@ class CustomSliverAppBar extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                'Guerra ' +
-                    String.fromCharCode($middot) +
-                    ' Drama ' +
-                    String.fromCharCode($middot) +
-                    ' Ação ' +
-                    String.fromCharCode($middot) +
-                    ' Thriller ',
+                shows[0].showname + ' by ' + shows[0].channel,
                 style: TextStyle(
                   fontSize: 14,
                   fontFamily: 'Comfortaa',
@@ -63,23 +62,25 @@ class CustomSliverAppBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   RaisedButton(
-                    color: Colors.white,
+                    color: Colors.white10,
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(3.0),
                         side: BorderSide(color: Colors.white)),
                     child: Row(
+
                       children: <Widget>[
                         Icon(
-                          Icons.play_arrow,
-                          color: Colors.black87,
+                          Icons.exit_to_app_sharp,
+                          color: Colors.white,
                           size: 28,
                         ),
                         Text(
-                          "Play",
+                          "Open",
                           style: TextStyle(
                             fontFamily: 'Confortaa',
                             fontSize: 16,
                             fontWeight: FontWeight.w900,
+                            color: Colors.white
                           ),
                         ),
                       ],

@@ -5,8 +5,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 ///
@@ -14,7 +12,6 @@ class PlayPauseButtonBar extends StatelessWidget {
   final String playUrl;
   final ValueNotifier<bool> _isMuted = ValueNotifier(false);
   PlayPauseButtonBar({@required this.playUrl});
-  Future<void> _launched;
 
   @override
   Widget build(BuildContext context) {
@@ -64,27 +61,7 @@ class PlayPauseButtonBar extends StatelessWidget {
           onPressed: context.ytController.nextVideo,
           color: Colors.white,
         ),
-        IconButton(
-          icon: const Icon(Icons.alternate_email, color: Colors.white,),
-          onPressed: () {
-            _launched = _launchYoutubeVideo(playUrl);
-          }),
-      ],
+      ]
     );
-  }
-}
-
-Future<void> _launchYoutubeVideo(String _youtubeUrl) async {
-  if (_youtubeUrl != null && _youtubeUrl.isNotEmpty) {
-    if (await canLaunch(_youtubeUrl)) {
-      final bool _nativeAppLaunchSucceeded = await launch(
-        _youtubeUrl,
-        forceSafariVC: false,
-        universalLinksOnly: true,
-      );
-      if (!_nativeAppLaunchSucceeded) {
-        await launch(_youtubeUrl, forceSafariVC: true);
-      }
-    }
   }
 }

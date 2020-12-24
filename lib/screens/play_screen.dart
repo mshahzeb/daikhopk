@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'package:daikhopk/utils/rtdb.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:daikhopk/widgets/play_pause_button_bar.dart';
 import 'package:daikhopk/models/episode.dart';
@@ -52,7 +54,6 @@ class _PlayScreenState extends State<PlayScreen> {
       videoId = YoutubePlayerController.convertUrlToId(episode.episodeUrl);
     else
       videoId = episode.episodeVideoId;
-    UpdateVideoIdStats();
 
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
@@ -90,6 +91,8 @@ class _PlayScreenState extends State<PlayScreen> {
       });
       log('Exited Fullscreen');
     };
+
+    UpdateVideoIdStats();
   }
 
   @override
@@ -174,6 +177,36 @@ class Controls extends StatelessWidget {
           PlayPauseButtonBar(
               playUrl: playUrl
           ),
+          RaisedButton(
+            color: Colors.white10,
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(3.0),
+                side: BorderSide(color: Colors.white)),
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  Icons.alternate_email,
+                  color: Colors.white,
+                  size: 28,
+                ),
+                Text(
+                  "Open in Youtube",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: 'Confortaa',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white
+                  ),
+                ),
+              ],
+            ),
+            onPressed: () {
+              String launchUrl;
+              launchUrl = playUrl + '&t=' + _controller.value.position.inSeconds.toString();
+              _launchYoutubeVideo(launchUrl);
+            },
+          ),
         ],
       ),
     );
@@ -186,46 +219,40 @@ void UpdateVideoIdStats() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   uid = prefs.getString('uid');
 
-  Map <String, dynamic> Json = {
-    "uid": uid,
-    "stat": "lastplaytime",
-    "videoId": videoId
-  };
-
-  Response result = await postUrl($serviceURLgetvideoidstats, Json);
-  int playtime = (int.parse(result.body) ?? 0);
-  _controller.seekTo(Duration(seconds: playtime));
-
-  Json = {
-    "uid": uid,
-    "stat": "playcounts",
-    "videoId": videoId,
-    "value": 1,
-    "op": 1
-  };
-
-  postUrl($serviceURLupdatevideoidstats, Json);
-
   DateTime now = new DateTime.now();
-  Json = {
-    "uid": uid,
-    "stat": "lastplayed",
-    "videoId": videoId,
-    "value": now.toString(),
-    "op": 0
-  };
+  List<String> stats = ["vid_playcounts", "vid_lastplayed", "show_playcounts", "show_lastplayed"];
+  List<dynamic> vals = ["inc", now.toString(), "inc", now.toString()];
 
-  postUrl($serviceURLupdatevideoidstats, Json);
+  updateStat(uid, videoId, stats, vals);
+  //updateStat(uid, "vid_playcounts", videoId, "inc");
+  //updateStat(uid, "vid_lastplayed", videoId, now.toString());
+
+  String result = await getStat(uid,  videoId, "vid_lastplaytime");
+  int playtime = int.parse(result ?? 0);
+  if (playtime < 0) {
+    playtime = 0;
+  }
+  await Future.delayed(Duration(seconds: 1));
+  _controller.seekTo(Duration(seconds: playtime));
 }
 
 void UpdateVideoIdLastPlayTime(int duration) async {
-  Map <String, dynamic> Json = {
-    "uid": uid,
-    "stat": "lastplaytime",
-    "videoId": videoId,
-    "value": duration,
-    "op": 0
-  };
+  List<String> stats = ["vid_lastplaytime"];
+  List<dynamic> vals = [duration];
+  updateStat(uid, videoId, stats, vals);
+}
 
-  postUrl($serviceURLupdatevideoidstats, Json);
+Future<void> _launchYoutubeVideo(String _youtubeUrl) async {
+  if (_youtubeUrl != null && _youtubeUrl.isNotEmpty) {
+    if (await canLaunch(_youtubeUrl)) {
+      final bool _nativeAppLaunchSucceeded = await launch(
+        _youtubeUrl,
+        forceSafariVC: false,
+        universalLinksOnly: true,
+      );
+      if (!_nativeAppLaunchSucceeded) {
+        await launch(_youtubeUrl, forceSafariVC: true);
+      }
+    }
+  }
 }

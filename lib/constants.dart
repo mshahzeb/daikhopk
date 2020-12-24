@@ -13,8 +13,8 @@ final String $serviceURLusrapi = 'https://' + $serverName + ':' + $serverPortusr
 final String $serviceURLversion = $serviceURLshowapi + '/showdata';
 final String $serviceURLshowdata = $serviceURLshowapi + '/showdata/data';
 final String $serviceURLupdateuserinfo = $serviceURLusrapi + '/updateuserinfo';
-final String $serviceURLupdatevideoidstats = $serviceURLusrapi + '/updatevideoidstats';
-final String $serviceURLgetvideoidstats = $serviceURLusrapi + '/getvideoidstats';
+final String $serviceURLupdatevideoidstats = $serviceURLusrapi + '/updatestat';
+final String $serviceURLgetvideoidstats = $serviceURLusrapi + '/getstat';
 
 final int $shownamescode = 100;
 final int $showfeaturedcode = 100;
