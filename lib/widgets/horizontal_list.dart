@@ -5,24 +5,46 @@ import 'package:daikhopk/widgets/horizontal_list_item.dart';
 import 'horizontal_list_item.dart';
 
 class HorizontalList extends StatelessWidget {
-  final List<Show> shows;
-  HorizontalList({this.shows});
+  final Map<int, Show> shows;
+  final String uid;
+  final List<String> filtershowids;
+
+  HorizontalList({this.shows, this.uid, this.filtershowids});
 
   final List<Widget> _horizontalListItem = List<Widget>();
 
   List<Widget> buildTile() {
-    // for (var i = 0; i < posterUrls.length; i++) {
-    for (var i = 0; i < shows.length; i++) {
-      _horizontalListItem.add(SizedBox(
-        width: 10,
-      ));
-      _horizontalListItem.add(HorizontalListItem(
-          showid: shows[i].showid,
-          showname: shows[i].showname,
-          posterUrl: shows[i].posterUrl,
-          trailerUrl: shows[i].trailerUrl,
-          embed: shows[i].embed,
-      ));
+    int check = filtershowids?.length ?? 0;
+    if (check == 0) {
+      shows.forEach((key, value) {
+        _horizontalListItem.add(SizedBox(
+          width: 10,
+        ));
+        _horizontalListItem.add(HorizontalListItem(
+            showid: shows[key].showid,
+            showname: shows[key].showname,
+            posterUrl: shows[key].posterUrl,
+            trailerUrl: shows[key].trailerUrl,
+            embed: shows[key].embed,
+            uid: uid
+        ));
+      });
+    } else {
+      int key = 0;
+      filtershowids.forEach((element) {
+        key = int.parse(element);
+        _horizontalListItem.add(SizedBox(
+          width: 10,
+        ));
+        _horizontalListItem.add(HorizontalListItem(
+            showid: shows[key].showid,
+            showname: shows[key].showname,
+            posterUrl: shows[key].posterUrl,
+            trailerUrl: shows[key].trailerUrl,
+            embed: shows[key].embed,
+            uid: uid
+        ));
+      });
     }
     return _horizontalListItem;
   }

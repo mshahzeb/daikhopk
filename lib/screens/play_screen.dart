@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:daikhopk/utils/rtdb.dart';
+import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -10,34 +10,37 @@ import 'package:daikhopk/widgets/play_pause_button_bar.dart';
 import 'package:daikhopk/models/episode.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/constants.dart';
-import 'package:daikhopk/utils/webservice.dart';
-import 'package:http/http.dart';
 
-String uid;
 String videoId;
 SharedPreferences prefs;
 
 YoutubePlayerController _controller;
 
 class PlayScreen extends StatefulWidget {
+  final int showid;
   final String showname;
   final String posterUrl;
   final Episode episode;
-  PlayScreen({@required final this.showname, final this.posterUrl, final this.episode});
+  final String uid;
+  PlayScreen({@required final this.showid, final this.showname, final this.posterUrl, final this.episode, final this.uid});
 
   @override
   _PlayScreenState createState() => _PlayScreenState(
+    showid: showid,
     showname: showname,
     posterUrl: posterUrl,
     episode: episode,
+    uid: uid
   );
 }
 
 class _PlayScreenState extends State<PlayScreen> {
+  final int showid;
   final String showname;
   final String posterUrl;
   final Episode episode;
-  _PlayScreenState({@required  final this.showname, final this.posterUrl, final this.episode});
+  final String uid;
+  _PlayScreenState({@required final this.showid, final this.showname, final this.posterUrl, final this.episode, final this.uid});
 
   @override
   void initState() {
@@ -93,6 +96,66 @@ class _PlayScreenState extends State<PlayScreen> {
     };
 
     UpdateVideoIdStats();
+  }
+
+  void UpdateVideoIdStats() async {
+    double now = new DateTime.now().millisecondsSinceEpoch/1000;
+    int nowint = now.toInt();
+    String showidstr = showid.toString();
+    Map <String, dynamic> Json = {
+      "uid": uid,
+      "stats": [
+        {
+          "sid": videoId,
+          "stat": "vid_playcounts",
+          "val": "inc"
+        },
+        {
+          "sid": videoId,
+          "stat": "vid_lastplayed",
+          "val": nowint
+        },
+        {
+          "sid": showidstr,
+          "stat": "show_playcounts",
+          "val": "inc"
+        },
+        {
+          "sid": showidstr,
+          "stat": "show_lastplayed",
+          "val": nowint
+        }
+      ]
+    };
+    postUrl($serviceURLupdatestats, Json);
+
+    Json = {
+      "uid": uid,
+      "stat": "vid_lastplaytime",
+      "sid": videoId
+    };
+
+    String result = await postUrl($serviceURLgetstats, Json);
+    int playtime = int.parse(result ?? 0);
+    if (playtime < 0) {
+      playtime = 0;
+    }
+    await Future.delayed(Duration(seconds: 1));
+    _controller.seekTo(Duration(seconds: playtime));
+  }
+
+  void UpdateVideoIdLastPlayTime(int duration) async {
+    Map <String, dynamic> Json = {
+      "uid": uid,
+      "stats": [
+        {
+          "sid": videoId,
+          "stat": "vid_lastplaytime",
+          "val": duration
+        }
+      ]
+    };
+    postUrl($serviceURLupdatestats, Json);
   }
 
   @override
@@ -213,33 +276,6 @@ class Controls extends StatelessWidget {
   }
 
   Widget get _space => const SizedBox(height: 10);
-}
-
-void UpdateVideoIdStats() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  uid = prefs.getString('uid');
-
-  DateTime now = new DateTime.now();
-  List<String> stats = ["vid_playcounts", "vid_lastplayed", "show_playcounts", "show_lastplayed"];
-  List<dynamic> vals = ["inc", now.toString(), "inc", now.toString()];
-
-  updateStat(uid, videoId, stats, vals);
-  //updateStat(uid, "vid_playcounts", videoId, "inc");
-  //updateStat(uid, "vid_lastplayed", videoId, now.toString());
-
-  String result = await getStat(uid,  videoId, "vid_lastplaytime");
-  int playtime = int.parse(result ?? 0);
-  if (playtime < 0) {
-    playtime = 0;
-  }
-  await Future.delayed(Duration(seconds: 1));
-  _controller.seekTo(Duration(seconds: playtime));
-}
-
-void UpdateVideoIdLastPlayTime(int duration) async {
-  List<String> stats = ["vid_lastplaytime"];
-  List<dynamic> vals = [duration];
-  updateStat(uid, videoId, stats, vals);
 }
 
 Future<void> _launchYoutubeVideo(String _youtubeUrl) async {

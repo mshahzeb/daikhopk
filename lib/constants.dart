@@ -13,18 +13,12 @@ final String $serviceURLusrapi = 'https://' + $serverName + ':' + $serverPortusr
 final String $serviceURLversion = $serviceURLshowapi + '/showdata';
 final String $serviceURLshowdata = $serviceURLshowapi + '/showdata/data';
 final String $serviceURLupdateuserinfo = $serviceURLusrapi + '/updateuserinfo';
-final String $serviceURLupdatevideoidstats = $serviceURLusrapi + '/updatestat';
-final String $serviceURLgetvideoidstats = $serviceURLusrapi + '/getstat';
+final String $serviceURLupdatestats = $serviceURLusrapi + '/updatestat';
+final String $serviceURLgetstats = $serviceURLusrapi + '/getstat';
 
 final int $shownamescode = 100;
 final int $showfeaturedcode = 100;
 
-final int $maxtrycounthttp = 99;
+final int $maxtrycounthttp = 2;
 
 final String $logopath = 'assets/logo/daikho_logo.png';
-
-final String $rethinkdbhost = $serverName;
-final int $rethinkdbport = 28015;
-final String $rethinkdb = "daikhopk";
-final String $rethinkdbuser = "daikhopk_rethinkdb";
-final String $rethinkdbpassword = "QQW?kB'\$kxL_j~2s";

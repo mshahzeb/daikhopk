@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/models/episode.dart';
 import 'package:daikhopk/models/shows.dart';
+import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/play_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart';
 import 'package:daikhopk/constants.dart';
 
 class ListScreen extends StatefulWidget {
@@ -17,7 +17,8 @@ class ListScreen extends StatefulWidget {
   final String trailerUrl;
   final String trailerVideoId;
   final int embed;
-  ListScreen({@required final this.showid, final this.showname, final this.posterUrl, final this.trailerUrl, final this.trailerVideoId, final this.embed});
+  final String uid;
+  ListScreen({@required final this.showid, final this.showname, final this.posterUrl, final this.trailerUrl, final this.trailerVideoId, final this.embed, final this.uid});
 
   @override
   _ListScreenState createState() => _ListScreenState(
@@ -27,6 +28,7 @@ class ListScreen extends StatefulWidget {
     trailerUrl: trailerUrl,
     trailerVideoId: trailerVideoId,
     embed: embed,
+    uid: uid
   );
 }
 
@@ -37,22 +39,38 @@ class _ListScreenState extends State<ListScreen> {
   final String trailerUrl;
   final String trailerVideoId;
   final int embed;
+  final String uid;
   Future<Shows> _dataRequiredForBuild;
   List<Episode> _episodes;
-  _ListScreenState({@required final this.showid, final this.showname, final this.posterUrl, final this.trailerUrl, final this.trailerVideoId, final this.embed});
+  _ListScreenState({@required final this.showid, final this.showname, final this.posterUrl, final this.trailerUrl, final this.trailerVideoId, final this.embed, final this.uid});
 
   @override
   void initState() {
     super.initState();
 
     _dataRequiredForBuild = fetchData();
+    UpdateShowIdStats();
   }
 
   Future<Shows> fetchData() async {
     String episodes = await fetchUrlCached(showid);
-
-    _episodes = Shows.fromJson(jsonDecode(episodes)).shows[0].episodes;
+    Map<int, Show> shows = Shows.fromJson(jsonDecode(episodes)).shows;
+    _episodes = shows[shows.keys.first].episodes;
     return Shows.fromJson(jsonDecode(episodes));
+  }
+
+  Future<void> UpdateShowIdStats() async {
+    Map <String, dynamic> Json = {
+      "uid": uid,
+      "stats": [
+        {
+          "sid": showid.toString(),
+          "stat": "show_clicks",
+          "val": "inc"
+        }
+      ]
+    };
+    postUrl($serviceURLupdatestats, Json);
   }
 
   @override
@@ -90,9 +108,11 @@ class _ListScreenState extends State<ListScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(builder: (context) => PlayScreen(
+                                        showid: showid,
                                         showname: showname,
                                         posterUrl: posterUrl,
                                         episode: _episodes[index],
+                                        uid: uid
                                       )
                                       ),
                                     );

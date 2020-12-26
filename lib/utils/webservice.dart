@@ -61,7 +61,7 @@ Future<String> fetchUrlCached(final int id) async {
   return jsonstring;
 }
 
-Future<Response> postUrl(final String url, final Map<String, dynamic> Json) async {
+Future<String> postUrl(final String url, final Map<String, dynamic> Json) async {
   Response response;
   int trycount = 0;
 
@@ -69,7 +69,7 @@ Future<Response> postUrl(final String url, final Map<String, dynamic> Json) asyn
     try {
       response = await post(Uri.encodeFull(url), headers: {"Content-Type":"application/json"}, body: jsonEncode(Json));
       if (response.statusCode == 200) {
-        return response;
+        return response.body;
       } else {
         trycount++;
       }

@@ -11,8 +11,9 @@ class HorizontalListItem extends StatelessWidget {
   final String trailerUrl;
   final String trailerVideoId;
   final int embed;
+  final String uid;
 
-  HorizontalListItem({@required final this.showid, this.showname, final this.posterUrl, final this.trailerUrl, final this.trailerVideoId, final this.embed});
+  HorizontalListItem({@required final this.showid, this.showname, final this.posterUrl, final this.trailerUrl, final this.trailerVideoId, final this.embed, final this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,7 @@ class HorizontalListItem extends StatelessWidget {
               trailerUrl: trailerUrl,
               trailerVideoId: trailerVideoId,
               embed: embed,
+              uid: uid
             )
         ),
         );

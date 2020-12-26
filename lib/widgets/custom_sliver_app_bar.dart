@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:daikhopk/constants.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
-  final List<Show> shows;
+  final Map<int, Show> shows;
   CustomSliverAppBar({@required this.shows});
 
   @override
@@ -34,7 +34,7 @@ class CustomSliverAppBar extends StatelessWidget {
         child: FlexibleSpaceBar(
           centerTitle: false,
           background: CachedNetworkImage(
-            imageUrl: shows[0].posterUrl,
+            imageUrl: shows[shows.keys.first].posterUrl,
             fit: BoxFit.scaleDown,
           ),
         ),
@@ -47,7 +47,7 @@ class CustomSliverAppBar extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                shows[0].showname + ' by ' + shows[0].channel,
+                shows[shows.keys.first].showname + ' by ' + shows[shows.keys.first].channel,
                 style: TextStyle(
                   fontSize: 14,
                   fontFamily: 'Comfortaa',
@@ -89,12 +89,12 @@ class CustomSliverAppBar extends StatelessWidget {
                       Navigator.push(
                         context,
                           MaterialPageRoute(builder: (context) => ListScreen(
-                            showid: shows[0].showid,
-                            showname: shows[0].showname,
-                            posterUrl: shows[0].posterUrl,
-                            trailerUrl: shows[0].trailerUrl,
-                            trailerVideoId: shows[0].trailerVideoId,
-                            embed: shows[0].embed,
+                            showid: shows[shows.keys.first].showid,
+                            showname: shows[shows.keys.first].showname,
+                            posterUrl: shows[shows.keys.first].posterUrl,
+                            trailerUrl: shows[shows.keys.first].trailerUrl,
+                            trailerVideoId: shows[shows.keys.first].trailerVideoId,
+                            embed: shows[shows.keys.first].embed,
                           )
                         ),
                       );
