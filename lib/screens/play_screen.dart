@@ -40,6 +40,7 @@ class _PlayScreenState extends State<PlayScreen> {
   final String posterUrl;
   final Episode episode;
   final String uid;
+  bool played = false;
   _PlayScreenState({@required final this.showid, final this.showname, final this.posterUrl, final this.episode, final this.uid});
 
   @override
@@ -70,10 +71,15 @@ class _PlayScreenState extends State<PlayScreen> {
       ),
     )..listen((value) {
       if (value.isReady && !value.hasPlayed) {
-        _controller
-          ..hidePauseOverlay()
-          ..hideTopMenu();
-        _controller.play();
+        if(!played) {
+          _controller.play();
+          played = true;
+        }
+        if(_controller.value.error.toString() == "YoutubeError.sameAsNotEmbeddable") {
+          _controller.stop();
+          _controller.reset();
+          _launchYoutubeVideo(episode.episodeUrl);
+        }
       }
     });
 
@@ -124,6 +130,11 @@ class _PlayScreenState extends State<PlayScreen> {
           "sid": showidstr,
           "stat": "show_lastplayed",
           "val": nowint
+        },
+        {
+          "sid": showidstr,
+          "stat": "show_lastplayedepi",
+          "val": episode.episodeno
         }
       ]
     };
@@ -145,17 +156,19 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   void UpdateVideoIdLastPlayTime(int duration) async {
-    Map <String, dynamic> Json = {
-      "uid": uid,
-      "stats": [
-        {
-          "sid": videoId,
-          "stat": "vid_lastplaytime",
-          "val": duration
-        }
-      ]
-    };
-    postUrl($serviceURLupdatestats, Json);
+    if(duration > 0) {
+      Map <String, dynamic> Json = {
+        "uid": uid,
+        "stats": [
+          {
+            "sid": videoId,
+            "stat": "vid_lastplaytime",
+            "val": duration
+          }
+        ]
+      };
+      postUrl($serviceURLupdatestats, Json);
+    }
   }
 
   @override
@@ -177,38 +190,56 @@ class _PlayScreenState extends State<PlayScreen> {
               color: Colors.black,
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  return ListView(
-                    children: [
-                      player,
-                      Controls(
-                        playUrl: episode.episodeUrl,
-                      ),
-                      ListTile(
-                        leading: CachedNetworkImage(
-                          imageUrl: posterUrl,
-                          width: $defaultWidth,
-                        ),
-                        title: Text(
-                          'Episode ' + episode.episodeno.toString(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
+                  if (kIsWeb && constraints.maxWidth > 800) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Expanded(child: player),
+                        SizedBox(
+                          width: 500,
+                          child: SingleChildScrollView(
+                            child: Controls(
+                              playUrl: episode.episodeUrl,
+                            ),
                           ),
-                          textAlign: TextAlign.left,
                         ),
-                        subtitle: Text(
-                          episode.episodetitle,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
+                      ],
+                    );
+                  }
+                  else {
+                    return ListView(
+                      children: [
+                        player,
+                        Controls(
+                          playUrl: episode.episodeUrl,
+                        ),
+                        ListTile(
+                          leading: CachedNetworkImage(
+                            imageUrl: posterUrl,
+                            width: $defaultWidth,
+                          ),
+                          title: Text(
+                            'Episode ' + episode.episodeno.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          subtitle: Text(
+                            episode.episodetitle,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
                             fontWeight: FontWeight.w600,
                           ),
                           textAlign: TextAlign.left,
                         ),
                       ),
                     ],
-                );
+                  );
+                }
               },
             ),
           )

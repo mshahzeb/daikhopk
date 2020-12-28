@@ -74,9 +74,14 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
+  Future<bool> _onBackPressed() async {
+    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    return true;
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      //onWillPop: _onBackPressed,
       child: SafeArea(
         child: Scaffold(
             backgroundColor: Color(0xFFE6E6E6),
@@ -269,17 +274,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                 Colors.green;
                                                           });
                                                           Future.delayed(
-                                                              Duration(
-                                                                  milliseconds: 500),
-                                                                  () {
-                                                                Navigator.of(
-                                                                    context)
-                                                                    .pushNamedAndRemoveUntil
-                                                                  (RouteName
-                                                                    .Home, (
-                                                                    Route<
-                                                                        dynamic> route) => false
-                                                                );
+                                                              Duration(milliseconds: 500),
+                                                                  () {Navigator.of(context).pushNamedAndRemoveUntil(RouteName.Home, (Route<dynamic> route) => false);
                                                               });
                                                         }
                                                       }).catchError((error) {
@@ -325,12 +321,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       height: 16,
                                                       width: 16,
                                                       child: CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                        valueColor:
-                                                        new AlwaysStoppedAnimation<
-                                                            Color>(
-                                                          Colors.white,
-                                                        ),
+                                                        backgroundColor: $circularbackgroundcolor,
+                                                        valueColor: new AlwaysStoppedAnimation<Color>($circularstrokecolor),
+                                                        strokeWidth: $circularstrokewidth,
                                                       ),
                                                     )
                                                         : Text(
@@ -508,9 +501,6 @@ class _LoginScreenState extends State<LoginScreen> {
             )
         ),
       ),
-      onWillPop: () async {
-        return false;
-      },
     );
   }
 }

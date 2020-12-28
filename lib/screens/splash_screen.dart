@@ -34,11 +34,11 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
     bool authSignedIn = prefs.getBool('auth') ?? false;
 
     if (authSignedIn == true) {
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => HomeScreen()), (Route<dynamic> route) => false);
     } else {
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => LoginScreen()));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => LoginScreen()), (Route<dynamic> route) => false);
     }
   }
 
