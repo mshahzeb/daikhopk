@@ -135,66 +135,82 @@ class _ListScreenState extends State<ListScreen> {
                                   conditionBuilder: (BuildContext context) =>
                                   (_lastplayedepisode >= 0),
                                   widgetBuilder: (BuildContext context) =>
-                                      ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: _episodes.length,
-                                        itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          behavior: HitTestBehavior.translucent,
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PlayScreen(
-                                                          showid: showid,
-                                                          showname: showname,
-                                                          posterUrl: posterUrl,
-                                                          episode: _episodes[_lastplayedepisode],
-                                                          uid: uid
-                                                      )
-                                              ),
-                                            );
-                                          },
-                                          child: ListTile(
-                                            leading: CachedNetworkImage(
-                                              imageUrl: _episodes[_lastplayedepisode]
-                                                  ?.episodeThumbnail ?? posterUrl,
-                                              width: $defaultWidth,
-                                              fit: BoxFit.fitHeight,
-                                              alignment: Alignment.topCenter,
-                                            ),
-                                            title: Text(
-                                              'Episode ' +
-                                                  _episodes[_lastplayedepisode].episodeno
-                                                      .toString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                              textAlign: TextAlign.left,
-                                            ),
-                                            subtitle: Text(
-                                              _episodes[_lastplayedepisode].episodetitle,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                              textAlign: TextAlign.left,
-                                            ),
+                                    ListView(
+                                      shrinkWrap: true,
+                                      physics: ScrollPhysics(),
+                                      children: <Widget> [
+                                        SizedBox(height: 20.0,),
+                                        Text(
+                                          'Continue Watching',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600,
                                           ),
-                                        );
-                                      }
-                                    ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        ListView.builder(
+                                          physics: NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: 1,
+                                          itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            behavior: HitTestBehavior.translucent,
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PlayScreen(
+                                                            showid: showid,
+                                                            showname: showname,
+                                                            posterUrl: posterUrl,
+                                                            episode: _episodes[_lastplayedepisode],
+                                                            uid: uid
+                                                        )
+                                                ),
+                                              );
+                                            },
+                                            child: ListTile(
+                                              leading: CachedNetworkImage(
+                                                imageUrl: _episodes[_lastplayedepisode]
+                                                    ?.episodeThumbnail ?? posterUrl,
+                                                width: $defaultWidth,
+                                                fit: BoxFit.fitHeight,
+                                                alignment: Alignment.topCenter,
+                                              ),
+                                              title: Text(
+                                                'Episode ' +
+                                                    _episodes[_lastplayedepisode].episodeno
+                                                        .toString(),
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                              subtitle: Text(
+                                                _episodes[_lastplayedepisode].episodetitle,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      ),
+                                    ]
+                                  ),
                                   fallbackBuilder: (BuildContext context) =>
                                   SizedBox(height: 0.0,),
                                 ),
                                 SizedBox(height: 20.0,),
                                 Text(
-                                  'Episodes',
+                                  'All Episodes',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,

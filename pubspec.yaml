@@ -11,28 +11,23 @@ description: Daikho PK Application Flutter
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.0+1
+version: 1.2.0
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.7.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.2
   http: ^0.12.2
   cached_network_image: ^2.1.0+1
-  video_player: ^0.10.8+1
+  provider: ^4.3.2
 
   firebase_core: ^0.5.0
   firebase_auth: ^0.18.0+1
   google_sign_in: ^4.4.4
-  path_provider: ^1.2.0
   shared_preferences: ^0.5.3+4
-  provider: ^2.0.1+1
-  progress_hud: ^1.1.0
-  youtube_player_flutter: ^6.1.0+4
   youtube_player_iframe: ^1.1.0
   url_launcher: ^5.7.10
   flutter_conditional_rendering: ^1.1.1
