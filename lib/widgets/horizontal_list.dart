@@ -21,11 +21,7 @@ class HorizontalList extends StatelessWidget {
           width: 10,
         ));
         _horizontalListItem.add(HorizontalListItem(
-            showid: shows[key].showid,
-            showname: shows[key].showname,
-            posterUrl: shows[key].posterUrl,
-            trailerUrl: shows[key].trailerUrl,
-            embed: shows[key].embed,
+            show: shows[key],
             uid: uid
         ));
       });
@@ -37,12 +33,8 @@ class HorizontalList extends StatelessWidget {
           width: 10,
         ));
         _horizontalListItem.add(HorizontalListItem(
-            showid: shows[key].showid,
-            showname: shows[key].showname,
-            posterUrl: shows[key].posterUrl,
-            trailerUrl: shows[key].trailerUrl,
-            embed: shows[key].embed,
-            uid: uid
+            show: shows[key],
+            uid: uid,
         ));
       });
     }

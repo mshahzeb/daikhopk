@@ -1,19 +1,15 @@
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/constants.dart';
 
 class HorizontalListItem extends StatelessWidget {
-  final int showid;
-  final String showname;
-  final String posterUrl;
-  final String trailerUrl;
-  final String trailerVideoId;
-  final int embed;
+  final Show show;
   final String uid;
 
-  HorizontalListItem({@required final this.showid, this.showname, final this.posterUrl, final this.trailerUrl, final this.trailerVideoId, final this.embed, final this.uid});
+  HorizontalListItem({@required final this.show, final this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +18,8 @@ class HorizontalListItem extends StatelessWidget {
         Navigator.push(
           context,
             MaterialPageRoute(builder: (context) => ListScreen(
-              showid: showid,
-              showname: showname,
-              posterUrl: posterUrl,
-              trailerUrl: trailerUrl,
-              trailerVideoId: trailerVideoId,
-              embed: embed,
-              uid: uid
+              show: show,
+              uid: uid,
             )
         ),
         );
@@ -37,7 +28,7 @@ class HorizontalListItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           CachedNetworkImage(
-            imageUrl: posterUrl,
+            imageUrl: show.posterUrl,
             width: $defaultWidth,
           ),
         ],

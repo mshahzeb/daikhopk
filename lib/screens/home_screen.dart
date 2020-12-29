@@ -103,8 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
                     CustomSliverAppBar(
-                        shows:
-                        snapshot.data.shows
+                        shows: snapshot.data.shows,
+                        uid: uid,
                     ),
                   ];
                 },

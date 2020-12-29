@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../constants.dart';
 
 Future<Response> fetchUrl(final String url) async {
@@ -11,7 +10,7 @@ Future<Response> fetchUrl(final String url) async {
 
   while (trycount < $maxtrycounthttp) {
     try {
-      response = await get(Uri.encodeFull(url), headers: {"Accept":"application/json"});
+      response = await get(Uri.encodeFull(url), headers: {"Accept":"application/json", "Connection":"keep-alive"});
       if (response.statusCode == 200) {
         return response;
       } else {
@@ -67,7 +66,7 @@ Future<String> postUrl(final String url, final Map<String, dynamic> Json) async 
 
   while (trycount < $maxtrycounthttp) {
     try {
-      response = await post(Uri.encodeFull(url), headers: {"Content-Type":"application/json"}, body: jsonEncode(Json));
+      response = await post(Uri.encodeFull(url), headers: {"Content-Type":"application/json", "Connection":"keep-alive"}, body: jsonEncode(Json));
       if (response.statusCode == 200) {
         return response.body;
       } else {

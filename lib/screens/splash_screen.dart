@@ -61,6 +61,12 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
   }
 
   @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     deviceSize = DeviceSize(
       size: MediaQuery.of(context).size,

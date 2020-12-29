@@ -8,7 +8,8 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
   final Map<int, Show> shows;
-  CustomSliverAppBar({@required this.shows});
+  final String uid;
+  CustomSliverAppBar({@required this.shows, this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +62,8 @@ class CustomSliverAppBar extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ListScreen(
-                      showid: shows[key].showid,
-                      showname: shows[key].showname,
-                      posterUrl: shows[key].posterUrl,
-                      trailerUrl: shows[key].trailerUrl,
-                      trailerVideoId: shows[key].trailerVideoId,
-                      embed: shows[key].embed,
+                      show: shows[key],
+                      uid: uid,
                     )
                     ),
                   );

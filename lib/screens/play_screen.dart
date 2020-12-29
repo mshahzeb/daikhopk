@@ -1,14 +1,14 @@
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/utils/webservice.dart';
+import 'package:daikhopk/widgets/play_pause_button_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-import 'package:daikhopk/widgets/play_pause_button_bar.dart';
 import 'package:daikhopk/models/episode.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/constants.dart';
 
 String videoId;
@@ -22,7 +22,8 @@ class PlayScreen extends StatefulWidget {
   final String posterUrl;
   final Episode episode;
   final String uid;
-  PlayScreen({@required final this.showid, final this.showname, final this.posterUrl, final this.episode, final this.uid});
+  final int embed;
+  PlayScreen({@required final this.showid, final this.showname, final this.posterUrl, final this.episode, final this.uid, final this.embed});
 
   @override
   _PlayScreenState createState() => _PlayScreenState(
@@ -30,7 +31,8 @@ class PlayScreen extends StatefulWidget {
     showname: showname,
     posterUrl: posterUrl,
     episode: episode,
-    uid: uid
+    uid: uid,
+    embed: embed
   );
 }
 
@@ -40,8 +42,9 @@ class _PlayScreenState extends State<PlayScreen> {
   final String posterUrl;
   final Episode episode;
   final String uid;
+  final int embed;
   bool played = false;
-  _PlayScreenState({@required final this.showid, final this.showname, final this.posterUrl, final this.episode, final this.uid});
+  _PlayScreenState({@required final this.showid, final this.showname, final this.posterUrl, final this.episode, final this.uid, final this.embed});
 
   @override
   void initState() {
@@ -50,8 +53,6 @@ class _PlayScreenState extends State<PlayScreen> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
     ]);
 
     if(episode.episodeVideoId == null)
@@ -64,18 +65,24 @@ class _PlayScreenState extends State<PlayScreen> {
       params: YoutubePlayerParams(
         showControls: true,
         showFullscreenButton: true,
+        enableCaption: false,
+        enableJavaScript: true,
         desktopMode: kIsWeb,
         autoPlay: true,
         playsInline: true,
-        startAt: Duration(seconds: 0),
+        startAt: Duration(seconds: 0)
       ),
     )..listen((value) {
       if (value.isReady && !value.hasPlayed) {
         if(!played) {
-          _controller.play();
+          if(embed == 1) {
+            _controller.play();
+          } else {
+            _launchYoutubeVideo(episode.episodeUrl);
+          }
           played = true;
         }
-        if(_controller.value.error.toString() == "YoutubeError.sameAsNotEmbeddable") {
+        if(_controller.value.error == YoutubeError.sameAsNotEmbeddable) {
           _controller.stop();
           _controller.reset();
           _launchYoutubeVideo(episode.episodeUrl);
@@ -102,6 +109,18 @@ class _PlayScreenState extends State<PlayScreen> {
     };
 
     UpdateVideoIdStats();
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    _controller.close();
+    super.dispose();
   }
 
   void UpdateVideoIdStats() async {
@@ -186,58 +205,54 @@ class _PlayScreenState extends State<PlayScreen> {
           appBar: AppBar(
             title: const Text('Play Video'),
           ),
-            body: Container(
-              color: Colors.black,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  if (kIsWeb && constraints.maxWidth > 800) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Expanded(child: player),
-                        SizedBox(
-                          width: 500,
-                          child: SingleChildScrollView(
-                            child: Controls(
-                              playUrl: episode.episodeUrl,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                  else {
-                    return ListView(
-                      children: [
-                        player,
-                        Controls(
-                          playUrl: episode.episodeUrl,
-                        ),
-                        ListTile(
-                          leading: CachedNetworkImage(
-                            imageUrl: posterUrl,
-                            width: $defaultWidth,
-                          ),
-                          title: Text(
-                            'Episode ' + episode.episodeno.toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                          subtitle: Text(
-                            episode.episodetitle,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                            fontWeight: FontWeight.w600,
+          body: Container(
+            color: Colors.black,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (kIsWeb && constraints.maxWidth > 800) {
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Expanded(child: player),
+                    ],
+                  );
+                }
+                else {
+                  return ListView(
+                    children: <Widget> [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height/2,
+                      width: MediaQuery.of(context).size.width,
+                      child: player,
+                    ),
+                    Controls(
+                      playUrl: episode.episodeUrl,
+                    ),
+                    ListTile(
+                      leading: CachedNetworkImage(
+                        imageUrl: posterUrl,
+                        width: $defaultWidth,
+                      ),
+                      title: Text(
+                        'Episode ' + episode.episodeno.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.left,
+                      ),
+                      subtitle: Text(
+                        episode.episodetitle,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
                           ),
                           textAlign: TextAlign.left,
                         ),
-                      ),
-                    ],
+                    )
+                    ]
                   );
                 }
               },
@@ -248,11 +263,6 @@ class _PlayScreenState extends State<PlayScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    _controller.close();
-    super.dispose();
-  }
 }
 
 class Controls extends StatelessWidget {

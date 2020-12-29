@@ -12,40 +12,25 @@ import 'package:daikhopk/constants.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
 
 class ListScreen extends StatefulWidget {
-  final int showid;
-  final String showname;
-  final String posterUrl;
-  final String trailerUrl;
-  final String trailerVideoId;
-  final int embed;
+  final Show show;
   final String uid;
-  ListScreen({@required final this.showid, final this.showname, final this.posterUrl, final this.trailerUrl, final this.trailerVideoId, final this.embed, final this.uid});
+  ListScreen({@required final this.show, final this.uid});
 
   @override
   _ListScreenState createState() => _ListScreenState(
-    showid: showid,
-    showname: showname,
-    posterUrl: posterUrl,
-    trailerUrl: trailerUrl,
-    trailerVideoId: trailerVideoId,
-    embed: embed,
+    show: show,
     uid: uid
   );
 }
 
 class _ListScreenState extends State<ListScreen> {
-  final int showid;
-  final String showname;
-  final String posterUrl;
-  final String trailerUrl;
-  final String trailerVideoId;
-  final int embed;
+  final Show show;
   final String uid;
   int error = 0;
   int _lastplayedepisode;
   Future<Shows> _dataRequiredForBuild;
   List<Episode> _episodes;
-  _ListScreenState({@required final this.showid, final this.showname, final this.posterUrl, final this.trailerUrl, final this.trailerVideoId, final this.embed, final this.uid});
+  _ListScreenState({@required final this.show, final this.uid});
 
   @override
   void initState() {
@@ -57,7 +42,7 @@ class _ListScreenState extends State<ListScreen> {
 
   Future<Shows> fetchData() async {
     try {
-      String episodes = await fetchUrlCached(showid);
+      String episodes = await fetchUrlCached(show.showid);
       Map<int, Show> shows = Shows
           .fromJson(jsonDecode(episodes))
           .shows;
@@ -66,7 +51,7 @@ class _ListScreenState extends State<ListScreen> {
       Map <String, dynamic> Json = {
         "uid": uid,
         "stat": "show_lastplayedepi",
-        "sid": showid.toString()
+        "sid": show.showid.toString()
       };
 
       String result = await postUrl($serviceURLgetstats, Json);
@@ -83,7 +68,7 @@ class _ListScreenState extends State<ListScreen> {
       "uid": uid,
       "stats": [
         {
-          "sid": showid.toString(),
+          "sid": show.showid.toString(),
           "stat": "show_clicks",
           "val": "inc"
         }
@@ -103,14 +88,14 @@ class _ListScreenState extends State<ListScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(showname),
+        title: Text(show.showname),
       ),
       body: Container(
         color: Colors.black,
         child: ListView(
               children: [
                 CachedNetworkImage(
-                  imageUrl: posterUrl,
+                  imageUrl: show.posterUrl,
                   width: $defaultWidth,
                 ),
                 FutureBuilder<Shows>(
@@ -131,6 +116,57 @@ class _ListScreenState extends State<ListScreen> {
                               shrinkWrap: true,
                               physics: ScrollPhysics(),
                               children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget> [
+                                    Container(
+                                        height: 100,
+                                        width: 100,
+                                        child: Center(
+                                          child: Text(
+                                            show.showname,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        )
+                                    ),
+                                    Container(
+                                      height: 50,
+                                      width: 100,
+                                      child: Center(
+                                        child: Text(
+                                          show.channel,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      )
+                                    ),
+                                    Container(
+                                        height: 50,
+                                        width: 100,
+                                        child: Center(
+                                          child: Text(
+                                            _episodes.length.toString() + ' Episodes',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        )
+                                    )
+                                  ],
+                                ),
                                 Conditional.single(
                                   conditionBuilder: (BuildContext context) =>
                                   (_lastplayedepisode >= 0),
@@ -139,7 +175,6 @@ class _ListScreenState extends State<ListScreen> {
                                       shrinkWrap: true,
                                       physics: ScrollPhysics(),
                                       children: <Widget> [
-                                        SizedBox(height: 20.0,),
                                         Text(
                                           'Continue Watching',
                                           style: TextStyle(
@@ -162,19 +197,19 @@ class _ListScreenState extends State<ListScreen> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         PlayScreen(
-                                                            showid: showid,
-                                                            showname: showname,
-                                                            posterUrl: posterUrl,
+                                                            showid: show.showid,
+                                                            showname: show.showname,
+                                                            posterUrl: show.posterUrl,
                                                             episode: _episodes[_lastplayedepisode],
-                                                            uid: uid
+                                                            uid: uid,
+                                                            embed: show.embed,
                                                         )
                                                 ),
                                               );
                                             },
                                             child: ListTile(
                                               leading: CachedNetworkImage(
-                                                imageUrl: _episodes[_lastplayedepisode]
-                                                    ?.episodeThumbnail ?? posterUrl,
+                                                imageUrl: (_episodes[_lastplayedepisode]?.episodeThumbnail ?? "") == "" ? show.posterUrl : _episodes[_lastplayedepisode].episodeThumbnail,
                                                 width: $defaultWidth,
                                                 fit: BoxFit.fitHeight,
                                                 alignment: Alignment.topCenter,
@@ -231,19 +266,19 @@ class _ListScreenState extends State<ListScreen> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   PlayScreen(
-                                                      showid: showid,
-                                                      showname: showname,
-                                                      posterUrl: posterUrl,
+                                                      showid: show.showid,
+                                                      showname: show.showname,
+                                                      posterUrl: show.posterUrl,
                                                       episode: _episodes[index],
-                                                      uid: uid
+                                                      uid: uid,
+                                                      embed: show.embed,
                                                   )
                                           ),
                                         );
                                       },
                                       child: ListTile(
                                         leading: CachedNetworkImage(
-                                          imageUrl: _episodes[index]
-                                              ?.episodeThumbnail ?? posterUrl,
+                                          imageUrl: (_episodes[index]?.episodeThumbnail ?? "") == "" ? show.posterUrl : _episodes[index].episodeThumbnail,
                                           width: $defaultWidth,
                                           fit: BoxFit.fitHeight,
                                           alignment: Alignment.topCenter,
