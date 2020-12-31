@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/models/shows.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:daikhopk/widgets/horizontal_list.dart';
@@ -11,7 +11,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:daikhopk/utils/authentication.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:daikhopk/widgets/custom_sliver_app_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:collection';
 import '../constants.dart';
 
@@ -28,8 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Shows _shows;
   List<String> _lastplayedshowids;
 
-  String uidlocal;
-
   @override
   void initState() {
     super.initState();
@@ -39,15 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    client.close();
     super.dispose();
   }
 
   Future<Shows> fetchData() async {
     try {
-      String featured = await fetchUrlCached($shownamescode);
-      String shows = await fetchUrlCached($showfeaturedcode);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      uidlocal = prefs.getString('uid');
+      String shows = await fetchUrlCached($shownamescode);
+      String featured = shows;
 
       Map <String, dynamic> Json = {
         "uid": uidlocal,
@@ -104,7 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   return <Widget>[
                     CustomSliverAppBar(
                         shows: snapshot.data.shows,
-                        uid: uid,
                     ),
                   ];
                 },
@@ -147,7 +142,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           height: 200.0,
                                           child: HorizontalList(
                                             shows: _shows.shows,
-                                            uid: uidlocal,
                                             filtershowids: _lastplayedshowids,
                                           ),
                                         ),
@@ -179,7 +173,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 200.0,
                               child: HorizontalList(
                                   shows: _shows.shows,
-                                  uid: uidlocal
                               ),
                             ),
                             SizedBox(

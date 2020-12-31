@@ -7,9 +7,8 @@ import 'package:daikhopk/constants.dart';
 
 class HorizontalListItem extends StatelessWidget {
   final Show show;
-  final String uid;
 
-  HorizontalListItem({@required final this.show, final this.uid});
+  HorizontalListItem({@required final this.show});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,6 @@ class HorizontalListItem extends StatelessWidget {
           context,
             MaterialPageRoute(builder: (context) => ListScreen(
               show: show,
-              uid: uid,
             )
         ),
         );

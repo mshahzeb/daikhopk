@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/widgets/google_sign_in_button.dart';
-
 import 'package:daikhopk/utils/routeNames.dart';
 import 'package:daikhopk/utils/authentication.dart';
-
 import '../constants.dart';
 
 class LoginScreen extends StatefulWidget{

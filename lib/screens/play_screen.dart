@@ -1,19 +1,17 @@
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:daikhopk/widgets/play_pause_button_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:daikhopk/models/episode.dart';
 import 'package:daikhopk/constants.dart';
 
 String videoId;
-SharedPreferences prefs;
-
 YoutubePlayerController _controller;
 
 class PlayScreen extends StatefulWidget {
@@ -21,9 +19,9 @@ class PlayScreen extends StatefulWidget {
   final String showname;
   final String posterUrl;
   final Episode episode;
-  final String uid;
   final int embed;
-  PlayScreen({@required final this.showid, final this.showname, final this.posterUrl, final this.episode, final this.uid, final this.embed});
+  var client;
+  PlayScreen({@required final this.showid, @required final this.showname, @required final this.posterUrl, @required final this.episode, @required final this.embed, @required final this.client});
 
   @override
   _PlayScreenState createState() => _PlayScreenState(
@@ -31,8 +29,8 @@ class PlayScreen extends StatefulWidget {
     showname: showname,
     posterUrl: posterUrl,
     episode: episode,
-    uid: uid,
-    embed: embed
+    embed: embed,
+    client: client,
   );
 }
 
@@ -41,10 +39,10 @@ class _PlayScreenState extends State<PlayScreen> {
   final String showname;
   final String posterUrl;
   final Episode episode;
-  final String uid;
   final int embed;
+  var client;
   bool played = false;
-  _PlayScreenState({@required final this.showid, final this.showname, final this.posterUrl, final this.episode, final this.uid, final this.embed});
+  _PlayScreenState({@required final this.showid, @required final this.showname, @required final this.posterUrl, @required final this.episode, @required final this.embed, @required final this.client});
 
   @override
   void initState() {
@@ -128,7 +126,7 @@ class _PlayScreenState extends State<PlayScreen> {
     int nowint = now.toInt();
     String showidstr = showid.toString();
     Map <String, dynamic> Json = {
-      "uid": uid,
+      "uid": uidlocal,
       "stats": [
         {
           "sid": videoId,
@@ -160,7 +158,7 @@ class _PlayScreenState extends State<PlayScreen> {
     postUrl($serviceURLupdatestats, Json);
 
     Json = {
-      "uid": uid,
+      "uid": uidlocal,
       "stat": "vid_lastplaytime",
       "sid": videoId
     };
@@ -170,14 +168,14 @@ class _PlayScreenState extends State<PlayScreen> {
     if (playtime < 0) {
       playtime = 0;
     }
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 2));
     _controller.seekTo(Duration(seconds: playtime));
   }
 
   void UpdateVideoIdLastPlayTime(int duration) async {
     if(duration > 0) {
       Map <String, dynamic> Json = {
-        "uid": uid,
+        "uid": uidlocal,
         "stats": [
           {
             "sid": videoId,
@@ -221,8 +219,8 @@ class _PlayScreenState extends State<PlayScreen> {
                   return ListView(
                     children: <Widget> [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height/2,
-                      width: MediaQuery.of(context).size.width,
+                      height: deviceSize.height/2,
+                      width: deviceSize.width,
                       child: player,
                     ),
                     Controls(

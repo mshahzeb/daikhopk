@@ -6,10 +6,9 @@ import 'horizontal_list_item.dart';
 
 class HorizontalList extends StatelessWidget {
   final Map<int, Show> shows;
-  final String uid;
   final List<String> filtershowids;
 
-  HorizontalList({this.shows, this.uid, this.filtershowids});
+  HorizontalList({@required final this.shows, final this.filtershowids});
 
   final List<Widget> _horizontalListItem = List<Widget>();
 
@@ -22,7 +21,6 @@ class HorizontalList extends StatelessWidget {
         ));
         _horizontalListItem.add(HorizontalListItem(
             show: shows[key],
-            uid: uid
         ));
       });
     } else {
@@ -34,7 +32,6 @@ class HorizontalList extends StatelessWidget {
         ));
         _horizontalListItem.add(HorizontalListItem(
             show: shows[key],
-            uid: uid,
         ));
       });
     }

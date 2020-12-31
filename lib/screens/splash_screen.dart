@@ -3,18 +3,19 @@ import 'package:daikhopk/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/utils/deviceSize.dart';
 import 'package:daikhopk/screens/login_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../constants.dart';
+import 'package:http/http.dart' as http;
 
+DeviceSize deviceSize;
+SharedPreferences prefs;
+String uidlocal;
+var client;
 
 class Splash extends StatefulWidget {
   @override
   VideoState createState() => VideoState();
 }
-
-DeviceSize deviceSize;
 
 class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
 
@@ -24,7 +25,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
   Animation<double> animation;
 
   startTime() async {
-    var _duration = new Duration(seconds: 3);
+    var _duration = new Duration(seconds: 2);
     return new Timer(_duration, navigationPage);
   }
 
@@ -32,8 +33,10 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool authSignedIn = prefs.getBool('auth') ?? false;
+    client = http.Client();
 
     if (authSignedIn == true) {
+      uidlocal = prefs.getString('uid');
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomeScreen()), (Route<dynamic> route) => false);
     } else {
@@ -47,7 +50,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
     super.initState();
 
     animationController = new AnimationController(
-        vsync: this, duration: new Duration(seconds: 2));
+        vsync: this, duration: new Duration(seconds: 1));
     animation =
     new CurvedAnimation(parent: animationController, curve: Curves.easeOut);
 

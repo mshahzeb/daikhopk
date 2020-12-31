@@ -4,6 +4,7 @@ import 'package:daikhopk/models/episode.dart';
 import 'package:daikhopk/models/shows.dart';
 import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/play_screen.dart';
+import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -13,24 +14,21 @@ import 'package:flutter_conditional_rendering/conditional.dart';
 
 class ListScreen extends StatefulWidget {
   final Show show;
-  final String uid;
-  ListScreen({@required final this.show, final this.uid});
+  ListScreen({@required final this.show});
 
   @override
   _ListScreenState createState() => _ListScreenState(
     show: show,
-    uid: uid
   );
 }
 
 class _ListScreenState extends State<ListScreen> {
   final Show show;
-  final String uid;
   int error = 0;
   int _lastplayedepisode;
   Future<Shows> _dataRequiredForBuild;
   List<Episode> _episodes;
-  _ListScreenState({@required final this.show, final this.uid});
+  _ListScreenState({@required final this.show});
 
   @override
   void initState() {
@@ -49,7 +47,7 @@ class _ListScreenState extends State<ListScreen> {
       _episodes = shows[shows.keys.first].episodes;
 
       Map <String, dynamic> Json = {
-        "uid": uid,
+        "uid": uidlocal,
         "stat": "show_lastplayedepi",
         "sid": show.showid.toString()
       };
@@ -65,7 +63,7 @@ class _ListScreenState extends State<ListScreen> {
 
   Future<void> UpdateShowIdStats() async {
     Map <String, dynamic> Json = {
-      "uid": uid,
+      "uid": uidlocal,
       "stats": [
         {
           "sid": show.showid.toString(),
@@ -201,7 +199,6 @@ class _ListScreenState extends State<ListScreen> {
                                                             showname: show.showname,
                                                             posterUrl: show.posterUrl,
                                                             episode: _episodes[_lastplayedepisode],
-                                                            uid: uid,
                                                             embed: show.embed,
                                                         )
                                                 ),
@@ -270,7 +267,6 @@ class _ListScreenState extends State<ListScreen> {
                                                       showname: show.showname,
                                                       posterUrl: show.posterUrl,
                                                       episode: _episodes[index],
-                                                      uid: uid,
                                                       embed: show.embed,
                                                   )
                                           ),
