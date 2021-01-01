@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/models/shows.dart';
-import 'package:daikhopk/utils/webservice.dart';
 import 'package:daikhopk/widgets/horizontal_list.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/screens/login_screen.dart';
@@ -11,7 +9,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:daikhopk/utils/authentication.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:daikhopk/widgets/custom_sliver_app_bar.dart';
-import 'dart:collection';
 import '../constants.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,16 +19,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  int error = 0;
-  Future<Shows> _dataRequiredForBuild;
-  Shows _shows;
-  List<String> _lastplayedshowids;
 
   @override
   void initState() {
     super.initState();
     print('initState');
-    _dataRequiredForBuild = fetchData();
   }
 
   @override
@@ -40,38 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  Future<Shows> fetchData() async {
-    try {
-      String shows = await fetchUrlCached($shownamescode);
-      String featured = shows;
-
-      Map <String, dynamic> Json = {
-        "uid": uidlocal,
-        "stat": "show_lastplayed"
-      };
-      String result = await postUrl($serviceURLgetstats, Json);
-      if(result != $nodata) {
-        Map<String, dynamic> lastplayed = jsonDecode(result);
-        final lastplayedsorted = new SplayTreeMap<String, dynamic>.from(
-            lastplayed, (a, b) => lastplayed[b].compareTo(lastplayed[a]));
-        _lastplayedshowids = lastplayedsorted.keys.toList();
-      }
-
-      _shows = Shows.fromJson(jsonDecode(featured));
-      return Shows.fromJson(jsonDecode(shows));
-    }
-    catch(e) {
-      error = 1;
-    }
-  }
-
   Future<bool> _onBackPressed() async {
     SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     return true;
   }
 
   void refreshdata() {
-    _dataRequiredForBuild = fetchData();
+    dataRequiredForHome = fetchDataHome();
     setState(() {});
   }
 
@@ -79,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
 
     return FutureBuilder<Shows>(
-      future: _dataRequiredForBuild,
+      future: dataRequiredForHome,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return Center(
@@ -89,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
               strokeWidth: $circularstrokewidth,
             ),
           );
-        } else if (snapshot.hasData && error == 0) {
+        } else if (snapshot.hasData && errorHome == 0) {
           return WillPopScope(
             onWillPop: _onBackPressed,
             child: Scaffold(
@@ -111,10 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
+                            SizedBox(
+                              height: 10
+                            ),
                             Conditional.single(
                               context: context,
                               conditionBuilder: (BuildContext context) =>
-                              ((_lastplayedshowids?.length ?? 0) > 0) == true,
+                              ((lastplayedshowidsHome?.length ?? 0) > 0) == true,
                               widgetBuilder: (BuildContext context) =>
                                   Column(
                                       children: <Widget>[
@@ -141,8 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         SizedBox(
                                           height: 200.0,
                                           child: HorizontalList(
-                                            shows: _shows.shows,
-                                            filtershowids: _lastplayedshowids,
+                                            shows: showsHome.shows,
+                                            filtershowids: lastplayedshowidsHome,
                                           ),
                                         ),
                                       ]
@@ -172,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               height: 200.0,
                               child: HorizontalList(
-                                  shows: _shows.shows,
+                                  shows: showsHome.shows,
                               ),
                             ),
                             SizedBox(
@@ -225,7 +195,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              bottomNavigationBar: CustomBottomNavBar(),
+              bottomNavigationBar: CustomBottomNavBar(
+                selectedindex: 1,
+              ),
             ),
           );
         } else {

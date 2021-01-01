@@ -32,6 +32,7 @@ dependencies:
   url_launcher: ^5.7.10
   flutter_conditional_rendering: ^1.1.1
   flutter_swiper: ^1.1.6
+  flutter_search_bar: ^2.1.0
 
 dev_dependencies:
   flutter_launcher_icons: "^0.8.0"

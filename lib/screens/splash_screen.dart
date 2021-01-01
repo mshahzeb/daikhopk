@@ -1,16 +1,25 @@
 import 'dart:async';
+import 'dart:collection';
+import 'dart:convert';
 import 'package:daikhopk/screens/home_screen.dart';
+import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/utils/deviceSize.dart';
 import 'package:daikhopk/screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:daikhopk/models/shows.dart';
 
 DeviceSize deviceSize;
 SharedPreferences prefs;
 String uidlocal;
 var client;
+int errorHome = 0;
+Future<Shows> dataRequiredForHome;
+Shows showsHome;
+List<String> lastplayedshowidsHome;
+bool authSignedIn;
 
 class Splash extends StatefulWidget {
   @override
@@ -25,18 +34,20 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
   Animation<double> animation;
 
   startTime() async {
-    var _duration = new Duration(seconds: 2);
+    prefs = await SharedPreferences.getInstance();
+    authSignedIn = prefs.getBool('auth') ?? false;
+    if(authSignedIn) {
+      uidlocal = prefs.getString('uid');
+    }
+    client = http.Client();
+    dataRequiredForHome = fetchDataHome();
+
+    var _duration = new Duration(seconds: 3);
     return new Timer(_duration, navigationPage);
   }
 
   Future<void> navigationPage() async {
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool authSignedIn = prefs.getBool('auth') ?? false;
-    client = http.Client();
-
     if (authSignedIn == true) {
-      uidlocal = prefs.getString('uid');
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomeScreen()), (Route<dynamic> route) => false);
     } else {
@@ -50,7 +61,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
     super.initState();
 
     animationController = new AnimationController(
-        vsync: this, duration: new Duration(seconds: 1));
+        vsync: this, duration: new Duration(milliseconds: 500));
     animation =
     new CurvedAnimation(parent: animationController, curve: Curves.easeOut);
 
@@ -60,6 +71,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
     setState(() {
       _visible = !_visible;
     });
+
     startTime();
   }
 
@@ -94,5 +106,32 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
         ],
       ),
     );
+  }
+}
+
+Future<Shows> fetchDataHome() async {
+  try {
+    String shows = await fetchUrlCached($shownamescode);
+    String featured = shows;
+
+    if(authSignedIn) {
+      Map <String, dynamic> Json = {
+        "uid": uidlocal,
+        "stat": "show_lastplayed"
+      };
+      String result = await postUrl($serviceURLgetstats, Json);
+      if (result != $nodata) {
+        Map<String, dynamic> lastplayed = jsonDecode(result);
+        final lastplayedsorted = new SplayTreeMap<String, dynamic>.from(
+            lastplayed, (a, b) => lastplayed[b].compareTo(lastplayed[a]));
+        lastplayedshowidsHome = lastplayedsorted.keys.toList();
+      }
+    }
+
+    showsHome = Shows.fromJson(jsonDecode(featured));
+    return Shows.fromJson(jsonDecode(shows));
+  }
+  catch(e) {
+    errorHome = 1;
   }
 }

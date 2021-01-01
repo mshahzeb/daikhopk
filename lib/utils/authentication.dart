@@ -1,9 +1,11 @@
+import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import '../constants.dart';
+import 'package:http/http.dart' as http;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -180,6 +182,12 @@ void updateUserDataCache(String uid, String name, String userEmail, String userI
   prefs.setString('name', name);
   prefs.setString('userEmail', userEmail);
   prefs.setString('userImageUrl', userImageUrl);
+
+  uidlocal = uid;
+  authSignedIn = true;
+
+  client = http.Client();
+  dataRequiredForHome = fetchDataHome();
 
   Map <String, dynamic> Json = {
     "uid": uid,

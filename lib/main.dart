@@ -1,7 +1,7 @@
+import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:daikhopk/utils/prefer.dart';
-import 'package:daikhopk/utils/routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,9 +40,10 @@ class _MyAppState extends State<MyApp> {
     return Center(
         child: MaterialApp(
           initialRoute: '/',
+          routes: {
+            '/': (_) => Splash(),
+          },
           debugShowCheckedModeBanner: false,
-          onGenerateRoute: Routes.onGenerateRoute,
-
           theme: ThemeData(
             primaryColor:Colors.black,
             fontFamily: 'FA',

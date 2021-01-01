@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/widgets/google_sign_in_button.dart';
-import 'package:daikhopk/utils/routeNames.dart';
 import 'package:daikhopk/utils/authentication.dart';
 import '../constants.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget{
 
@@ -272,9 +272,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                                                 Colors.green;
                                                           });
                                                           Future.delayed(
-                                                              Duration(milliseconds: 500),
-                                                                  () {Navigator.of(context).pushNamedAndRemoveUntil(RouteName.Home, (Route<dynamic> route) => false);
-                                                              });
+                                                              Duration(
+                                                                  milliseconds: 500),
+                                                                  () {
+                                                                    Navigator.of(context)
+                                                                      .pushAndRemoveUntil(
+                                                                        MaterialPageRoute(
+                                                                            builder: (_) => HomeScreen()
+                                                                        ),
+                                                                        (Route<dynamic> route) => false
+                                                                    );
+                                                                }
+                                                              );
                                                         }
                                                       }).catchError((error) {
                                                         print(
@@ -381,14 +390,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                                               Duration(
                                                                   milliseconds: 500),
                                                                   () {
-                                                                Navigator.of(
-                                                                    context)
-                                                                    .pushNamedAndRemoveUntil
-                                                                  (RouteName
-                                                                    .Home, (
-                                                                    Route<
-                                                                        dynamic> route) => false
-                                                                );
+                                                                    Navigator.of(context)
+                                                                        .pushAndRemoveUntil(
+                                                                        MaterialPageRoute(
+                                                                            builder: (_) => HomeScreen()
+                                                                        ),
+                                                                            (Route<dynamic> route) => false
+                                                                    );
                                                               });
                                                         }
                                                       }).catchError((error) {

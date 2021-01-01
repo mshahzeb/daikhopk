@@ -1,6 +1,6 @@
+import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/utils/authentication.dart';
 import 'package:flutter/material.dart';
-import 'package:daikhopk/utils/routeNames.dart';
 
 class GoogleButton extends StatefulWidget {
   @override
@@ -30,8 +30,12 @@ class _GoogleButtonState extends State<GoogleButton> {
           await signInWithGoogle().then((result) {
             print(result);
             if (result != null) {
-              Navigator.of(context).pushNamedAndRemoveUntil
-                (RouteName.Home, (Route<dynamic> route) => false
+              Navigator.of(context)
+                  .pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (_) => HomeScreen()
+                  ),
+                      (Route<dynamic> route) => false
               );
             }
           }).catchError((error) {

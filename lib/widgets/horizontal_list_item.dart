@@ -1,4 +1,4 @@
-// import 'package:cached_network_image/cached_network_image.dart';
+import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/list_screen.dart';
@@ -14,8 +14,7 @@ class HorizontalListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
+        Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => ListScreen(
               show: show,
             )
@@ -27,7 +26,22 @@ class HorizontalListItem extends StatelessWidget {
         children: <Widget>[
           CachedNetworkImage(
             imageUrl: show.posterUrl,
+            height: $defaultHeight,
             width: $defaultWidth,
+            fit: BoxFit.fitHeight,
+          ),
+          SizedBox(
+            height: 30,
+            width: $defaultWidth,
+            child: Text(
+              show.showname,
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: 'Comfortaa',
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       )
