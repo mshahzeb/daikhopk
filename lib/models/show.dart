@@ -9,10 +9,12 @@ class Show {
   String _trailerVideoId;
   int _embed;
   String _channel;
+  int _totalepisodes;
   int _completed;
-  List<Episode> _episodes;
+  int _year;
+  Map<int, Episode> _episodes;
 
-  Show(this._showid, this._showname, this._showtype, this._posterUrl, this._trailerUrl, this._embed, this._channel, this._episodes);
+  Show(this._showid, this._showname, this._showtype, this._posterUrl, this._trailerUrl, this._trailerVideoId, this._embed, this._channel, this._totalepisodes, this._completed, this._year, this._episodes);
 
   int get showid => _showid; // ignore: unnecessary_getters_setters
   set showid(int showid) => _showid = showid; // ignore: unnecessary_getters_setters
@@ -30,10 +32,14 @@ class Show {
   set trailerVideoId(String trailerVideoId) => _trailerVideoId = trailerVideoId; // ignore: unnecessary_getters_setters
   int get embed => _embed; // ignore: unnecessary_getters_setters
   set embed(int embed) => _embed = embed; // ignore: unnecessary_getters_setters
-  List<Episode> get episodes => _episodes; // ignore: unnecessary_getters_setters
-  set episodes(List<Episode> episodes) => _episodes = episodes; // ignore: unnecessary_getters_setters
+  int get totalepisodes => _totalepisodes; // ignore: unnecessary_getters_setters
+  set totalepisodes(int totalepisodes) => _totalepisodes = totalepisodes; // ignore: unnecessary_getters_setters
   int get completed => _completed; // ignore: unnecessary_getters_setters
   set completed(int completed) => _completed = completed; // ignore: unnecessary_getters_setters
+  int get year => _year; // ignore: unnecessary_getters_setters
+  set year(int year) => _year = year; // ignore: unnecessary_getters_setters
+  Map<int, Episode> get episodes => _episodes; // ignore: unnecessary_getters_setters
+  set episodes(Map<int, Episode> episodes) => _episodes = episodes; // ignore: unnecessary_getters_setters
 
   // named constructor
   Show.fromJson(Map<String, dynamic> json) {
@@ -45,30 +51,14 @@ class Show {
     _trailerUrl = json['trailerVideoId'];
     _embed = json['embed'];
     _channel = json['channel'];
+    _totalepisodes = json['totalepisodes'];
+    _year = json['releaseYear'];
     _completed = json['completed'];
     if (json['episodes'] != null) {
-      _episodes = new List<Episode>();
+      _episodes = new Map<int, Episode>();
       json['episodes'].forEach((v) {
-        _episodes.add(new Episode.fromJson(v));
+        _episodes.putIfAbsent(v['episodeno'], () => Episode.fromJson(v));
       });
     }
-  }
-
-  // method
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['showid'] = _showid;
-    data['showname'] = _showname;
-    data['showtype'] = _showtype;
-    data['posterUrl'] = _posterUrl;
-    data['trailerUrl'] = _trailerUrl;
-    data['trailerVideoId'] = _trailerVideoId;
-    data['embed'] = _embed;
-    data['channel'] = _channel;
-    data['completed'] = _completed;
-    if (this._episodes != null) {
-    data['episodes'] = this._episodes.map((v) => v.toJson()).toList();
-    }
-    return data;
   }
 }

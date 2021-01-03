@@ -1,21 +1,18 @@
 import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/screens/search_screen.dart';
+import 'package:daikhopk/utils/customroute.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
-  int selectedindex;
-  CustomBottomNavBar({@required final this.selectedindex});
+  CustomBottomNavBar(
+      );
 
   @override
-  _CustomBottomNavBarState createState() => _CustomBottomNavBarState(
-    selectedIndex: selectedindex,
-  );
+  _CustomBottomNavBarState createState() => _CustomBottomNavBarState();
 }
 
 class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
-  int selectedIndex;
-
-  _CustomBottomNavBarState({@required final this.selectedIndex});
+  _CustomBottomNavBarState();
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 11, fontWeight: FontWeight.w300, fontFamily: 'Comfortaa');
@@ -41,8 +38,9 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         break;
 
         case 1: {
-          Navigator.of(context).push(
-            MyFadeRoute(builder: (context) => HomeScreen())
+          Navigator.of(context).pushAndRemoveUntil(
+            MyFadeRoute(builder: (context) => HomeScreen()),
+            (Route<dynamic> route) => false
           );
         }
         break;
@@ -54,7 +52,6 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         }
         break;
       }
-      selectedIndex = index;
     });
   }
 
@@ -76,28 +73,11 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
             label: 'Search',
           ),
         ],
-        currentIndex: selectedIndex,
-        selectedItemColor: Colors.redAccent,
         backgroundColor: Colors.black,
         unselectedItemColor: Colors.white,
-        // fixedColor: Colors.grey,
+        fixedColor: Colors.white,
 
         onTap: _onItemTapped,
       );
-  }
-}
-
-class MyFadeRoute<T> extends MaterialPageRoute<T> {
-  MyFadeRoute({ WidgetBuilder builder, RouteSettings settings })
-      : super(builder: builder, settings: settings);
-
-  @override
-  Widget buildTransitions(BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child) {
-    //if (settings.isInitialRoute)
-    //  return child;
-    return new FadeTransition(opacity: animation, child: child);
   }
 }

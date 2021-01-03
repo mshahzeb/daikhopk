@@ -29,17 +29,4 @@ class Episode {
         _episodeUrl = json['episodeUrl'],
         _episodeVideoId = json['episodeVideoId'],
         _episodeThumbnail = json['episodeThumbnail'];
-
-  // method
-  Map<String, dynamic> toJson() {
-    return {
-      'episodeid': _episodeid,
-      'episodeno': _episodeno,
-      'episodetitle': _episodetitle,
-      'episodeUrl': _episodeUrl,
-      'episodeVideoId': _episodeVideoId,
-      'episodeThumbnail': _episodeThumbnail
-    };
-  }
-
 }

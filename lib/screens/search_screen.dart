@@ -13,7 +13,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   AppBar buildAppBar(BuildContext context) {
     return new AppBar(
-        title: new Text('Search Bar Demo'),
+        title: new Text('Explore'),
         actions: [searchBar.getSearchAction(context)]);
   }
 
@@ -43,9 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
       key: _scaffoldKey,
       body: new Center(
           child: new Text("Don't look at me! Press the search button!")),
-      bottomNavigationBar: CustomBottomNavBar(
-        selectedindex: 2,
-      ),
+      bottomNavigationBar: CustomBottomNavBar(),
     );
   }
 }

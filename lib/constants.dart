@@ -30,5 +30,5 @@ final int $maxfeatured = 5;
 
 //Circular Progress CircularProgressIndicator
 final Color $circularbackgroundcolor = Colors.black;
-final Color $circularstrokecolor = Colors.blue;
+final Color $circularstrokecolor = Colors.redAccent;
 final double $circularstrokewidth = 5;

@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return true;
   }
 
-  void refreshdata() {
+  Future<void> refreshdata() async {
     dataRequiredForHome = fetchDataHome();
     setState(() {});
   }
@@ -67,20 +67,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   return <Widget>[
                     CustomSliverAppBar(
                         shows: snapshot.data.shows,
+                        channels: snapshot.data.channels,
                     ),
                   ];
                 },
                 body: Container(
                   color: Colors.black,
-                  child: ListView(
+                  child: RefreshIndicator(
+                    color: Colors.redAccent,
+                    backgroundColor: Colors.black,
+                    displacement: 100,
+                    child: ListView(
                       shrinkWrap: true,
                       children: <Widget>[
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            SizedBox(
-                              height: 10
-                            ),
                             Conditional.single(
                               context: context,
                               conditionBuilder: (BuildContext context) =>
@@ -112,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           height: 200.0,
                                           child: HorizontalList(
                                             shows: showsHome.shows,
+                                            channels: showsHome.channels,
                                             filtershowids: lastplayedshowidsHome,
                                           ),
                                         ),
@@ -142,28 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               height: 200.0,
                               child: HorizontalList(
-                                  shows: showsHome.shows,
+                                shows: showsHome.shows,
+                                channels: showsHome.channels,
                               ),
-                            ),
-                            SizedBox(
-                              height: 30.0,
-                            ),
-                            RaisedButton(
-                              onPressed: () {
-                                refreshdata();
-                              },
-                              color: Colors.black,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Refresh',
-                                  style: TextStyle(
-                                      fontSize: 25, color: Colors.white),
-                                ),
-                              ),
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40)),
                             ),
                             SizedBox(
                               height: 30.0,
@@ -192,12 +176,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ]
+                    ),
+                    onRefresh: refreshdata,
                   ),
                 ),
               ),
-              bottomNavigationBar: CustomBottomNavBar(
-                selectedindex: 1,
-              ),
+              bottomNavigationBar: CustomBottomNavBar(),
             ),
           );
         } else {
