@@ -90,7 +90,19 @@ class CustomSliverAppBar extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                    )
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        numdisplay(shows[key].viewCount) + ' Views',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'Comfortaa',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ]
                 )
               );
@@ -99,9 +111,9 @@ class CustomSliverAppBar extends StatelessWidget {
             autoplayDelay: 5000,
             layout: SwiperLayout.DEFAULT,
             pagination: new SwiperPagination(
-              alignment: Alignment.bottomLeft,
+              alignment: Alignment.topCenter,
               builder: new DotSwiperPaginationBuilder(
-              color: Colors.white, activeColor: Colors.redAccent),
+                color: Colors.black, activeColor: Colors.redAccent),
             ),
           ),
         )

@@ -183,7 +183,10 @@ void updateUserDataCache(String uid, String name, String userEmail, String userI
   prefs.setString('userEmail', userEmail);
   prefs.setString('userImageUrl', userImageUrl);
 
-  uidlocal = uid;
+  userlocal.putIfAbsent('uid', () => prefs.getString('uid'));
+  userlocal.putIfAbsent('name', () => prefs.getString('name'));
+  userlocal.putIfAbsent('userEmail', () => prefs.getString('userEmail'));
+  userlocal.putIfAbsent('userImageUrl', () => prefs.getString('userImageUrl'));
   authSignedIn = true;
 
   client = http.Client();

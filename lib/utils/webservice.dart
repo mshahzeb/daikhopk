@@ -1,13 +1,23 @@
-import 'package:daikhopk/screens/splash_screen.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
+import 'package:http/http.dart' as http;
+
+var client;
+
+Future<void> InitClient() async {
+  if(client == null) {
+    client = http.Client();
+  }
+}
 
 Future<Response> fetchUrl(final String url) async {
   Response response;
   int trycount = 0;
+
+  await InitClient();
 
   while (trycount < $maxtrycounthttp) {
     try {
@@ -64,6 +74,8 @@ Future<String> fetchUrlCached(final int id) async {
 Future<String> postUrl(final String url, final Map<String, dynamic> Json) async {
   Response response;
   int trycount = 0;
+
+  await InitClient();
 
   while (trycount < $maxtrycounthttp) {
     try {

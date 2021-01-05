@@ -6,20 +6,23 @@ import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/utils/deviceSize.dart';
 import 'package:daikhopk/screens/login_screen.dart';
+import 'package:number_display/number_display.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
-import 'package:http/http.dart' as http;
 import 'package:daikhopk/models/shows.dart';
 
 DeviceSize deviceSize;
 SharedPreferences prefs;
-String uidlocal;
-var client;
+var userlocal = new Map();
 int errorHome = 0;
 Future<Shows> dataRequiredForHome;
 Shows showsHome;
 List<String> lastplayedshowidsHome;
 bool authSignedIn;
+
+final numdisplay = createDisplay(
+  length: 5,
+);
 
 class Splash extends StatefulWidget {
   @override
@@ -37,9 +40,11 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
     prefs = await SharedPreferences.getInstance();
     authSignedIn = prefs.getBool('auth') ?? false;
     if(authSignedIn) {
-      uidlocal = prefs.getString('uid');
+      userlocal.putIfAbsent('uid', () => prefs.getString('uid'));
+      userlocal.putIfAbsent('name', () => prefs.getString('name'));
+      userlocal.putIfAbsent('userEmail', () => prefs.getString('userEmail'));
+      userlocal.putIfAbsent('userImageUrl', () => prefs.getString('userImageUrl'));
     }
-    client = http.Client();
     dataRequiredForHome = fetchDataHome();
 
     var _duration = new Duration(seconds: 3);
@@ -116,7 +121,7 @@ Future<Shows> fetchDataHome() async {
 
     if(authSignedIn) {
       Map <String, dynamic> Json = {
-        "uid": uidlocal,
+        "uid": userlocal['uid'],
         "stat": "show_lastplayed"
       };
       String result = await postUrl($serviceURLgetstats, Json);

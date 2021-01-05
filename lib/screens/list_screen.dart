@@ -53,7 +53,7 @@ class _ListScreenState extends State<ListScreen> {
       _episodes = shows[shows.keys.first].episodes;
 
       Map <String, dynamic> Json = {
-        "uid": uidlocal,
+        "uid": userlocal['uid'],
         "stat": "show_lastplayedepi",
         "sid": show.showid.toString()
       };
@@ -69,7 +69,7 @@ class _ListScreenState extends State<ListScreen> {
 
   Future<void> UpdateShowIdStats() async {
     Map <String, dynamic> Json = {
-      "uid": uidlocal,
+      "uid": userlocal['uid'],
       "stats": [
         {
           "sid": show.showid.toString(),
@@ -128,7 +128,7 @@ class _ListScreenState extends State<ListScreen> {
                         width: 100,
                         child: Center(
                           child: Text(
-                            show.totalepisodes.toString() + ' Episodes',
+                            'Episodes\n' + show.totalepisodes.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 15,
@@ -143,7 +143,22 @@ class _ListScreenState extends State<ListScreen> {
                         width: 100,
                         child: Center(
                           child: Text(
-                            show.year.toString() + ' Released',
+                            'Released\n' + show.releaseYear.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                    ),
+                    Container(
+                        height: 50,
+                        width: 100,
+                        child: Center(
+                          child: Text(
+                            'Views\n' + numdisplay(show.viewCount),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 15,

@@ -11,10 +11,11 @@ class Show {
   String _channel;
   int _totalepisodes;
   int _completed;
-  int _year;
+  int _releaseYear;
+  int _viewCount;
   Map<int, Episode> _episodes;
 
-  Show(this._showid, this._showname, this._showtype, this._posterUrl, this._trailerUrl, this._trailerVideoId, this._embed, this._channel, this._totalepisodes, this._completed, this._year, this._episodes);
+  Show(this._showid, this._showname, this._showtype, this._posterUrl, this._trailerUrl, this._trailerVideoId, this._embed, this._channel, this._totalepisodes, this._completed, this._releaseYear, this._viewCount, this._episodes);
 
   int get showid => _showid; // ignore: unnecessary_getters_setters
   set showid(int showid) => _showid = showid; // ignore: unnecessary_getters_setters
@@ -36,8 +37,10 @@ class Show {
   set totalepisodes(int totalepisodes) => _totalepisodes = totalepisodes; // ignore: unnecessary_getters_setters
   int get completed => _completed; // ignore: unnecessary_getters_setters
   set completed(int completed) => _completed = completed; // ignore: unnecessary_getters_setters
-  int get year => _year; // ignore: unnecessary_getters_setters
-  set year(int year) => _year = year; // ignore: unnecessary_getters_setters
+  int get releaseYear => _releaseYear; // ignore: unnecessary_getters_setters
+  set releaseYear(int releaseYear) => _releaseYear = releaseYear; // ignore: unnecessary_getters_setters
+  int get viewCount => _viewCount; // ignore: unnecessary_getters_setters
+  set viewCount(int viewCount) => _viewCount = viewCount; // ignore: unnecessary_getters_setters
   Map<int, Episode> get episodes => _episodes; // ignore: unnecessary_getters_setters
   set episodes(Map<int, Episode> episodes) => _episodes = episodes; // ignore: unnecessary_getters_setters
 
@@ -52,8 +55,9 @@ class Show {
     _embed = json['embed'];
     _channel = json['channel'];
     _totalepisodes = json['totalepisodes'];
-    _year = json['releaseYear'];
     _completed = json['completed'];
+    _releaseYear = json['releaseYear'];
+    _viewCount = json['viewCount'];
     if (json['episodes'] != null) {
       _episodes = new Map<int, Episode>();
       json['episodes'].forEach((v) {

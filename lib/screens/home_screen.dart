@@ -1,5 +1,6 @@
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/models/shows.dart';
+import 'package:daikhopk/utils/webservice.dart';
 import 'package:daikhopk/widgets/horizontal_list.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/screens/login_screen.dart';
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: RefreshIndicator(
                     color: Colors.redAccent,
                     backgroundColor: Colors.black,
-                    displacement: 100,
+                    displacement: 50,
                     child: ListView(
                       shrinkWrap: true,
                       children: <Widget>[

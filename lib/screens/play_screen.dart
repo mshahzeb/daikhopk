@@ -126,7 +126,7 @@ class _PlayScreenState extends State<PlayScreen> {
     int nowint = now.toInt();
     String showidstr = showid.toString();
     Map <String, dynamic> Json = {
-      "uid": uidlocal,
+      "uid": userlocal['uid'],
       "stats": [
         {
           "sid": videoId,
@@ -158,7 +158,7 @@ class _PlayScreenState extends State<PlayScreen> {
     postUrl($serviceURLupdatestats, Json);
 
     Json = {
-      "uid": uidlocal,
+      "uid": userlocal['uid'],
       "stat": "vid_lastplaytime",
       "sid": videoId
     };
@@ -175,7 +175,7 @@ class _PlayScreenState extends State<PlayScreen> {
   void UpdateVideoIdLastPlayTime(int duration) async {
     if(duration > 0) {
       Map <String, dynamic> Json = {
-        "uid": uidlocal,
+        "uid": userlocal['uid'],
         "stats": [
           {
             "sid": videoId,
@@ -228,7 +228,7 @@ class _PlayScreenState extends State<PlayScreen> {
                     ),
                     ListTile(
                       leading: CachedNetworkImage(
-                        imageUrl: posterUrl,
+                        imageUrl: (episode?.episodeThumbnail ?? "") == "" ? posterUrl : episode.episodeThumbnail,
                         width: $defaultWidth,
                       ),
                       title: Text(

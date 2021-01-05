@@ -1,3 +1,4 @@
+import 'package:daikhopk/screens/account_screen.dart';
 import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/screens/search_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
@@ -34,7 +35,11 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   void _onItemTapped(int index) {
     setState(() {
       switch(index) {
-        case 0: { print('1'); }
+        case 0: {
+          Navigator.of(context).push(
+              MyFadeRoute(builder: (context) => AccountScreen())
+          );
+        }
         break;
 
         case 1: {
