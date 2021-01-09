@@ -5,15 +5,20 @@ import 'package:daikhopk/utils/customroute.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
-  CustomBottomNavBar(
-      );
+  final String currentscreen;
+  CustomBottomNavBar({@required final this.currentscreen});
 
   @override
-  _CustomBottomNavBarState createState() => _CustomBottomNavBarState();
+  _CustomBottomNavBarState createState() => _CustomBottomNavBarState(
+    currentscreen: currentscreen,
+  );
 }
 
 class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
-  _CustomBottomNavBarState();
+  final String currentscreen;
+  _CustomBottomNavBarState({@required final this.currentscreen});
+
+  bool refresh;
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 11, fontWeight: FontWeight.w300, fontFamily: 'Comfortaa');
@@ -43,8 +48,13 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         break;
 
         case 1: {
+          if(currentscreen == "Home") {
+            refresh = true;
+          } else {
+            refresh = false;
+          }
           Navigator.of(context).pushAndRemoveUntil(
-            MyFadeRoute(builder: (context) => HomeScreen()),
+            MyFadeRoute(builder: (context) => HomeScreen(refresh: refresh)),
             (Route<dynamic> route) => false
           );
         }

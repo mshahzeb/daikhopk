@@ -1,11 +1,11 @@
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import '../constants.dart';
-import 'package:http/http.dart' as http;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -14,6 +14,7 @@ String uid;
 String name;
 String userEmail;
 String imageUrl;
+String accountType;
 
 /// For checking if the user is already signed into the
 /// app using Google Sign In
@@ -35,11 +36,6 @@ Future getUser() async {
   }
 }
 
-/// For authenticating user using Google Sign In
-/// with Firebase Authentication API.
-///
-/// Retrieves some general user related information
-/// from their Google account for ease of the login process
 Future<String> signInWithGoogle() async {
   await Firebase.initializeApp();
 
@@ -67,6 +63,7 @@ Future<String> signInWithGoogle() async {
     name = user.displayName;
     userEmail = user.email;
     imageUrl = user.photoURL;
+    accountType = 'Google';
 
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
@@ -74,7 +71,7 @@ Future<String> signInWithGoogle() async {
     final User currentUser = _auth.currentUser;
     assert(user.uid == currentUser.uid);
 
-    updateUserDataCache(uid, name, userEmail, imageUrl);
+    updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
 
     return 'Google sign in successful, User UID: ${user.uid}';
   }
@@ -82,51 +79,32 @@ Future<String> signInWithGoogle() async {
   return null;
 }
 
-Future<String> registerWithEmailPassword(String email, String password) async {
+Future<String> signInWithFacebook() async {
+
   await Firebase.initializeApp();
 
-  final UserCredential userCredential =
-      await _auth.createUserWithEmailAndPassword(
-    email: email,
-    password: password,
-  );
+  final AccessToken result = await FacebookAuth.instance.login();
 
+  // Create a credential from the access token
+  final FacebookAuthCredential facebookAuthCredential =
+  FacebookAuthProvider.credential(result.token);
+
+  // Once signed in, return the UserCredential
+  final UserCredential userCredential = await _auth.signInWithCredential(facebookAuthCredential);
   final User user = userCredential.user;
 
   if (user != null) {
-    // checking if uid or email is null
+    // Checking if email and name is null
     assert(user.uid != null);
     assert(user.email != null);
+    assert(user.displayName != null);
+    assert(user.photoURL != null);
 
     uid = user.uid;
+    name = user.displayName;
     userEmail = user.email;
-
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    return 'Successfully registered, User UID: ${user.uid}';
-  }
-
-  return null;
-}
-
-Future<String> signInWithEmailPassword(String email, String password) async {
-  await Firebase.initializeApp();
-
-  final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-    email: email,
-    password: password,
-  );
-
-  final User user = userCredential.user;
-
-  if (user != null) {
-    // checking if uid or email is null
-    assert(user.uid != null);
-    assert(user.email != null);
-
-    uid = user.uid;
-    userEmail = user.email;
+    imageUrl = user.photoURL;
+    accountType = 'Facebook';
 
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
@@ -134,27 +112,35 @@ Future<String> signInWithEmailPassword(String email, String password) async {
     final User currentUser = _auth.currentUser;
     assert(user.uid == currentUser.uid);
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('auth', true);
+    updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
 
-    return 'Successfully logged in, User UID: ${user.uid}';
+    return 'Facebook sign in successful, User UID: ${user.uid}';
   }
 
   return null;
 }
 
-Future<String> signOut() async {
-
-  await Firebase.initializeApp();
-  await _auth.signOut();
-
+void signOut() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool('auth', false);
+  String accountType = prefs.getString('accountType');
+
+  if(accountType == "Google") {
+    signOutGoogle();
+  } else if (accountType == "Facebook") {
+    signOutFacebook();
+  } else {
+    signOutGoogle();
+    signOutFacebook();
+  }
 
   uid = null;
+  name = null;
   userEmail = null;
+  imageUrl = null;
+  accountType = null;
 
-  return 'User signed out';
+  prefs.clear();
+  userlocal.clear();
 }
 
 /// For signing out of their Google account
@@ -164,17 +150,19 @@ void signOutGoogle() async {
   await googleSignIn.signOut();
   await _auth.signOut();
 
-  clearUserDataCache();
-
-  uid = null;
-  name = null;
-  userEmail = null;
-  imageUrl = null;
-
   print("User signed out of Google account");
 }
 
-void updateUserDataCache(String uid, String name, String userEmail, String userImageUrl) async {
+Future<String> signOutFacebook() async {
+
+  await Firebase.initializeApp();
+  await FacebookAuth.instance.logOut();
+  await _auth.signOut();
+
+  print("User signed out of Facebook account");
+}
+
+void updateUserDataCache(String uid, String name, String userEmail, String userImageUrl, String accountType) async {
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('auth', true);
@@ -182,27 +170,24 @@ void updateUserDataCache(String uid, String name, String userEmail, String userI
   prefs.setString('name', name);
   prefs.setString('userEmail', userEmail);
   prefs.setString('userImageUrl', userImageUrl);
+  prefs.setString('accountType', accountType);
 
   userlocal.putIfAbsent('uid', () => prefs.getString('uid'));
   userlocal.putIfAbsent('name', () => prefs.getString('name'));
   userlocal.putIfAbsent('userEmail', () => prefs.getString('userEmail'));
   userlocal.putIfAbsent('userImageUrl', () => prefs.getString('userImageUrl'));
+  userlocal.putIfAbsent('accountType', () => prefs.getString('accountType'));
   authSignedIn = true;
 
-  client = http.Client();
   dataRequiredForHome = fetchDataHome();
 
   Map <String, dynamic> Json = {
     "uid": uid,
     "name": name,
     "userEmail": userEmail,
-    "userImageUrl": userImageUrl
+    "userImageUrl": userImageUrl,
+    "accounType": accountType
   };
 
   postUrl($serviceURLupdateuserinfo, Json);
-}
-
-void clearUserDataCache() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.clear();
 }

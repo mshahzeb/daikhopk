@@ -1,6 +1,5 @@
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/models/shows.dart';
-import 'package:daikhopk/utils/webservice.dart';
 import 'package:daikhopk/widgets/horizontal_list.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/screens/login_screen.dart';
@@ -13,23 +12,34 @@ import 'package:daikhopk/widgets/custom_sliver_app_bar.dart';
 import '../constants.dart';
 
 class HomeScreen extends StatefulWidget {
+  final bool refresh;
+  HomeScreen({@required final this.refresh});
+
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState(
+    refresh: refresh
+  );
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final bool refresh;
+  _HomeScreenState({@required final this.refresh});
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void initState() {
     super.initState();
+
+    if(refresh) {
+      refreshdata();
+    }
+
     print('initState');
   }
 
   @override
   void dispose() {
-    client.close();
     super.dispose();
   }
 
@@ -74,115 +84,110 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 body: Container(
                   color: Colors.black,
-                  child: RefreshIndicator(
-                    color: Colors.redAccent,
-                    backgroundColor: Colors.black,
-                    displacement: 50,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: <Widget>[
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Conditional.single(
-                              context: context,
-                              conditionBuilder: (BuildContext context) =>
-                              ((lastplayedshowidsHome?.length ?? 0) > 0) == true,
-                              widgetBuilder: (BuildContext context) =>
-                                  Column(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: Row(
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 10),
-                                              ),
-                                              Text(
-                                                'Last Played',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                textAlign: TextAlign.left,
-                                              ),
-                                            ],
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Conditional.single(
+                            context: context,
+                            conditionBuilder: (BuildContext context) =>
+                            ((lastplayedshowidsHome?.length ?? 0) > 0) == true,
+                            widgetBuilder: (BuildContext context) =>
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: Row(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 10),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 200.0,
-                                          child: HorizontalList(
-                                            shows: showsHome.shows,
-                                            channels: showsHome.channels,
-                                            filtershowids: lastplayedshowidsHome,
+                                          Text(
+                                            'Last Played',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            textAlign: TextAlign.left,
                                           ),
-                                        ),
-                                      ]
-                                  ),
-                              fallbackBuilder: (BuildContext context) =>
-                                  SizedBox(height: 0.0,),
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 10),
-                                  ),
-                                  Text(
-                                    'Shows',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
+                                        ],
+                                      ),
                                     ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 200.0,
-                              child: HorizontalList(
-                                shows: showsHome.shows,
-                                channels: showsHome.channels,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 30.0,
-                            ),
-                            RaisedButton(
-                              onPressed: () {
-                                signOutGoogle();
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(builder: (context) {
-                                      return LoginScreen();
-                                    }), ModalRoute.withName('/'));
-                              },
-                              color: Colors.black,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Sign Out',
-                                  style: TextStyle(
-                                      fontSize: 25, color: Colors.white),
+                                    SizedBox(
+                                      height: 200.0,
+                                      child: HorizontalList(
+                                        shows: showsHome.shows,
+                                        channels: showsHome.channels,
+                                        filtershowids: lastplayedshowidsHome,
+                                      ),
+                                    ),
+                                  ]
                                 ),
+                            fallbackBuilder: (BuildContext context) =>
+                              SizedBox(height: 0.0,),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                ),
+                                Text(
+                                  'Shows',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 200.0,
+                            child: HorizontalList(
+                              shows: showsHome.shows,
+                              channels: showsHome.channels,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              signOut();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (context) {
+                                    return LoginScreen();
+                                  }), ModalRoute.withName('/'));
+                            },
+                            color: Colors.black,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Sign Out',
+                                style: TextStyle(
+                                    fontSize: 25, color: Colors.white),
                               ),
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40)),
-                            )
-                          ],
-                        ),
-                      ]
-                    ),
-                    onRefresh: refreshdata,
+                            ),
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40)),
+                          )
+                        ],
+                      ),
+                    ]
                   ),
                 ),
               ),
-              bottomNavigationBar: CustomBottomNavBar(),
+              bottomNavigationBar: CustomBottomNavBar(currentscreen: "Home",),
             ),
           );
         } else {

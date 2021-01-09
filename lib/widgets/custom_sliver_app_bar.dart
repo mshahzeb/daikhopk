@@ -72,6 +72,7 @@ class CustomSliverAppBar extends StatelessWidget {
                     ),
                     Container(
                       alignment: Alignment.bottomRight,
+                      padding: EdgeInsets.only(right: 10),
                       child: CachedNetworkImage(
                         imageUrl: channels[shows[key].channel].logoUrl,
                         height: 50,
@@ -93,6 +94,7 @@ class CustomSliverAppBar extends StatelessWidget {
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
+                      padding: EdgeInsets.only(left: 10),
                       child: Text(
                         numdisplay(shows[key].viewCount) + ' Views',
                         style: TextStyle(

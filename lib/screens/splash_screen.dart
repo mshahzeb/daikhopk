@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +14,15 @@ import 'package:daikhopk/models/shows.dart';
 
 DeviceSize deviceSize;
 SharedPreferences prefs;
-var userlocal = new Map();
-int errorHome = 0;
-Future<Shows> dataRequiredForHome;
 Shows showsHome;
+Show showLocal;
+
+var userlocal = new Map();
+Future<Shows> dataRequiredForHome;
+
 List<String> lastplayedshowidsHome;
 bool authSignedIn;
+int errorHome = 0;
 
 final numdisplay = createDisplay(
   length: 5,
@@ -44,6 +48,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
       userlocal.putIfAbsent('name', () => prefs.getString('name'));
       userlocal.putIfAbsent('userEmail', () => prefs.getString('userEmail'));
       userlocal.putIfAbsent('userImageUrl', () => prefs.getString('userImageUrl'));
+      userlocal.putIfAbsent('accountType', () => prefs.getString('accountType'));
     }
     dataRequiredForHome = fetchDataHome();
 
@@ -54,7 +59,7 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
   Future<void> navigationPage() async {
     if (authSignedIn == true) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => HomeScreen()), (Route<dynamic> route) => false);
+          MaterialPageRoute(builder: (context) => HomeScreen(refresh: false)), (Route<dynamic> route) => false);
     } else {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => LoginScreen()), (Route<dynamic> route) => false);

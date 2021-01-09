@@ -21,6 +21,7 @@ class HorizontalListItem extends StatelessWidget {
             MyFadeRoute(builder: (context) => ListScreen(
               show: show,
               channel: channel,
+              refresh: true
             )
         ),
         );

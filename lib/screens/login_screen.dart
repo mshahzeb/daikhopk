@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:daikhopk/widgets/facebook_sign_in_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +8,6 @@ import 'package:daikhopk/widgets/google_sign_in_button.dart';
 import '../constants.dart';
 
 class LoginScreen extends StatefulWidget{
-
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -47,13 +47,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    textControllerEmail = TextEditingController();
-    textControllerPassword = TextEditingController();
-    textControllerEmail.text = null;
-    textControllerPassword.text = null;
-    textFocusNodeEmail = FocusNode();
-    textFocusNodePassword = FocusNode();
-
     super.initState();
   }
 
@@ -86,21 +79,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         fit: BoxFit.fitHeight
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                        'All your favorite shows in one place',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(height: 100,),
+                    SizedBox(height: 10,),
                     Center(child: GoogleButton()),
-                    SizedBox(height: 16,),
+                    SizedBox(height: 25,),
+                    Center(child: FacebookButton()),
                     ],
                 ),
               )

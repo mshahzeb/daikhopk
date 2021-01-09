@@ -170,6 +170,27 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_facebook_auth">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth-2.0.0+1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_facebook_auth_platform_interface">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth_platform_interface-1.0.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_facebook_auth_web">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth_web-1.0.6/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_inappwebview">
           <value>
             <list>
@@ -222,7 +243,7 @@
         <entry key="google_sign_in">
           <value>
             <list>
-              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-4.5.6/lib" />
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-4.5.9/lib" />
             </list>
           </value>
         </entry>
@@ -327,7 +348,7 @@
         <entry key="path_provider">
           <value>
             <list>
-              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.24/lib" />
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.27/lib" />
             </list>
           </value>
         </entry>
@@ -341,7 +362,7 @@
         <entry key="path_provider_macos">
           <value>
             <list>
-              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+6/lib" />
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+8/lib" />
             </list>
           </value>
         </entry>
@@ -658,12 +679,15 @@
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_blurhash-0.5.0/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_cache_manager-2.1.0/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_conditional_rendering-1.1.1/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth-2.0.0+1/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth_platform_interface-1.0.1/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth_web-1.0.6/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_inappwebview-4.0.0+4/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_launcher_icons-0.8.1/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_page_indicator-0.0.3/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_search_bar-2.1.0/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_swiper-1.1.6/lib" />
-      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-4.5.6/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-4.5.9/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_platform_interface-1.1.2/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.9.2/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.12.2/lib" />
@@ -678,9 +702,9 @@
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/number_display-2.3.0/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/octo_image-0.3.0/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0-nullsafety.3/lib" />
-      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.24/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.27/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-0.0.1+2/lib" />
-      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+6/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+8/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-1.0.4/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-0.0.4+3/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.9.2/lib" />

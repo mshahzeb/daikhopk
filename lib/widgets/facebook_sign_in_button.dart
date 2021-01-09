@@ -2,12 +2,12 @@ import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/utils/authentication.dart';
 import 'package:flutter/material.dart';
 
-class GoogleButton extends StatefulWidget {
+class FacebookButton extends StatefulWidget {
   @override
-  _GoogleButtonState createState() => _GoogleButtonState();
+  _FacebookButtonState createState() => _FacebookButtonState();
 }
 
-class _GoogleButtonState extends State<GoogleButton> {
+class _FacebookButtonState extends State<FacebookButton> {
   bool _isProcessing = false;
 
   @override
@@ -18,7 +18,7 @@ class _GoogleButtonState extends State<GoogleButton> {
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(color: Colors.grey, width: 2),
         ),
-        color: Colors.black38,
+        color: Colors.black,
       ),
       child: OutlineButton(
         highlightColor: Colors.redAccent,
@@ -27,7 +27,7 @@ class _GoogleButtonState extends State<GoogleButton> {
           setState(() {
             _isProcessing = true;
           });
-          await signInWithGoogle().then((result) {
+          await signInWithFacebook().then((result) {
             print(result);
             if (result != null) {
               Navigator.of(context)
@@ -59,21 +59,22 @@ class _GoogleButtonState extends State<GoogleButton> {
               Colors.white,
             ),
           )
-          : Row(
+              : Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image(
-                image: AssetImage("assets/images/google-logo.png"),
+                image: AssetImage("assets/images/facebook-logo.png"),
                 height: 30.0,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: Text(
-                  'Sign in with Google',
+                  'Sign in with Facebook',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.grey,
+
                   ),
                 ),
               )

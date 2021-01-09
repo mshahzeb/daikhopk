@@ -43,7 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
       key: _scaffoldKey,
       body: new Center(
           child: new Text("Don't look at me! Press the search button!")),
-      bottomNavigationBar: CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(currentscreen: "Search",),
     );
   }
 }

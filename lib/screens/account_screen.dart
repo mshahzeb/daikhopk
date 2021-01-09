@@ -18,7 +18,7 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
       body: new Center(
           child: new Text("Your Name is: " + userlocal['name'])),
-      bottomNavigationBar: CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(currentscreen: "Account",),
     );
   }
 }

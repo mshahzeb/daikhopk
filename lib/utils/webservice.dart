@@ -4,12 +4,11 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import 'package:http/http.dart' as http;
-
-var client;
+http.Client client;
 
 Future<void> InitClient() async {
   if(client == null) {
-    client = http.Client();
+    client = new http.Client();
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:daikhopk/screens/splash_screen.dart';
+import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:daikhopk/utils/prefer.dart';
@@ -24,6 +25,12 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     print('initState()');
+  }
+
+  @override
+  void dispose() {
+    client.close();
+    super.dispose();
   }
 
   @override
