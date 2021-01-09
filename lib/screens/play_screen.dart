@@ -25,8 +25,8 @@ class PlayScreen extends StatefulWidget {
   @override
   _PlayScreenState createState() => _PlayScreenState(
     show: show,
+    channel: channel,
     episodeno: episodeno,
-    channel: channel
   );
 }
 
@@ -226,6 +226,7 @@ class _PlayScreenState extends State<PlayScreen> {
               builder: (context) =>
                   PlayScreen(
                     show: show,
+                    channel: channel,
                     episodeno: episodeno,
                   )
           )
@@ -358,35 +359,63 @@ class _PlayScreenState extends State<PlayScreen> {
                             ),
                           ]
                         ),
-                        RaisedButton(
-                          color: Colors.white10,
-                          shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(3.0),
-                          side: BorderSide(color: Colors.white)),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.alternate_email,
-                                color: Colors.white,
-                                size: 28,
+                        SizedBox(height: 10.0),
+                        SizedBox(
+                          width: deviceSize.width,
+                          child: DecoratedBox(
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                side: BorderSide(color: Colors.grey, width: 2),
                               ),
-                              Text(
-                                "Open in Youtube",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                fontFamily: 'Confortaa',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white
+                              color: Colors.black38,
+                            ),
+                            child: OutlineButton(
+                              highlightColor: Colors.redAccent,
+                              splashColor: Colors.grey,
+                              onPressed: () {
+                                String launchUrl;
+                                launchUrl = show.episodes[episodeno].episodeUrl + '&t=' + _controller.value.position.inSeconds.toString();
+                                _launchYoutubeVideo(launchUrl);
+                              },
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                                side: BorderSide(color: Colors.grey, width: 3),
+                              ),
+                              highlightElevation: 0,
+                              // borderSide: BorderSide(color: Colors.blueGrey, width: 3),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        'Open Video in',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 20.0),
+                                    Image(
+                                      image: AssetImage("assets/images/Youtube-logo.png"),
+                                      height: 25.0,
+                                    ),
+                                    SizedBox(width: 20.0),
+                                    Image(
+                                      image: AssetImage("assets/images/cast-logo-white.png"),
+                                      height: 20.0,
+                                      width: 20.0,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                          onPressed: () {
-                            String launchUrl;
-                            launchUrl = show.episodes[episodeno].episodeUrl + '&t=' + _controller.value.position.inSeconds.toString();
-                            _launchYoutubeVideo(launchUrl);
-                          },
                         ),
                         ],
                       ),

@@ -23,6 +23,8 @@ final String $serviceURLgetstats = $serviceURLusrapi + '/getstat';
 //Default Values
 final String $logopath = 'assets/logo/daikho_logo.png';
 final String $iconpath = 'assets/logo/daikho_icon.png';
+final String $iconcirclepath = 'assets/logo/daikho_icon_blackbgcircle.png';
+final String $iconovalpath = 'assets/logo/daikho_icon_blackbgoval.png';
 final int $shownamescode = 100;
 final int $maxtrycounthttp = 2;
 final String $nodata = "0\n";

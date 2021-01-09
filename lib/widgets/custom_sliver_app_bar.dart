@@ -26,12 +26,8 @@ class CustomSliverAppBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget> [
           Container(
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.black
-            ),
             child: Image.asset(
-                $iconpath,
+                $iconcirclepath,
                 width: 50,
                 height: 50,
             ),
@@ -55,6 +51,7 @@ class CustomSliverAppBar extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => ListScreen(
                       show: shows[key],
                       channel: channels[shows[key].channel],
+                      refresh: true,
                     )
                     ),
                   );

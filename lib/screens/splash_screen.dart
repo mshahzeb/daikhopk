@@ -108,8 +108,8 @@ class VideoState extends State<Splash> with SingleTickerProviderStateMixin{
             children: <Widget>[
             new Image.asset(
               $logopath,
-              width: animation.value * 250,
-              height: animation.value * 250,
+              width: 500,
+              height: 500,
             ),
           ],
           ),
