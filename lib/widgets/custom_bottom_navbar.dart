@@ -32,7 +32,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
       style: optionStyle,
     ),
     Text(
-      'Index 2: Search',
+      'Index 2: Explore',
       style: optionStyle,
     ),
   ];
@@ -85,7 +85,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Search',
+            label: 'Explore',
           ),
         ],
         backgroundColor: Colors.black,

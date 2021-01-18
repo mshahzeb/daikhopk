@@ -33,7 +33,7 @@ dependencies:
   url_launcher: ^5.7.10
   flutter_conditional_rendering: ^1.1.1
   flutter_swiper: ^1.1.6
-  flutter_search_bar: ^2.1.0
+  flappy_search_bar: 1.4.1
   number_display: ^2.3.0
 
 dev_dependencies:
@@ -42,8 +42,8 @@ dev_dependencies:
     sdk: flutter
 
 flutter_icons:
-  image_path_ios: 'assets/logo/daikho_icon_blackbgoval.png'
-  image_path_android: 'assets/logo/daikho_icon_blackbgcircle.png'
+  image_path_ios: 'assets/logo/daikho_icon_blackbgsquare.png'
+  image_path_android: 'assets/logo/daikho_icon_blackbgsquare.png'
   android: true
   ios: true
 

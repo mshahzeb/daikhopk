@@ -352,7 +352,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                 if(nextepisode != null) {
                                   ChangeEpisode(nextepisode);
                                 } else {
-                                  ShowSnackBarMessage('This is the first available Episode', 3000);
+                                  ShowSnackBarMessage('This is the last available Episode', 3000);
                                 }
                               },
                               color: Colors.white,
