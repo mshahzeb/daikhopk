@@ -21,7 +21,8 @@ class HorizontalListItem extends StatelessWidget {
             MyFadeRoute(builder: (context) => ListScreen(
               show: show,
               channel: channel,
-              refresh: true
+              refresh: true,
+              backroute: 0,
             )
         ),
         );
@@ -36,7 +37,7 @@ class HorizontalListItem extends StatelessWidget {
               imageUrl: show.posterUrl,
               height: $defaultHeight,
               width: $defaultWidth,
-              fit: BoxFit.fitHeight,
+              fit: BoxFit.fitWidth,
             ),
             CachedNetworkImage(
                 imageUrl: channel.logoUrl,

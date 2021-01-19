@@ -16,7 +16,7 @@ class CustomSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: deviceSize.height/2,
+      expandedHeight: deviceSize.height/2.5,
       floating: false,
       pinned: false,
       snap: false,
@@ -64,7 +64,7 @@ class CustomSliverAppBar extends StatelessWidget {
                         imageUrl: shows[key].posterUrl,
                         height: deviceSize.height/2,
                         width: deviceSize.width,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fitWidth,
                       ),
                     ),
                     Container(

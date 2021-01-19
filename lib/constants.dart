@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 const int $middot = 0x00B7;
-final double $defaultWidth = 100;
-final double $defaultHeight = 150;
+final double $defaultWidth = 125;
+final double $defaultHeight = 75;
 
 // Web Service Configs
 final String $serverName = 'daikho.pk';

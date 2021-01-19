@@ -20,14 +20,17 @@ class ListScreen extends StatefulWidget {
   final Channel channel;
   final bool refresh;
   final int lastplayedepisodeLocal;
-  ListScreen({@required final this.show, @required final this.channel, @required final this.refresh, final this.lastplayedepisodeLocal});
+  final int backroute;
+
+  ListScreen({@required final this.show, @required final this.channel, @required final this.refresh, final this.lastplayedepisodeLocal, final this.backroute});
 
   @override
   _ListScreenState createState() => _ListScreenState(
     show: show,
     channel: channel,
     refresh: refresh,
-    lastplayedepisodeLocal: lastplayedepisodeLocal
+    lastplayedepisodeLocal: lastplayedepisodeLocal,
+    backroute: backroute,
   );
 }
 
@@ -36,10 +39,12 @@ class _ListScreenState extends State<ListScreen> {
   final Channel channel;
   final bool refresh;
   final int lastplayedepisodeLocal;
+  final int backroute;
+
   int error = 0;
   int _lastplayedepisode;
   Future<Show> _dataRequiredForBuild;
-  _ListScreenState({@required final this.show, @required final this.channel, @required final this.refresh, final this.lastplayedepisodeLocal});
+  _ListScreenState({@required final this.show, @required final this.channel, @required final this.refresh, final this.lastplayedepisodeLocal, final this.backroute});
 
   @override
   void initState() {
@@ -101,15 +106,19 @@ class _ListScreenState extends State<ListScreen> {
 
     return WillPopScope(
       onWillPop: ()async {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-                builder: (context) =>
-                    HomeScreen(
-                      refresh: false,
-                    )
-            )
-        );
-        return true;
+        if(backroute == 1) {
+          return true;
+        } else {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      HomeScreen(
+                        refresh: false,
+                      )
+              )
+          );
+          return true;
+        }
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,

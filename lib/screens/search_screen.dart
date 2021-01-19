@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:daikhopk/screens/play_screen.dart';
+import 'package:daikhopk/screens/showslist_screen.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
@@ -7,20 +7,11 @@ import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/material.dart';
-
-import '../constants.dart';
 import 'list_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
-  _SearchScreenState createState() => new _SearchScreenState();
-}
-
-class Post {
-  final String title;
-  final String description;
-
-  Post(this.title, this.description);
+  _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
@@ -108,6 +99,126 @@ class _SearchScreenState extends State<SearchScreen> {
             crossAxisCount: 1,
             //icon: Icon(Icons.youtube_searched_for),
             indexedScaledTileBuilder: (int index) => ScaledTile.fit(1),
+            placeHolder: Container(
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: deviceSize.width,
+                    child: DecoratedBox(
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(color: Colors.grey, width: 2),
+                        ),
+                        color: Colors.black38,
+                      ),
+                      child: OutlineButton(
+                        highlightColor: Colors.redAccent,
+                        splashColor: Colors.grey,
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MyFadeRoute(builder: (context) => ShowsList(
+                              title: 'All Shows',
+                              type: 'all',
+                              filter: '',
+                            )
+                            ),
+                          );
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(color: Colors.grey, width: 3),
+                        ),
+                        highlightElevation: 0,
+                        // borderSide: BorderSide(color: Colors.blueGrey, width: 3),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: Text(
+                            'All Shows (' + showsHome.shows.length.toString() + ')',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox( height:10 ),
+                  SizedBox(
+                    width: deviceSize.width,
+                    child: DecoratedBox(
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(color: Colors.grey, width: 2),
+                        ),
+                        color: Colors.black38,
+                      ),
+                      child: OutlineButton(
+                        highlightColor: Colors.redAccent,
+                        splashColor: Colors.grey,
+                        onPressed: () {
+                          String launchUrl;
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(color: Colors.grey, width: 3),
+                        ),
+                        highlightElevation: 0,
+                        // borderSide: BorderSide(color: Colors.blueGrey, width: 3),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: Text(
+                            'Find by Channels (' + showsHome.channels.length.toString() + ')',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox( height:10 ),
+                  SizedBox(
+                    width: deviceSize.width,
+                    child: DecoratedBox(
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(color: Colors.grey, width: 2),
+                        ),
+                        color: Colors.black38,
+                      ),
+                      child: OutlineButton(
+                        highlightColor: Colors.redAccent,
+                        splashColor: Colors.grey,
+                        onPressed: () {
+                          String launchUrl;
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(color: Colors.grey, width: 3),
+                        ),
+                        highlightElevation: 0,
+                        // borderSide: BorderSide(color: Colors.blueGrey, width: 3),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: Text(
+                            'Find by Release Year',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ),
             onItemFound: (int showid, int index) {
               return GestureDetector(
                 behavior: HitTestBehavior.translucent,

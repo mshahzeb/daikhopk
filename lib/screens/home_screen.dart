@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 200.0,
+                                      height: $defaultHeight + 50,
                                       child: HorizontalList(
                                         shows: showsHome.shows,
                                         channels: showsHome.channels,
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 200.0,
+                            height: $defaultHeight + 50,
                             child: HorizontalList(
                               shows: showsHome.shows,
                               channels: showsHome.channels,
