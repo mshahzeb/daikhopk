@@ -157,30 +157,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               channels: showsHome.channels,
                             ),
                           ),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                          RaisedButton(
-                            onPressed: () {
-                              signOut();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(builder: (context) {
-                                    return LoginScreen();
-                                  }), ModalRoute.withName('/'));
-                            },
-                            color: Colors.black,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Sign Out',
-                                style: TextStyle(
-                                    fontSize: 25, color: Colors.white),
-                              ),
-                            ),
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40)),
-                          )
                         ],
                       ),
                     ]
