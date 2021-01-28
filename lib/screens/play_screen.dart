@@ -19,13 +19,15 @@ YoutubePlayerController _controller;
 class PlayScreen extends StatefulWidget {
   final Show show;
   final Channel channel;
+  final int seasonno;
   final int episodeno;
-  PlayScreen({@required final this.show, @required final this.channel, @required final this.episodeno});
+  PlayScreen({@required final this.show, @required final this.channel, @required final this.seasonno, @required final this.episodeno});
 
   @override
   _PlayScreenState createState() => _PlayScreenState(
     show: show,
     channel: channel,
+    seasonno: seasonno,
     episodeno: episodeno,
   );
 }
@@ -33,6 +35,7 @@ class PlayScreen extends StatefulWidget {
 class _PlayScreenState extends State<PlayScreen> {
   final Show show;
   final Channel channel;
+  final int seasonno;
   final int episodeno;
 
   final ValueNotifier<bool> _isMuted = ValueNotifier(false);
@@ -44,7 +47,7 @@ class _PlayScreenState extends State<PlayScreen> {
   int previousepisode;
   bool completed = false;
 
-  _PlayScreenState({@required final this.show, @required this.channel, @required final this.episodeno});
+  _PlayScreenState({@required final this.show, @required this.channel, @required final this.seasonno, @required final this.episodeno});
 
   @override
   void initState() {
@@ -55,10 +58,10 @@ class _PlayScreenState extends State<PlayScreen> {
       DeviceOrientation.portraitDown,
     ]);
 
-    if(show.episodes[episodeno].episodeVideoId == null)
-      videoId = YoutubePlayerController.convertUrlToId(show.episodes[episodeno].episodeUrl);
+    if(show.seasons[seasonno].episodes[episodeno].episodeVideoId == null)
+      videoId = YoutubePlayerController.convertUrlToId(show.seasons[seasonno].episodes[episodeno].episodeUrl);
     else
-      videoId = show.episodes[episodeno].episodeVideoId;
+      videoId = show.seasons[seasonno].episodes[episodeno].episodeVideoId;
 
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
@@ -78,14 +81,14 @@ class _PlayScreenState extends State<PlayScreen> {
           if(show.embed == 1) {
             _controller.play();
           } else {
-            _launchYoutubeVideo(show.episodes[episodeno].episodeUrl);
+            _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
           }
           played = true;
         }
         if(_controller.value.error == YoutubeError.sameAsNotEmbeddable) {
           _controller.stop();
           _controller.reset();
-          _launchYoutubeVideo(show.episodes[episodeno].episodeUrl);
+          _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
         }
       }
       if(nextepisode != null && played && (value.metaData.duration.inSeconds > 0) && (value.position.inSeconds >= (value.metaData.duration.inSeconds - 10))) {
@@ -124,10 +127,10 @@ class _PlayScreenState extends State<PlayScreen> {
 
     UpdateVideoIdStats();
 
-    if(show.episodes[episodeno + 1] != null) {
+    if(show.seasons[seasonno].episodes[episodeno + 1] != null) {
       nextepisode = episodeno + 1;
     }
-    if(show.episodes[episodeno - 1] != null) {
+    if(show.seasons[seasonno].episodes[episodeno - 1] != null) {
       previousepisode = episodeno - 1;
     }
   }
@@ -177,7 +180,7 @@ class _PlayScreenState extends State<PlayScreen> {
         {
           "sid": showidstr,
           "stat": "show_lastplayedepi",
-          "val": episodeno
+          "val": seasonno.toString() + '_' + episodeno.toString()
         }
       ]
     };
@@ -227,6 +230,7 @@ class _PlayScreenState extends State<PlayScreen> {
                   PlayScreen(
                     show: show,
                     channel: channel,
+                    seasonno: seasonno,
                     episodeno: episodeno,
                   )
           )
@@ -249,6 +253,7 @@ class _PlayScreenState extends State<PlayScreen> {
                         show: show,
                         channel: channel,
                         refresh: false,
+                        lastplayedseasonLocal: seasonno,
                         lastplayedepisodeLocal: episodeno,
                       )
               )
@@ -375,7 +380,7 @@ class _PlayScreenState extends State<PlayScreen> {
                               splashColor: Colors.grey,
                               onPressed: () {
                                 String launchUrl;
-                                launchUrl = show.episodes[episodeno].episodeUrl + '&t=' + _controller.value.position.inSeconds.toString();
+                                launchUrl = show.seasons[seasonno].episodes[episodeno].episodeUrl + '&t=' + _controller.value.position.inSeconds.toString();
                                 _launchYoutubeVideo(launchUrl);
                               },
                               shape: RoundedRectangleBorder(
@@ -422,11 +427,11 @@ class _PlayScreenState extends State<PlayScreen> {
                     ),
                     ListTile(
                       leading: CachedNetworkImage(
-                        imageUrl: (show.episodes[episodeno]?.episodeThumbnail ?? "") == "" ? show.posterUrl : show.episodes[episodeno].episodeThumbnail,
+                        imageUrl: (show.seasons[seasonno].episodes[episodeno]?.episodeThumbnail ?? "") == "" ? show.posterUrl : show.seasons[seasonno].episodes[episodeno].episodeThumbnail,
                         width: $defaultWidth,
                       ),
                       title: Text(
-                        'Episode ' + show.episodes[episodeno].episodeno.toString(),
+                        'Episode ' + show.seasons[seasonno].episodes[episodeno].episodeno.toString(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 25,
@@ -435,7 +440,7 @@ class _PlayScreenState extends State<PlayScreen> {
                       textAlign: TextAlign.left,
                       ),
                       subtitle: Text(
-                        show.episodes[episodeno].episodetitle,
+                        show.seasons[seasonno].episodes[episodeno].episodetitle,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
