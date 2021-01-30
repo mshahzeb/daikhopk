@@ -254,7 +254,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           textAlign: TextAlign.left,
                         ),
                         subtitle: Text(
-                          '\n' + showsHome.shows[showid].releaseYear.toString(),
+                          '\n' + showsHome.shows[showid].releaseDatetime.year.toString(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,

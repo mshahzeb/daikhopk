@@ -13,8 +13,9 @@ class Channel {
   set logoUrl(String logoUrl) => _logoUrl = logoUrl; // ignore: unnecessary_getters_setters
 
   // named constructor
-  Channel.fromJson(Map<String, dynamic> json)
-      : _channelid = json['channelid'],
-        _channel = json['channel'],
-        _logoUrl = json['logoUrl'];
+  Channel.fromJson(Map<String, dynamic> json) {
+    _channelid = json['channelid'] ?? "";
+    _channel = json['channel'] ?? "";
+    _logoUrl = json['logoUrl'] ?? "";
+  }
 }

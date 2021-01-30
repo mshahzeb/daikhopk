@@ -12,10 +12,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import 'package:daikhopk/models/shows.dart';
 
+List<String> listdataHomeCategories = ['New Episodes','Released This Month','Most Watched','Top Rated'];
 DeviceSize deviceSize;
 SharedPreferences prefs;
 Shows showsHome;
 Show showLocal;
+List<HorizontalListData> listdataHome;
 
 var userlocal = new Map();
 Future<Shows> dataRequiredForHome;
@@ -139,9 +141,51 @@ Future<Shows> fetchDataHome() async {
     }
 
     showsHome = Shows.fromJson(jsonDecode(featured));
+
+    //['New Episodes','Released This Month','Most Watched','Top Rated']
+    listdataHome = List();
+    for(var i=0; i < listdataHomeCategories.length; i ++) {
+      SplayTreeMap<int, Show> sortedshows;
+      DateTime currDate = DateTime.now();
+      DateTime currMonth = new DateTime(currDate.year, currDate.month - 1, 1);
+
+      if(listdataHomeCategories[i] == "New Episodes") {
+        sortedshows = new SplayTreeMap<int, Show>.from(
+          showsHome.shows, (a,b) => showsHome.shows[b].releaseDatetime.compareTo(showsHome.shows[a].releaseDatetime)
+        );
+      }
+      else if(listdataHomeCategories[i] == "Released This Month") {
+        sortedshows = new SplayTreeMap<int, Show>.from(showsHome.shows);
+        showsHome.shows.forEach((key, value) {
+          if(showsHome.shows[key].releaseDatetime.isBefore(currMonth)) {
+            sortedshows.remove(key);
+          }
+        });
+      }
+      else if(listdataHomeCategories[i] == "Most Watched") {
+        sortedshows = new SplayTreeMap<int, Show>.from(
+            showsHome.shows, (a,b) => showsHome.shows[b].viewCount.compareTo(showsHome.shows[a].viewCount)
+        );
+      }
+      else if(listdataHomeCategories[i] == "Top Rated") {
+        sortedshows = new SplayTreeMap<int, Show>.from(
+            showsHome.shows, (a,b) => showsHome.shows[b].likeCount.compareTo(showsHome.shows[a].likeCount)
+        );
+      }
+      listdataHome.add(HorizontalListData(listdataHomeCategories[i],sortedshows));
+    }
+
     return Shows.fromJson(jsonDecode(shows));
   }
   catch(e) {
     errorHome = 1;
   }
+}
+
+
+class HorizontalListData {
+  String title;
+  Map<int, Show> data;
+
+  HorizontalListData(this.title, this.data);
 }

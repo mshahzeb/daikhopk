@@ -237,7 +237,7 @@ class _ListScreenState extends State<ListScreen> {
                         //width: 100,
                         child: Center(
                           child: Text(
-                            'Released\n' + show.releaseYear.toString(),
+                            'Released\n' + show.releaseDatetime.year.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 15,
@@ -378,7 +378,7 @@ class _ListScreenState extends State<ListScreen> {
                                               },
                                               child: ListTile(
                                                 leading: CachedNetworkImage(
-                                                  imageUrl: (showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode]?.episodeThumbnail ?? "") == "" ? show.posterUrl : showLocal.seasons[1].episodes[_lastplayedepisode].episodeThumbnail,
+                                                  imageUrl: (showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode]?.episodeThumbnail ?? "") == "" ? show.posterUrl : showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode].episodeThumbnail,
                                                   width: 100,
                                                   fit: BoxFit.fitWidth,
                                                   alignment: Alignment.topLeft,

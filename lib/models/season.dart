@@ -13,7 +13,7 @@ class Season {
 
   // named constructor
   Season.fromJson(Map<String, dynamic> json) {
-    _seasonno = json['showid'];
+    _seasonno = json['showid']?? 0;
     if (json['episodes'] != null) {
       _episodes = new Map<int, Episode>();
       json['episodes'].forEach((v) {

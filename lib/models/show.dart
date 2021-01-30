@@ -12,11 +12,13 @@ class Show {
   int _totalseasons;
   int _totalepisodes;
   int _completed;
-  int _releaseYear;
+  DateTime _releaseDatetime;
+  DateTime _updateDatetime;
   int _viewCount;
+  int _likeCount;
   Map<int, Season> _seasons;
 
-  Show(this._showid, this._showname, this._showtype, this._posterUrl, this._trailerUrl, this._trailerVideoId, this._embed, this._channel, this._totalseasons, this._totalepisodes, this._completed, this._releaseYear, this._viewCount, this._seasons);
+  Show(this._showid, this._showname, this._showtype, this._posterUrl, this._trailerUrl, this._trailerVideoId, this._embed, this._channel, this._totalseasons, this._totalepisodes, this._completed, this._releaseDatetime, this._updateDatetime, this._viewCount, this._likeCount, this._seasons);
 
   int get showid => _showid; // ignore: unnecessary_getters_setters
   set showid(int showid) => _showid = showid; // ignore: unnecessary_getters_setters
@@ -40,28 +42,34 @@ class Show {
   set totalepisodes(int totalepisodes) => _totalepisodes = totalepisodes; // ignore: unnecessary_getters_setters
   int get completed => _completed; // ignore: unnecessary_getters_setters
   set completed(int completed) => _completed = completed; // ignore: unnecessary_getters_setters
-  int get releaseYear => _releaseYear; // ignore: unnecessary_getters_setters
-  set releaseYear(int releaseYear) => _releaseYear = releaseYear; // ignore: unnecessary_getters_setters
+  DateTime get releaseDatetime => _releaseDatetime; // ignore: unnecessary_getters_setters
+  set releaseDatetime(DateTime releaseDatetime) => _releaseDatetime = releaseDatetime; // ignore: unnecessary_getters_setters
+  DateTime get updateDatetime => _updateDatetime; // ignore: unnecessary_getters_setters
+  set updateDatetime(DateTime updateDatetime) => _updateDatetime = updateDatetime; // ignore: unnecessary_getters_setters
   int get viewCount => _viewCount; // ignore: unnecessary_getters_setters
   set viewCount(int viewCount) => _viewCount = viewCount; // ignore: unnecessary_getters_setters
+  int get likeCount => _likeCount; // ignore: unnecessary_getters_setters
+  set likeCount(int likeCount) => _likeCount = likeCount; // ignore: unnecessary_getters_setters
   Map<int, Season> get seasons => _seasons; // ignore: unnecessary_getters_setters
   set seasons(Map<int, Season> seasons) => _seasons = seasons; // ignore: unnecessary_getters_setters
 
   // named constructor
   Show.fromJson(Map<String, dynamic> json) {
-    _showid = json['showid'];
-    _showname = json['showname'];
-    _showtype = json['showtype'];
-    _posterUrl = json['posterUrl'];
-    _trailerUrl = json['trailerUrl'];
-    _trailerUrl = json['trailerVideoId'];
-    _embed = json['embed'];
-    _channel = json['channel'];
-    _totalseasons = json['totalseasons'];
-    _totalepisodes = json['totalepisodes'];
-    _completed = json['completed'];
-    _releaseYear = json['releaseYear'];
-    _viewCount = json['viewCount'];
+    _showid = json['showid']?? 0;
+    _showname = json['showname']?? "";
+    _showtype = json['showtype']?? "";
+    _posterUrl = json['posterUrl']?? "";
+    _trailerVideoId = json['trailerVideoId']?? "";
+    _trailerUrl = 'https://www.youtube.com/watch?v=' + _trailerVideoId?? "";
+    _embed = json['embed']?? 0;
+    _channel = json['channel']?? "";
+    _totalseasons = json['totalseasons']?? 0;
+    _totalepisodes = json['totalepisodes']?? 0;
+    _completed = json['completed']?? 0;
+    _releaseDatetime = DateTime.parse(json['releaseDatetime']?? "2021-01-01");
+    _updateDatetime = DateTime.parse(json['updateDatetime']?? "2021-01-01");
+    _viewCount = json['viewCount']?? 0;
+    _likeCount = json['likeCount']?? 0;
     if (json['seasons'] != null) {
       _seasons = new Map<int, Season>();
       json['seasons'].forEach((v) {
