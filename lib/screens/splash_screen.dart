@@ -138,11 +138,13 @@ Future<Shows> fetchDataHome() async {
       String response = await postUrl($serviceURLgetstats, Json);
       if (response != $nodata) {
         var jsonresult = jsonDecode(response);
-        final lastplayed = new Map<String, dynamic>.from(jsonresult[0]['show_lastplayed']);
-        print('debug');
-        final lastplayedsorted = new SplayTreeMap<String, dynamic>.from(
-            lastplayed, (a, b) => lastplayed[b].compareTo(lastplayed[a]));
-        lastplayedshowidsHome = lastplayedsorted.keys.toList();
+        if(jsonresult[0]['show_lastplayed'] != "0") {
+          final lastplayed = new Map<String, dynamic>.from(
+              jsonresult[0]['show_lastplayed']);
+          final lastplayedsorted = new SplayTreeMap<String, dynamic>.from(
+              lastplayed, (a, b) => lastplayed[b].compareTo(lastplayed[a]));
+          lastplayedshowidsHome = lastplayedsorted.keys.toList();
+        }
       }
     }
 

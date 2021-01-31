@@ -199,9 +199,7 @@ class _PlayScreenState extends State<PlayScreen> {
 
     String response = await postUrl($serviceURLgetstats, Json);
     var jsonresult = jsonDecode(response);
-    String result = jsonresult[0]['vid_lastplaytime'];
-
-    int playtime = int.parse(result ?? 0);
+    int playtime = jsonresult[0]['vid_lastplaytime'];
     if (playtime < 0) {
       playtime = 0;
     }
