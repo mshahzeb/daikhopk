@@ -22,7 +22,7 @@ List<HorizontalListData> listdataHome;
 var userlocal = new Map();
 Future<Shows> dataRequiredForHome;
 
-List<String> lastplayedshowidsHome;
+List<String> lastplayedshowidsHome = List();
 bool authSignedIn;
 int errorHome = 0;
 
@@ -132,7 +132,7 @@ Future<Shows> fetchDataHome() async {
         "stats": [
           {
             "stat": "show_lastplayed"
-          }
+          },
         ]
       };
       String response = await postUrl($serviceURLgetstats, Json);

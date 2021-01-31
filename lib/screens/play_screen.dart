@@ -8,6 +8,7 @@ import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:daikhopk/constants.dart';
@@ -149,11 +150,14 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   void UpdateVideoIdStats() async {
-    lastplayedshowidsHome.removeWhere((item) => item == show.showid.toString());
-    lastplayedshowidsHome.insert(0, show.showid.toString());
+    if(lastplayedshowidsHome.length > 0) {
+      lastplayedshowidsHome.removeWhere((item) =>
+      item == show.showid.toString());
+    }
 
-    double now = new DateTime.now().millisecondsSinceEpoch/1000;
-    int nowint = now.toInt();
+    lastplayedshowidsHome.insert(0, show.showid.toString());
+    DateTime currTime = DateTime.now();
+    String formattedDatetime = DateFormat("yyyy-MM-dd HH:mm:ss").format(currTime);
     String showidstr = show.showid.toString();
     Map <String, dynamic> Json = {
       "uid": userlocal['uid'],
@@ -164,9 +168,9 @@ class _PlayScreenState extends State<PlayScreen> {
           "val": "inc"
         },
         {
-          "sid": videoId,
+          "sid": showidstr + '_' + seasonno.toString() + '_' + episodeno.toString(),
           "stat": "vid_lastplayed",
-          "val": nowint
+          "val": formattedDatetime
         },
         {
           "sid": showidstr,
@@ -176,7 +180,7 @@ class _PlayScreenState extends State<PlayScreen> {
         {
           "sid": showidstr,
           "stat": "show_lastplayed",
-          "val": nowint
+          "val": formattedDatetime
         },
         {
           "sid": showidstr,

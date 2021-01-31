@@ -130,37 +130,45 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(height: 0.0,),
                           ),
                           for (var i=0; i<listdataHomeCategories.length; i++)
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 10),
+                            Conditional.single(
+                              context: context,
+                              conditionBuilder: (BuildContext context) =>
+                                listdataHome[i].data.length > 0,
+                              widgetBuilder: (BuildContext context) =>
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: Row(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                          ),
+                                          Text(
+                                            listdataHome[i].title,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        listdataHome[i].title,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        textAlign: TextAlign.left,
+                                    ),
+                                    SizedBox(
+                                      height: $defaultHeight + 50,
+                                      child: HorizontalList(
+                                        shows: listdataHome[i].data,
+                                        channels: showsHome.channels,
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: $defaultHeight + 50,
-                                  child: HorizontalList(
-                                    shows: listdataHome[i].data,
-                                    channels: showsHome.channels,
-                                  ),
-                                ),
-                              ],
-                            )
+                              fallbackBuilder: (BuildContext context) =>
+                                SizedBox(height: 0.0,),
+                            ),
                         ],
                       ),
                     ]
