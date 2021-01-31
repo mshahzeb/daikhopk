@@ -129,11 +129,17 @@ Future<Shows> fetchDataHome() async {
     if(authSignedIn) {
       Map <String, dynamic> Json = {
         "uid": userlocal['uid'],
-        "stat": "show_lastplayed"
+        "stats": [
+          {
+            "stat": "show_lastplayed"
+          }
+        ]
       };
-      String result = await postUrl($serviceURLgetstats, Json);
-      if (result != $nodata) {
-        Map<String, dynamic> lastplayed = jsonDecode(result);
+      String response = await postUrl($serviceURLgetstats, Json);
+      if (response != $nodata) {
+        var jsonresult = jsonDecode(response);
+        final lastplayed = new Map<String, dynamic>.from(jsonresult[0]['show_lastplayed']);
+        print('debug');
         final lastplayedsorted = new SplayTreeMap<String, dynamic>.from(
             lastplayed, (a, b) => lastplayed[b].compareTo(lastplayed[a]));
         lastplayedshowidsHome = lastplayedsorted.keys.toList();

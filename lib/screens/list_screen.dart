@@ -72,13 +72,18 @@ class _ListScreenState extends State<ListScreen> {
 
         Map <String, dynamic> Json = {
           "uid": userlocal['uid'],
-          "stat": "show_lastplayedepi",
-          "sid": show.showid.toString()
+          "stats": [
+            {
+              "stat": "show_lastplayedepi",
+              "sid": show.showid.toString()
+            }
+          ]
         };
 
-        String result = await postUrl($serviceURLgetstats, Json);
-        if((result != null) && result != "-1\n" && result != "0\n") {
-          result = jsonDecode(result);
+        String response = await postUrl($serviceURLgetstats, Json);
+        var jsonresult = jsonDecode(response);
+        String result = jsonresult[0]['show_lastplayedepi'];
+        if((result != null) && result != "-1" && result != "0") {
           _lastplayedseason = int.parse(result.split('_')[0]);
           _lastplayedepisode = int.parse(result.split('_')[1]);
         } else {

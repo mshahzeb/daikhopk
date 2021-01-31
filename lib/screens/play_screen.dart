@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/models/channel.dart';
@@ -188,11 +189,18 @@ class _PlayScreenState extends State<PlayScreen> {
 
     Json = {
       "uid": userlocal['uid'],
-      "stat": "vid_lastplaytime",
-      "sid": videoId
+      "stats": [
+        {
+          "stat": "vid_lastplaytime",
+          "sid": videoId
+        }
+      ]
     };
 
-    String result = await postUrl($serviceURLgetstats, Json);
+    String response = await postUrl($serviceURLgetstats, Json);
+    var jsonresult = jsonDecode(response);
+    String result = jsonresult[0]['vid_lastplaytime'];
+
     int playtime = int.parse(result ?? 0);
     if (playtime < 0) {
       playtime = 0;
