@@ -1,8 +1,11 @@
+import 'package:daikhopk/utils/customroute.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:daikhopk/utils/urlLauncher.dart';
 
 import '../constants.dart';
+import 'contactus_screen.dart';
 
 class HelpAndSupportScreen extends StatefulWidget {
   @override
@@ -85,7 +88,11 @@ class ProfileListItems extends StatelessWidget {
             text: 'FAQs',
           ),
           ProfileListItem(
-            icon: LineAwesomeIcons.question,
+            icon: LineAwesomeIcons.newspaper,
+            text: 'Privacy Policy',
+          ),
+          ProfileListItem(
+            icon: LineAwesomeIcons.phone,
             text: 'Contact Us',
           ),
         ],
@@ -110,8 +117,14 @@ class ProfileListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (this.text == 'Logout') {
-
+        if (this.text == 'FAQs') {
+          launchUrl($faqurl);
+        } else if (this.text == 'Privacy Policy') {
+          launchUrl($privacypolicyurl);
+        } else if (this.text == 'Contact Us') {
+          Navigator.of(context).push(
+              MyFadeRoute(builder: (context) => ContactUsScreen())
+          );
         }
       },
       child: Container(

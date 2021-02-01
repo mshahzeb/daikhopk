@@ -40,3 +40,6 @@ final String $aboutus = '''
 daikho.pk is a free content delivery platform focused primarily on Pakistani television content. It is the largest collection of Pakistani TV Serials & TV Series.
 \nOur platform links & hosts content that is available to watch freely on platforms like YouTube, Daily Motion and does not own any of the content. All rights are reserved with the content providers. We comply with all the Terms & Services of the platform’s videos embedding policies. All views of the videos on our platform are attributed to the content owners on their respective platforms.
 ''';
+final String $faqurl = 'https://daikho.pk';
+final String $privacypolicyurl = 'https://daikho.pk';
+final String $supportemail = 'pk.daikho@gmail.com';

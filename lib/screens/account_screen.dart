@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/screens/helpandsupport_screen.dart';
-import 'package:daikhopk/screens/search_screen.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/screens/viewinghistory_screen.dart';
 import 'package:daikhopk/utils/authentication.dart';
@@ -8,8 +7,9 @@ import 'package:daikhopk/utils/customroute.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 
-import 'feedback_screen.dart';
+import 'contactus_screen.dart';
 import 'login_screen.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -71,113 +71,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     fontWeight: FontWeight.w300
                   ),
                 ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 50,),
-                    Column(
-                      children: [
-                        Text(
-                          'Shows\nWatched\n',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          child: Center(
-                              child: Text(
-                              lastplayedshowidsHome.length.toString(),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        )
-                      ]
-                    ),
-                    Spacer(),
-                    Column(
-                      children: [
-                        Text(
-                          'Episodes\nWatched\n',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '50',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        )
-                      ]
-                    ),
-                    Spacer(),
-                    Column(
-                      children: [
-                        Text(
-                          'Viewing\nHours\n',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '150',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        )
-                      ]
-                    ),
-                    SizedBox(width: 50,),
-                  ],
-                ),
-                SizedBox(height: 20),
+                SizedBox(height: 50),
                 ProfileListItems(),
               ],
             ),
@@ -209,8 +103,8 @@ class ProfileListItems extends StatelessWidget {
             text: 'Help & Support',
           ),
           ProfileListItem(
-            icon: LineAwesomeIcons.comment,
-            text: 'Feedback',
+            icon: LineAwesomeIcons.thumbs_up,
+            text: 'Rate Us',
           ),
           ProfileListItem(
             icon: LineAwesomeIcons.alternate_sign_out,
@@ -253,10 +147,61 @@ class ProfileListItem extends StatelessWidget {
           Navigator.of(context).push(
               MyFadeRoute(builder: (context) => HelpAndSupportScreen())
           );
-        } else if (this.text == 'Feedback') {
-          Navigator.of(context).push(
-              MyFadeRoute(builder: (context) => FeedbackScreen())
-          );
+        } else if (this.text == 'Rate Us') {
+          rateMyApp.init().then((_){
+            //if(rateMyApp.shouldOpenDialog){ //conditions check if user already rated the app
+            if(true){
+              rateMyApp.showStarRateDialog(
+                context,
+                title: 'Like our App?',
+                message: 'Please Leave a Rating',
+
+                actionsBuilder: (_, stars){
+                  return [ // Returns a list of actions (that will be shown at the bottom of the dialog).
+                    FlatButton(
+                      child: Text(
+                        'Submit',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      onPressed: () async {
+                        print('Thanks for the ' + (stars == null ? '0' : stars.round().toString()) + ' star(s) !');
+                        if(stars != null && (stars >= 4)){
+                          String message = 'Thank you!' ;
+                          var snackBar = SnackBar(content: Text(message), duration: Duration(milliseconds: 5000));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
+                        } else if (stars != null && (stars <= 3) ) {
+                          String message = 'Please tell us how can we make it better?' ;
+                          var snackBar = SnackBar(content: Text(message), duration: Duration(milliseconds: 5000));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
+                          Navigator.of(context).push(
+                              MyFadeRoute(builder: (context) => ContactUsScreen())
+                          );
+                        }
+                        // You can handle the result as you want (for instance if the user puts 1 star then open your contact page, if he puts more then open the store page, etc...).
+                        // This allows to mimic the behavior of the default "Rate" button. See "Advanced > Broadcasting events" for more information :
+                        //await rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
+                        //Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
+                      },
+                    ),
+                  ];
+                },
+                dialogStyle: DialogStyle(
+                  titleAlign: TextAlign.center,
+                  messageAlign: TextAlign.center,
+                  messagePadding: EdgeInsets.only(bottom: 20.0),
+                ),
+                starRatingOptions: StarRatingOptions(),
+                onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
+              );
+            }
+          });
         }
       },
       child: Container(

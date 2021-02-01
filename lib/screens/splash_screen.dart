@@ -11,6 +11,7 @@ import 'package:number_display/number_display.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import 'package:daikhopk/models/shows.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 
 List<String> listdataHomeCategories = ['New Episodes','Released This Month','Most Watched','Top Rated'];
 DeviceSize deviceSize;
@@ -28,6 +29,14 @@ int errorHome = 0;
 
 final numdisplay = createDisplay(
   length: 5,
+);
+
+RateMyApp rateMyApp = RateMyApp (
+  preferencesPrefix: 'rateMyApp_daikhopk',
+  minDays: 3,
+  minLaunches: 5,
+  remindDays: 3,
+  remindLaunches: 5
 );
 
 class Splash extends StatefulWidget {

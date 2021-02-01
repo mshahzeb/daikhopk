@@ -1,14 +1,11 @@
 import 'dart:collection';
 import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:daikhopk/models/show.dart';
-import 'package:daikhopk/screens/play_screen.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../constants.dart';
 import 'list_screen.dart';
 
@@ -21,6 +18,7 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
 
   Future<int> _dataRequiredForBuild;
   List<String> lastplayedvideos = List();
+  List<dynamic> lastplayedvideostimes = List();
   int error = 0;
 
   @override
@@ -49,6 +47,7 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
           final lastplayedsorted = new SplayTreeMap<String, dynamic>.from(
               lastplayed, (a, b) => lastplayed[b].compareTo(lastplayed[a]));
           lastplayedvideos = lastplayedsorted.keys.toList();
+          lastplayedvideostimes = lastplayedsorted.values.toList();
           return 1;
         }
       }
@@ -88,6 +87,121 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
                     children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(width: 50,),
+                          Column(
+                              children: [
+                                Text(
+                                  'Shows\nWatched\n',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      lastplayedshowidsHome.length.toString(),
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )
+                              ]
+                          ),
+                          Spacer(),
+                          Column(
+                              children: [
+                                Text(
+                                  'Episodes\nWatched\n',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      lastplayedvideos.length.toString(),
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )
+                              ]
+                          ),
+                          Spacer(),
+                          Column(
+                              children: [
+                                Text(
+                                  'Viewing\nHours\n',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '150',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                )
+                              ]
+                          ),
+                          SizedBox(width: 50,),
+                        ],
+                      ),
+                      SizedBox(height: 20,),
+                      Text(
+                        'Recently Played Videos',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
                       ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -96,6 +210,7 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                           int showid = int.parse(lastplayedvideos[index].split('_')[0]);
                           int seasonno = int.parse(lastplayedvideos[index].split('_')[1]);
                           int episodeno = int.parse(lastplayedvideos[index].split('_')[2]);
+                          String formattedDatetime = DateFormat("yyyy MMM d - hh:mm a").format(DateTime.parse(lastplayedvideostimes[index]));
 
                           if(showsHome.shows[showid] != null) {
                             return GestureDetector(
@@ -121,7 +236,7 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                   alignment: Alignment.topLeft,
                                 ),
                                 title: Text(
-                                  showsHome.shows[showid].showname,
+                                  showsHome.shows[showid].showname + ' ' + 'Episode ' + episodeno.toString(),
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
@@ -130,7 +245,7 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                   textAlign: TextAlign.left,
                                 ),
                                 subtitle: Text(
-                                    'Episode ' + episodeno.toString() + ' (Season ' + seasonno.toString() + ')',
+                                    formattedDatetime,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 15,
