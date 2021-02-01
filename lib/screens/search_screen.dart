@@ -1,8 +1,11 @@
+import 'dart:collection';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/screens/showslist_screen.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
+import 'package:string_similarity/string_similarity.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:flappy_search_bar/search_bar_style.dart';
@@ -16,16 +19,36 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   _SearchScreenState();
+  Map<String, int> showssearch = Map();
+
+  @override
+  void initState() {
+    super.initState();
+    showsHome.shows.forEach((key, value) {
+      showssearch.putIfAbsent(showsHome.shows[key].showname, () => showsHome.shows[key].showid);
+    });
+  }
 
   Future<List<int>> search(String search) async {
     if (search == "empty") return [];
     if (search == "error") throw Error();
+    search = search.toLowerCase();
     List<int> showids = [];
-    showsHome.shows.forEach((key, value) {
-      if (showsHome.shows[key].showname.toLowerCase().contains(search.toLowerCase())) {
-        showids.add(showsHome.shows[key].showid);
-      }
-    });
+    final bestMatch = search.bestMatch(showssearch.keys.toList());
+    if(bestMatch != null && bestMatch.bestMatch != null && bestMatch.bestMatch.rating > 0.0) {
+      bestMatch.ratings.sort((a, b) => b.rating.compareTo(a.rating));
+      bestMatch.ratings.forEach((element) {
+        if(element.rating > 0.0) {
+          showids.add(showsHome.shows[showssearch[element.target]].showid);
+        }
+      });
+    } else {
+      showsHome.shows.forEach((key, value) {
+        if(showsHome.shows[key].showname.toLowerCase().contains(search)) {
+          showids.add(showsHome.shows[key].showid);
+        }
+      });
+    }
 
     return showids;
   }

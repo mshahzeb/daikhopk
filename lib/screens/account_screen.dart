@@ -155,7 +155,6 @@ class ProfileListItem extends StatelessWidget {
                 context,
                 title: 'Like our App?',
                 message: 'Please Leave a Rating',
-
                 actionsBuilder: (_, stars){
                   return [ // Returns a list of actions (that will be shown at the bottom of the dialog).
                     FlatButton(
@@ -197,7 +196,10 @@ class ProfileListItem extends StatelessWidget {
                   messageAlign: TextAlign.center,
                   messagePadding: EdgeInsets.only(bottom: 20.0),
                 ),
-                starRatingOptions: StarRatingOptions(),
+                starRatingOptions: StarRatingOptions(
+                  starsBorderColor: Colors.redAccent,
+                  starsFillColor: Colors.redAccent,
+                ),
                 onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
               );
             }
