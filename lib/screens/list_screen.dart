@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:daikhopk/constants.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
+import 'package:intl/intl.dart';
 
 class ListScreen extends StatefulWidget {
   final Show show;
@@ -242,7 +243,7 @@ class _ListScreenState extends State<ListScreen> {
                         //width: 100,
                         child: Center(
                           child: Text(
-                            'Released\n' + show.releaseDatetime.year.toString(),
+                            'Released\n' + DateFormat("MMM").format(show.releaseDatetime) + ' ' + show.releaseDatetime.year.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 15,
@@ -293,53 +294,53 @@ class _ListScreenState extends State<ListScreen> {
                                     conditionBuilder: (BuildContext context) =>
                                     (show.showtype == 'SZN'),
                                     widgetBuilder: (BuildContext context) =>
-                                        Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: <Widget> [
-                                              Container(
-                                                  height: 50,
-                                                  //width: 100,
-                                                  child: Center(
-                                                    child: Text(
-                                                      'Seasons',
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15,
-                                                        fontWeight: FontWeight.w600,
-                                                      ),
-                                                      textAlign: TextAlign.center,
-                                                    ),
-                                                  )
-                                              ),
-                                              SizedBox(width: 10.0),
-                                              Container(
-                                                height: 50,
-                                                //width: 100,
-                                                child: DropdownButton<ListItem>(
-                                                    value: _selectedItem,
-                                                    items: _dropdownMenuItems,
-                                                    icon: Icon(Icons.arrow_downward, color: Colors.white,),
-                                                    dropdownColor: Colors.black,
-                                                    underline: Container(
-                                                      height: 2,
-                                                      color: Colors.white,
-                                                    ),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 15,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                    onChanged: (value) {
-                                                      setState(() {
-                                                        _selectedItem = value;
-                                                        seasonno = value.value;
-                                                      });
-                                                    }
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget> [
+                                          Container(
+                                              height: 50,
+                                              //width: 100,
+                                              child: Center(
+                                                child: Text(
+                                                  'Seasons',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                  textAlign: TextAlign.center,
                                                 ),
-                                              ),
-                                            ]
-                                        ),
+                                              )
+                                          ),
+                                          SizedBox(width: 10.0),
+                                          Container(
+                                            height: 50,
+                                            //width: 100,
+                                            child: DropdownButton<ListItem>(
+                                                value: _selectedItem,
+                                                items: _dropdownMenuItems,
+                                                icon: Icon(Icons.arrow_downward, color: Colors.white,),
+                                                dropdownColor: Colors.black,
+                                                underline: Container(
+                                                  height: 2,
+                                                  color: Colors.white,
+                                                ),
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _selectedItem = value;
+                                                    seasonno = value.value;
+                                                  });
+                                                }
+                                            ),
+                                          ),
+                                        ]
+                                      ),
                                     fallbackBuilder: (BuildContext context) =>
                                         SizedBox(height: 0.0,),
                                   ),

@@ -164,7 +164,8 @@ Future<Shows> fetchDataHome() async {
     for(var i=0; i < listdataHomeCategories.length; i ++) {
       SplayTreeMap<int, Show> sortedshows;
       DateTime currDate = DateTime.now();
-      DateTime currMonth = new DateTime(currDate.year, currDate.month - 1, 1);
+      //DateTime currMonth = new DateTime(currDate.year, currDate.month - 1, 1);
+      DateTime currMonth = new DateTime(currDate.year - 1, 6, 1);
 
       if(listdataHomeCategories[i] == "New Episodes") {
         sortedshows = new SplayTreeMap<int, Show>.from(

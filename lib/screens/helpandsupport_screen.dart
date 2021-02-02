@@ -22,7 +22,7 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
       appBar: AppBar(
           title: const Text('Help & Support'),
       ),
-      body: Stack(
+      body: ListView(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(25),
@@ -30,15 +30,11 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: 100,
-                  height: 100,
-                  padding: EdgeInsets.all(8),
+                  height: 80,
                   decoration: avatarDecoration,
                   child: Image.asset(
                     $iconcirclepath,
-                    fit: BoxFit.fill,
-                    //width: 500,
-                    //height: 500,
+                    fit: BoxFit.fitHeight,
                   ),
                 ),
                 Text(
@@ -46,7 +42,7 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: FontWeight.w300
                   ),
                 ),
@@ -61,7 +57,18 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
-                ProfileListItems(),
+                ProfileListItem(
+                  icon: LineAwesomeIcons.history,
+                  text: 'FAQs',
+                ),
+                ProfileListItem(
+                  icon: LineAwesomeIcons.newspaper,
+                  text: 'Privacy Policy',
+                ),
+                ProfileListItem(
+                  icon: LineAwesomeIcons.phone,
+                  text: 'Contact Us',
+                ),
               ],
             ),
           )
@@ -76,30 +83,6 @@ BoxDecoration avatarDecoration = BoxDecoration(
   shape: BoxShape.circle,
   color: Colors.black38,
 );
-
-class ProfileListItems extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView(
-        children: <Widget>[
-          ProfileListItem(
-            icon: LineAwesomeIcons.history,
-            text: 'FAQs',
-          ),
-          ProfileListItem(
-            icon: LineAwesomeIcons.newspaper,
-            text: 'Privacy Policy',
-          ),
-          ProfileListItem(
-            icon: LineAwesomeIcons.phone,
-            text: 'Contact Us',
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class ProfileListItem extends StatelessWidget {
   final IconData icon;

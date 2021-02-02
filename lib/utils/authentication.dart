@@ -5,6 +5,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:daikhopk/utils/webservice.dart';
+import 'package:intl/intl.dart';
 import '../constants.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -164,6 +165,9 @@ Future<String> signOutFacebook() async {
 
 void updateUserDataCache(String uid, String name, String userEmail, String userImageUrl, String accountType) async {
 
+  DateTime currTime = DateTime.now();
+  String formattedDatetime = DateFormat("yyyy-MM-dd HH:mm:ss").format(currTime);
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('auth', true);
   prefs.setString('uid', uid);
@@ -186,7 +190,8 @@ void updateUserDataCache(String uid, String name, String userEmail, String userI
     "name": name,
     "userEmail": userEmail,
     "userImageUrl": userImageUrl,
-    "accounType": accountType
+    "accounType": accountType,
+    "lastLogin": formattedDatetime
   };
 
   postUrl($serviceURLupdateuserinfo, Json);

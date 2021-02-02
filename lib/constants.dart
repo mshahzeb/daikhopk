@@ -42,4 +42,4 @@ daikho.pk is a free content delivery platform focused primarily on Pakistani tel
 ''';
 final String $faqurl = 'https://daikho.pk';
 final String $privacypolicyurl = 'https://daikho.pk';
-final String $supportemail = 'pk.daikho@gmail.com';
+final String $supportemail = 'support@daikho.pk';

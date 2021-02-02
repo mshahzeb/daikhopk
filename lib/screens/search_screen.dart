@@ -1,15 +1,16 @@
-import 'dart:collection';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:daikhopk/screens/showslist_screen.dart';
+import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:string_similarity/string_similarity.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/material.dart';
+import '../constants.dart';
 import 'list_screen.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -20,37 +21,54 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   _SearchScreenState();
   Map<String, int> showssearch = Map();
+  List<Show> showsList = List();
+
+  final SearchBarController<Show> _searchBarController = SearchBarController();
+  bool isReplay = false;
+  int releasesort = 0;
+  int ratingssort = 0;
+  int viewssort = 0;
 
   @override
   void initState() {
     super.initState();
     showsHome.shows.forEach((key, value) {
+      showsList.add(showsHome.shows[key]);
+    });
+    showsList.sort((a, b) => b.likeCount.compareTo(a.likeCount));
+    showsHome.shows.forEach((key, value) {
       showssearch.putIfAbsent(showsHome.shows[key].showname, () => showsHome.shows[key].showid);
     });
+
+    _searchBarController.replayLastSearch();
   }
 
-  Future<List<int>> search(String search) async {
+  Future<List<Show>> search(String search) async {
+    if(search == "") {
+      return showsList;
+    }
     if (search == "empty") return [];
     if (search == "error") throw Error();
+
     search = search.toLowerCase();
-    List<int> showids = [];
+    List<Show> shows = List();
     final bestMatch = search.bestMatch(showssearch.keys.toList());
     if(bestMatch != null && bestMatch.bestMatch != null && bestMatch.bestMatch.rating > 0.0) {
       bestMatch.ratings.sort((a, b) => b.rating.compareTo(a.rating));
       bestMatch.ratings.forEach((element) {
         if(element.rating > 0.0) {
-          showids.add(showsHome.shows[showssearch[element.target]].showid);
-        }
-      });
-    } else {
-      showsHome.shows.forEach((key, value) {
-        if(showsHome.shows[key].showname.toLowerCase().contains(search)) {
-          showids.add(showsHome.shows[key].showid);
+          shows.add(showsHome.shows[showssearch[element.target]]);
         }
       });
     }
+    showsHome.shows.forEach((key, value) {
+      String temp = showsHome.shows[key].showname + ' ' + showsHome.shows[key].channel + showsHome.shows[key].releaseDatetime.year.toString();
+      if(temp.toLowerCase().contains(search) & !shows.contains(showsHome.shows[key])) {
+        shows.add(showsHome.shows[key]);
+      }
+    });
 
-    return showids;
+    return shows;
   }
 
   @override
@@ -60,13 +78,14 @@ class _SearchScreenState extends State<SearchScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: SearchBar<int>(
+          child: SearchBar<Show>(
             onSearch: search,
             searchBarStyle: SearchBarStyle(
               backgroundColor: Colors.white,
               padding: EdgeInsets.all(5),
               borderRadius: BorderRadius.circular(5),
             ),
+            searchBarController: _searchBarController,
             minimumChars: 1,
             debounceDuration: Duration(milliseconds: 500),
             onError: (error) {
@@ -81,6 +100,133 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               );
             },
+            header: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    RaisedButton(
+                      color: Colors.black,
+                      child: Row(
+                        children: <Widget> [
+                          Icon(
+                            LineAwesomeIcons.sort,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                          Text(
+                            'Released',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ]
+                      ),
+                      onPressed: () {
+                        if(releasesort == 0) {
+                          releasesort = 1;
+                          setState(() {
+                            showsList.sort((a, b) => b.releaseDatetime.compareTo(a.releaseDatetime));
+                          });
+                          _searchBarController.sortList((Show a, Show b) {
+                            return b.releaseDatetime.compareTo(a.releaseDatetime);
+                          });
+                        } else {
+                          releasesort = 0;
+                          setState(() {
+                            showsList.sort((a, b) => a.releaseDatetime.compareTo(b.releaseDatetime));
+                          });
+                          _searchBarController.sortList((Show a, Show b) {
+                            return a.releaseDatetime.compareTo(b.releaseDatetime);
+                          });
+                        }
+                      },
+                    ),
+                    Spacer(),
+                    RaisedButton(
+                      color: Colors.black,
+                      child: Row(
+                          children: <Widget> [
+                            Icon(
+                              LineAwesomeIcons.sort,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                            Text(
+                              'Rating',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ]
+                      ),
+                      onPressed: () {
+                        if(ratingssort == 0) {
+                          ratingssort = 1;
+                          setState(() {
+                            showsList.sort((a, b) => b.likeCount.compareTo(a.likeCount));
+                          });
+                          _searchBarController.sortList((Show a, Show b) {
+                            return b.likeCount.compareTo(a.likeCount);
+                          });
+                        } else {
+                          ratingssort = 0;
+                          setState(() {
+                            showsList.sort((a, b) => a.likeCount.compareTo(b.likeCount));
+                          });
+                          _searchBarController.sortList((Show a, Show b) {
+                            return a.likeCount.compareTo(b.likeCount);
+                          });
+                        }
+                      },
+                    ),
+                    Spacer(),
+                    RaisedButton(
+                      color: Colors.black,
+                      child: Row(
+                          children: <Widget> [
+                            Icon(
+                              LineAwesomeIcons.sort,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                            Text(
+                              'Views',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ]
+                      ),
+                      onPressed: () {
+                        if(viewssort == 0) {
+                          viewssort = 1;
+                          setState(() {
+                            showsList.sort((a, b) => b.viewCount.compareTo(a.viewCount));
+                          });
+                          _searchBarController.sortList((Show a, Show b) {
+                            return b.viewCount.compareTo(a.viewCount);
+                          });
+                        } else {
+                          viewssort = 0;
+                          setState(() {
+                            showsList.sort((a, b) => a.viewCount.compareTo(b.viewCount));
+                          });
+                          _searchBarController.sortList((Show a, Show b) {
+                            return a.viewCount.compareTo(b.viewCount);
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
             emptyWidget: Center(
               child: Text(
                 'Nothing Found',
@@ -109,147 +255,89 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            hintText: "Type in a Show Name",
+            hintText: "Show, Channel or Year Released",
             hintStyle: TextStyle(
                 color: Colors.black,
-              ),
-              textStyle: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
               ),
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
             crossAxisCount: 1,
-            //icon: Icon(Icons.youtube_searched_for),
+            icon: Icon(LineAwesomeIcons.search),
             indexedScaledTileBuilder: (int index) => ScaledTile.fit(1),
             placeHolder: Container(
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: deviceSize.width,
-                    child: DecoratedBox(
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: Colors.grey, width: 2),
-                        ),
-                        color: Colors.black38,
-                      ),
-                      child: OutlineButton(
-                        highlightColor: Colors.redAccent,
-                        splashColor: Colors.grey,
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MyFadeRoute(builder: (context) => ShowsList(
-                              title: 'All Shows',
-                              type: 'all',
-                              filter: '',
+              child: StaggeredGridView.countBuilder(
+                crossAxisCount: 3,
+                itemCount: showsList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  int key = showsList.length;
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MyFadeRoute(builder: (context) =>
+                            ListScreen(
+                              show: showsList[index],
+                              channel: showsHome.channels[showsList[index].channel],
+                              refresh: true,
+                              backroute: 1,
                             )
-                            ),
-                          );
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: Colors.grey, width: 3),
                         ),
-                        highlightElevation: 0,
-                        // borderSide: BorderSide(color: Colors.blueGrey, width: 3),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      );
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Stack(
+                            alignment: Alignment.topRight,
+                            children: <Widget>[
+                              CachedNetworkImage(
+                                imageUrl: showsList[index].posterUrl,
+                                height: $defaultHeight,
+                                width: $defaultWidth,
+                                fit: BoxFit.fitHeight,
+                              ),
+                              CachedNetworkImage(
+                                imageUrl: showsHome.channels[showsList[index]
+                                    .channel].logoUrl,
+                                height: 25,
+                                width: 25,
+                                fit: BoxFit.fitHeight,
+                              ),
+                            ]
+                        ),
+                        SizedBox(
+                          height: 30,
+                          width: $defaultWidth,
                           child: Text(
-                            'All Shows (' + showsHome.shows.length.toString() + ')',
+                            showsList[index].showname,
                             style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.grey,
+                              fontSize: 12,
+                              fontFamily: 'Comfortaa',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  SizedBox( height:10 ),
-                  SizedBox(
-                    width: deviceSize.width,
-                    child: DecoratedBox(
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: Colors.grey, width: 2),
-                        ),
-                        color: Colors.black38,
-                      ),
-                      child: OutlineButton(
-                        highlightColor: Colors.redAccent,
-                        splashColor: Colors.grey,
-                        onPressed: () {
-                          String launchUrl;
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: Colors.grey, width: 3),
-                        ),
-                        highlightElevation: 0,
-                        // borderSide: BorderSide(color: Colors.blueGrey, width: 3),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Text(
-                            'Find by Channels (' + showsHome.channels.length.toString() + ')',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox( height:10 ),
-                  SizedBox(
-                    width: deviceSize.width,
-                    child: DecoratedBox(
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: Colors.grey, width: 2),
-                        ),
-                        color: Colors.black38,
-                      ),
-                      child: OutlineButton(
-                        highlightColor: Colors.redAccent,
-                        splashColor: Colors.grey,
-                        onPressed: () {
-                          String launchUrl;
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: Colors.grey, width: 3),
-                        ),
-                        highlightElevation: 0,
-                        // borderSide: BorderSide(color: Colors.blueGrey, width: 3),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: Text(
-                            'Find by Release Year',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  );
+                },
+                //staggeredTileBuilder: (int index) => new StaggeredTile.count(2, index.isEven ? 2 : 1),
+                //staggeredTileBuilder: (int index) => new StaggeredTile.count(2, 1),
+                staggeredTileBuilder: (int index) => new StaggeredTile.fit(1),
+                mainAxisSpacing: 10.0,
+                crossAxisSpacing: 10.0,
               )
             ),
-            onItemFound: (int showid, int index) {
+            onItemFound: (Show show, int index) {
               return GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
                   Navigator.of(context).push(
                     MyFadeRoute(builder: (context) => ListScreen(
-                        show: showsHome.shows[showid],
-                        channel: showsHome.channels[showsHome.shows[showid].channel],
+                        show: show,
+                        channel: showsHome.channels[show.channel],
                         refresh: true
                     )
                     ),
@@ -259,16 +347,16 @@ class _SearchScreenState extends State<SearchScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget> [
                     CachedNetworkImage(
-                      imageUrl: showsHome.shows[showid].posterUrl,
+                      imageUrl: show.posterUrl,
                       width: 100,
-                      height: 150,
+                      height: 125,
                       fit: BoxFit.cover,
                       alignment: Alignment.topCenter,
                     ),
                     Expanded(
                       child: ListTile(
                         title: Text(
-                          showsHome.shows[showid].showname,
+                          show.showname,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -277,9 +365,12 @@ class _SearchScreenState extends State<SearchScreen> {
                           textAlign: TextAlign.left,
                         ),
                         subtitle: Text(
-                          '\n' + showsHome.shows[showid].releaseDatetime.year.toString(),
+                          numdisplay(show.viewCount).toString() + ' ' + 'Views'
+                          '\n' + numdisplay(show.likeCount).toString() + ' ' + 'Likes'
+                          '\n' + show.releaseDatetime.year.toString(),
                           style: TextStyle(
                             color: Colors.white,
+                            height: 1.5,
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                           ),
