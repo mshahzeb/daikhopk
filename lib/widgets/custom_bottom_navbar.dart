@@ -1,8 +1,10 @@
 import 'package:daikhopk/screens/account_screen.dart';
+import 'package:daikhopk/screens/channels_screen.dart';
 import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/screens/search_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
   final String currentscreen;
@@ -24,15 +26,23 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
       TextStyle(fontSize: 11, fontWeight: FontWeight.w300, fontFamily: 'Comfortaa');
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
-      'Index 0: My Account',
+      'Index 0: Account',
       style: optionStyle,
     ),
     Text(
-      'Index 1: Home',
+      'Index 1: Channels',
       style: optionStyle,
     ),
     Text(
-      'Index 2: Explore',
+      'Index 2: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 3: Live',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 4: Explore',
       style: optionStyle,
     ),
   ];
@@ -48,6 +58,13 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         break;
 
         case 1: {
+          Navigator.of(context).push(
+              MyFadeRoute(builder: (context) => ChannelScreen())
+          );
+        }
+        break;
+
+        case 2: {
           if(currentscreen == "Home") {
             refresh = true;
           } else {
@@ -60,7 +77,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         }
         break;
 
-        case 2: {
+        case 4: {
           Navigator.of(context).push(
             MyFadeRoute(builder: (context) => SearchScreen())
           );
@@ -76,15 +93,43 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         type : BottomNavigationBarType.fixed,        
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'My Account',
+            icon: Icon(
+              LineAwesomeIcons.user,
+              color: Colors.white,
+              size: 25.0,
+            ),
+            label: 'Account',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              LineAwesomeIcons.film,
+              color: Colors.blueAccent,
+              size: 25.0,
+            ),
+            label: 'Channels',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage('assets/logo/daikho_icon_cropped.png'),
+              color: Colors.redAccent,
+              size: 35.0,
+            ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(
+              LineAwesomeIcons.television,
+              color: Colors.amberAccent,
+              size: 25.0,
+            ),
+            label: 'Live',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              LineAwesomeIcons.search,
+              color: Colors.white,
+              size: 25.0,
+            ),
             label: 'Explore',
           ),
         ],

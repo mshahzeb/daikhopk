@@ -23,8 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final bool refresh;
   _HomeScreenState({@required final this.refresh});
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
   @override
   void initState() {
     super.initState();
@@ -75,8 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
                     CustomSliverAppBar(
-                        shows: snapshot.data.shows,
-                        channels: snapshot.data.channels,
+                        featured: showsHome.featured,
                     ),
                   ];
                 },

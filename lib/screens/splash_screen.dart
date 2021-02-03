@@ -158,6 +158,7 @@ Future<Shows> fetchDataHome() async {
     }
 
     showsHome = Shows.fromJson(jsonDecode(featured));
+    showsHome.featured.shuffle();
 
     //['New Episodes','Released This Month','Most Watched','Top Rated']
     listdataHome = List();

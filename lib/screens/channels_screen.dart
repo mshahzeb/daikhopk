@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:daikhopk/models/channel.dart';
 import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
@@ -13,17 +14,16 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import 'list_screen.dart';
 
-class SearchScreen extends StatefulWidget {
+class ChannelScreen extends StatefulWidget {
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _ChannelScreenState createState() => _ChannelScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-  _SearchScreenState();
-  Map<String, int> showssearch = Map();
-  List<Show> showsList = List();
+class _ChannelScreenState extends State<ChannelScreen> {
+  _ChannelScreenState();
+  List<Channel> channelsList = List();
 
-  final SearchBarController<Show> _searchBarController = SearchBarController();
+  final SearchBarController<Channel> _searchBarController = SearchBarController();
   bool isReplay = false;
   int releasesort = 0;
   int ratingssort = 0;
@@ -32,43 +32,39 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    showsHome.shows.forEach((key, value) {
-      showsList.add(showsHome.shows[key]);
-    });
-    showsList.sort((a, b) => b.likeCount.compareTo(a.likeCount));
-    showsHome.shows.forEach((key, value) {
-      showssearch.putIfAbsent(showsHome.shows[key].showname, () => showsHome.shows[key].showid);
+    showsHome.channels.forEach((key, value) {
+      channelsList.add(showsHome.channels[key]);
     });
 
     _searchBarController.replayLastSearch();
   }
 
-  Future<List<Show>> search(String search) async {
+  Future<List<Channel>> search(String search) async {
     if(search == "") {
-      return showsList;
+      return channelsList;
     }
     if (search == "empty") return [];
     if (search == "error") throw Error();
 
     search = search.toLowerCase();
-    List<Show> shows = List();
-    final bestMatch = search.bestMatch(showssearch.keys.toList());
+    List<Channel> channels = List();
+    final bestMatch = search.bestMatch(showsHome.channels.keys.toList());
     if(bestMatch != null && bestMatch.bestMatch != null && bestMatch.bestMatch.rating > 0.0) {
       bestMatch.ratings.sort((a, b) => b.rating.compareTo(a.rating));
       bestMatch.ratings.forEach((element) {
         if(element.rating > 0.0) {
-          shows.add(showsHome.shows[showssearch[element.target]]);
+          channels.add(showsHome.channels[showsHome.channels[element.target]]);
         }
       });
     }
-    showsHome.shows.forEach((key, value) {
-      String temp = showsHome.shows[key].showname + ' ' + showsHome.shows[key].channel + showsHome.shows[key].releaseDatetime.year.toString();
-      if(temp.toLowerCase().contains(search) & !shows.contains(showsHome.shows[key])) {
-        shows.add(showsHome.shows[key]);
+    showsHome.channels.forEach((key, value) {
+      String temp = showsHome.channels[key].channel;
+      if(temp.toLowerCase().contains(search) & !channels.contains(showsHome.channels[key])) {
+        channels.add(showsHome.channels[key]);
       }
     });
 
-    return shows;
+    return channels;
   }
 
   @override
@@ -78,7 +74,7 @@ class _SearchScreenState extends State<SearchScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: SearchBar<Show>(
+          child: SearchBar<Channel>(
             onSearch: search,
             searchBarStyle: SearchBarStyle(
               backgroundColor: Colors.white,
@@ -114,7 +110,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             size: 25,
                           ),
                           Text(
-                            'Released',
+                            'Name',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 15,
@@ -127,18 +123,18 @@ class _SearchScreenState extends State<SearchScreen> {
                         if(releasesort == 0) {
                           releasesort = 1;
                           setState(() {
-                            showsList.sort((a, b) => b.releaseDatetime.compareTo(a.releaseDatetime));
+                            channelsList.sort((a, b) => b.channel.compareTo(a.channel));
                           });
-                          _searchBarController.sortList((Show a, Show b) {
-                            return b.releaseDatetime.compareTo(a.releaseDatetime);
+                          _searchBarController.sortList((Channel a, Channel b) {
+                            return b.channel.compareTo(a.channel);
                           });
                         } else {
                           releasesort = 0;
                           setState(() {
-                            showsList.sort((a, b) => a.releaseDatetime.compareTo(b.releaseDatetime));
+                            channelsList.sort((a, b) => a.channel.compareTo(b.channel));
                           });
-                          _searchBarController.sortList((Show a, Show b) {
-                            return a.releaseDatetime.compareTo(b.releaseDatetime);
+                          _searchBarController.sortList((Channel a, Channel b) {
+                            return a.channel.compareTo(b.channel);
                           });
                         }
                       },
@@ -167,19 +163,19 @@ class _SearchScreenState extends State<SearchScreen> {
                         if(ratingssort == 0) {
                           ratingssort = 1;
                           setState(() {
-                            showsList.sort((a, b) => b.likeCount.compareTo(a.likeCount));
+                          //  showsList.sort((a, b) => b.likeCount.compareTo(a.likeCount));
                           });
-                          _searchBarController.sortList((Show a, Show b) {
-                            return b.likeCount.compareTo(a.likeCount);
-                          });
+                          //_searchBarController.sortList((Show a, Show b) {
+                          //  return b.likeCount.compareTo(a.likeCount);
+                          //});
                         } else {
                           ratingssort = 0;
                           setState(() {
-                            showsList.sort((a, b) => a.likeCount.compareTo(b.likeCount));
+                          //  showsList.sort((a, b) => a.likeCount.compareTo(b.likeCount));
                           });
-                          _searchBarController.sortList((Show a, Show b) {
-                            return a.likeCount.compareTo(b.likeCount);
-                          });
+                          //_searchBarController.sortList((Show a, Show b) {
+                          //  return a.likeCount.compareTo(b.likeCount);
+                          //});
                         }
                       },
                     ),
@@ -207,19 +203,19 @@ class _SearchScreenState extends State<SearchScreen> {
                         if(viewssort == 0) {
                           viewssort = 1;
                           setState(() {
-                            showsList.sort((a, b) => b.viewCount.compareTo(a.viewCount));
+                            //showsList.sort((a, b) => b.viewCount.compareTo(a.viewCount));
                           });
-                          _searchBarController.sortList((Show a, Show b) {
-                            return b.viewCount.compareTo(a.viewCount);
-                          });
+                          //_searchBarController.sortList((Show a, Show b) {
+                          //  return b.viewCount.compareTo(a.viewCount);
+                          //});
                         } else {
                           viewssort = 0;
                           setState(() {
-                            showsList.sort((a, b) => a.viewCount.compareTo(b.viewCount));
+                            //showsList.sort((a, b) => a.viewCount.compareTo(b.viewCount));
                           });
-                          _searchBarController.sortList((Show a, Show b) {
-                            return a.viewCount.compareTo(b.viewCount);
-                          });
+                          //_searchBarController.sortList((Show a, Show b) {
+                          //  return a.viewCount.compareTo(b.viewCount);
+                          //});
                         }
                       },
                     ),
@@ -255,7 +251,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            hintText: "Show, Channel or Year Released",
+            hintText: "Search for Channels",
             hintStyle: TextStyle(
                 color: Colors.black,
                 fontSize: 15,
@@ -269,20 +265,11 @@ class _SearchScreenState extends State<SearchScreen> {
             placeHolder: Container(
               child: StaggeredGridView.countBuilder(
                 crossAxisCount: 3,
-                itemCount: showsList.length,
+                itemCount: channelsList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MyFadeRoute(builder: (context) =>
-                            ListScreen(
-                              show: showsList[index],
-                              channel: showsHome.channels[showsList[index].channel],
-                              refresh: true,
-                              backroute: 1,
-                            )
-                        ),
-                      );
+
                     },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -291,25 +278,19 @@ class _SearchScreenState extends State<SearchScreen> {
                             alignment: Alignment.topRight,
                             children: <Widget>[
                               CachedNetworkImage(
-                                imageUrl: showsList[index].posterUrl,
+                                imageUrl: channelsList[index].logoUrl,
                                 height: $defaultHeight,
                                 width: $defaultWidth,
                                 fit: BoxFit.fitHeight,
                               ),
-                              CachedNetworkImage(
-                                imageUrl: showsHome.channels[showsList[index]
-                                    .channel].logoUrl,
-                                height: 25,
-                                width: 25,
-                                fit: BoxFit.fitHeight,
-                              ),
                             ]
                         ),
+                        SizedBox(height: 5.0,),
                         SizedBox(
                           height: 30,
                           width: $defaultWidth,
                           child: Text(
-                            showsList[index].showname,
+                            channelsList[index].channel + ' ' + '(' + channelsList[index].shows.toString() + ')',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 12,
@@ -330,24 +311,17 @@ class _SearchScreenState extends State<SearchScreen> {
                 crossAxisSpacing: 10.0,
               )
             ),
-            onItemFound: (Show show, int index) {
+            onItemFound: (Channel channel, int index) {
               return GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
-                  Navigator.of(context).push(
-                    MyFadeRoute(builder: (context) => ListScreen(
-                        show: show,
-                        channel: showsHome.channels[show.channel],
-                        refresh: true
-                    )
-                    ),
-                  );
+
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget> [
                     CachedNetworkImage(
-                      imageUrl: show.posterUrl,
+                      imageUrl: channel.logoUrl,
                       width: 100,
                       height: 125,
                       fit: BoxFit.cover,
@@ -356,7 +330,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     Expanded(
                       child: ListTile(
                         title: Text(
-                          show.showname,
+                          channel.channel,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -365,9 +339,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           textAlign: TextAlign.left,
                         ),
                         subtitle: Text(
-                          numdisplay(show.viewCount).toString() + ' ' + 'Views'
-                          '\n' + numdisplay(show.likeCount).toString() + ' ' + 'Likes'
-                          '\n' + show.releaseDatetime.year.toString(),
+                          channel.shows.toString() + ' Shows',
                           style: TextStyle(
                             color: Colors.white,
                             height: 1.5,
@@ -385,7 +357,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: CustomBottomNavBar(currentscreen: "Explore",),
+      bottomNavigationBar: CustomBottomNavBar(currentscreen: "Channels",),
     );
   }
 }
