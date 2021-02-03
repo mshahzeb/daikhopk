@@ -1,7 +1,9 @@
 import 'package:daikhopk/screens/account_screen.dart';
 import 'package:daikhopk/screens/channels_screen.dart';
 import 'package:daikhopk/screens/home_screen.dart';
+import 'package:daikhopk/screens/livechannels_screen.dart';
 import 'package:daikhopk/screens/search_screen.dart';
+import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -59,7 +61,10 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
 
         case 1: {
           Navigator.of(context).push(
-              MyFadeRoute(builder: (context) => ChannelScreen())
+              MyFadeRoute(builder: (context) => ChannelScreen(
+                channelsPassed: showsHome.channels,
+                searchHint: "Search for Channels",
+              ))
           );
         }
         break;
@@ -77,9 +82,22 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         }
         break;
 
+        case 3: {
+          Navigator.of(context).push(
+              MyFadeRoute(builder: (context) => LiveChannelScreen(
+                channelsPassed: showsHome.livechannels,
+                searchHint: "Search for Live Channels",
+              ))
+          );
+        }
+        break;
+
         case 4: {
           Navigator.of(context).push(
-            MyFadeRoute(builder: (context) => SearchScreen())
+            MyFadeRoute(builder: (context) => SearchScreen(
+              showsPassed: showsHome.shows,
+              searchHint: 'Show, Channel or Year Released',
+            ))
           );
         }
         break;

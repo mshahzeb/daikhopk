@@ -14,12 +14,23 @@ import '../constants.dart';
 import 'list_screen.dart';
 
 class SearchScreen extends StatefulWidget {
+  Map<int, Show> showsPassed;
+  String searchHint;
+  SearchScreen({@required this.showsPassed, this.searchHint});
+
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _SearchScreenState createState() => _SearchScreenState(
+    showsPassed: showsPassed,
+    searchHint: searchHint,
+  );
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  _SearchScreenState();
+  Map<int, Show> showsPassed;
+  String searchHint;
+
+  _SearchScreenState({@required this.showsPassed, this.searchHint});
+
   Map<String, int> showssearch = Map();
   List<Show> showsList = List();
 
@@ -32,12 +43,12 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    showsHome.shows.forEach((key, value) {
-      showsList.add(showsHome.shows[key]);
+    showsPassed.forEach((key, value) {
+      showsList.add(showsPassed[key]);
     });
     showsList.sort((a, b) => b.likeCount.compareTo(a.likeCount));
-    showsHome.shows.forEach((key, value) {
-      showssearch.putIfAbsent(showsHome.shows[key].showname, () => showsHome.shows[key].showid);
+    showsPassed.forEach((key, value) {
+      showssearch.putIfAbsent(showsPassed[key].showname, () =>showsPassed[key].showid);
     });
 
     _searchBarController.replayLastSearch();
@@ -57,14 +68,14 @@ class _SearchScreenState extends State<SearchScreen> {
       bestMatch.ratings.sort((a, b) => b.rating.compareTo(a.rating));
       bestMatch.ratings.forEach((element) {
         if(element.rating > 0.0) {
-          shows.add(showsHome.shows[showssearch[element.target]]);
+          shows.add(showsPassed[showssearch[element.target]]);
         }
       });
     }
-    showsHome.shows.forEach((key, value) {
-      String temp = showsHome.shows[key].showname + ' ' + showsHome.shows[key].channel + showsHome.shows[key].releaseDatetime.year.toString();
-      if(temp.toLowerCase().contains(search) & !shows.contains(showsHome.shows[key])) {
-        shows.add(showsHome.shows[key]);
+    showsPassed.forEach((key, value) {
+      String temp = showsPassed[key].showname + ' ' + showsPassed[key].channel + showsPassed[key].releaseDatetime.year.toString();
+      if(temp.toLowerCase().contains(search) & !shows.contains(showsPassed[key])) {
+        shows.add(showsPassed[key]);
       }
     });
 
@@ -255,7 +266,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            hintText: "Show, Channel or Year Released",
+            hintText: searchHint,
             hintStyle: TextStyle(
                 color: Colors.black,
                 fontSize: 15,
@@ -288,22 +299,22 @@ class _SearchScreenState extends State<SearchScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Stack(
-                            alignment: Alignment.topRight,
-                            children: <Widget>[
-                              CachedNetworkImage(
-                                imageUrl: showsList[index].posterUrl,
-                                height: $defaultHeight,
-                                width: $defaultWidth,
-                                fit: BoxFit.fitHeight,
-                              ),
-                              CachedNetworkImage(
-                                imageUrl: showsHome.channels[showsList[index]
-                                    .channel].logoUrl,
-                                height: 25,
-                                width: 25,
-                                fit: BoxFit.fitHeight,
-                              ),
-                            ]
+                          alignment: Alignment.topRight,
+                          children: <Widget>[
+                            CachedNetworkImage(
+                              imageUrl: showsList[index].posterUrl,
+                              height: $defaultHeight,
+                              width: $defaultWidth,
+                              fit: BoxFit.fitHeight,
+                            ),
+                            CachedNetworkImage(
+                              imageUrl: showsHome.channels[showsList[index]
+                                  .channel].logoUrl,
+                              height: 25,
+                              width: 25,
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ]
                         ),
                         SizedBox(
                           height: 30,
@@ -346,12 +357,23 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget> [
-                    CachedNetworkImage(
-                      imageUrl: show.posterUrl,
-                      width: 100,
-                      height: 125,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: <Widget>[
+                        CachedNetworkImage(
+                          imageUrl: show.posterUrl,
+                          //height: $defaultHeight,
+                          width: $defaultWidth,
+                          fit: BoxFit.fitHeight,
+                        ),
+                        CachedNetworkImage(
+                          imageUrl: showsHome.channels[show
+                              .channel].logoUrl,
+                          height: 25,
+                          width: 25,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ]
                     ),
                     Expanded(
                       child: ListTile(

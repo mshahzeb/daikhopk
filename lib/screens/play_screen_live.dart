@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:daikhopk/models/channel.dart';
+import 'package:daikhopk/models/livechannel.dart';
 import 'package:daikhopk/models/show.dart';
+import 'package:daikhopk/screens/livechannels_screen.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
@@ -13,42 +14,29 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:daikhopk/constants.dart';
 
-import 'list_screen.dart';
-
 String videoId;
 YoutubePlayerController _controller;
 
-class PlayScreen extends StatefulWidget {
+class PlayScreenLive extends StatefulWidget {
   final Show show;
-  final Channel channel;
-  final int seasonno;
-  final int episodeno;
-  PlayScreen({@required final this.show, @required final this.channel, @required final this.seasonno, @required final this.episodeno});
+  final LiveChannel channel;
+  PlayScreenLive({@required final this.show, @required final this.channel});
 
   @override
-  _PlayScreenState createState() => _PlayScreenState(
+  _PlayScreenLiveState createState() => _PlayScreenLiveState(
     show: show,
     channel: channel,
-    seasonno: seasonno,
-    episodeno: episodeno,
   );
 }
 
-class _PlayScreenState extends State<PlayScreen> {
+class _PlayScreenLiveState extends State<PlayScreenLive> {
   final Show show;
-  final Channel channel;
-  final int seasonno;
-  final int episodeno;
+  final LiveChannel channel;
 
-  _PlayScreenState({@required final this.show, @required this.channel, @required final this.seasonno, @required final this.episodeno});
+  _PlayScreenLiveState({@required final this.show, @required this.channel});
 
   final ValueNotifier<bool> _isMuted = ValueNotifier(false);
   bool played = false;
-  int pos1 = 0;
-  int pos2 = 0;
-  int timeleft = 0;
-  int nextepisode;
-  int previousepisode;
   bool completed = false;
 
   @override
@@ -60,10 +48,7 @@ class _PlayScreenState extends State<PlayScreen> {
       DeviceOrientation.portraitDown,
     ]);
 
-    if(show.seasons[seasonno].episodes[episodeno].episodeVideoId == null)
-      videoId = YoutubePlayerController.convertUrlToId(show.seasons[seasonno].episodes[episodeno].episodeUrl);
-    else
-      videoId = show.seasons[seasonno].episodes[episodeno].episodeVideoId;
+    videoId = channel.videoId;
 
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
@@ -75,36 +60,13 @@ class _PlayScreenState extends State<PlayScreen> {
         desktopMode: kIsWeb,
         autoPlay: true,
         playsInline: true,
-        startAt: Duration(seconds: 0)
+        //startAt: Duration(seconds: 0)
       ),
     )..listen((value) {
       if (value.isReady && !value.hasPlayed) {
         if(!played) {
-          if(show.embed == 1) {
-            _controller.play();
-          } else {
-            _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
-          }
+          _controller.play();
           played = true;
-        }
-        if(_controller.value.error == YoutubeError.sameAsNotEmbeddable) {
-          _controller.stop();
-          _controller.reset();
-          _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
-        }
-      }
-      if(nextepisode != null && played && (value.metaData.duration.inSeconds > 0) && (value.position.inSeconds >= (value.metaData.duration.inSeconds - 10))) {
-        pos1 = value.position.inSeconds;
-        if(pos1 != pos2) {
-          pos2 = pos1;
-          timeleft = value.metaData.duration.inSeconds - pos1;
-          if(timeleft == 10 || timeleft == 5) {
-            ShowSnackBarMessage('Next Episode in ' + timeleft.toString() + ' seconds', 4000);
-          } else if(timeleft == 0) {
-            ShowSnackBarMessage('Playing Next Episode', 5000);
-            ChangeEpisode(nextepisode);
-            completed = true;
-          }
         }
       }
     });
@@ -128,13 +90,6 @@ class _PlayScreenState extends State<PlayScreen> {
     };
 
     UpdateVideoIdStats();
-
-    if(show.seasons[seasonno].episodes[episodeno + 1] != null) {
-      nextepisode = episodeno + 1;
-    }
-    if(show.seasons[seasonno].episodes[episodeno - 1] != null) {
-      previousepisode = episodeno - 1;
-    }
   }
 
   @override
@@ -168,84 +123,18 @@ class _PlayScreenState extends State<PlayScreen> {
           "val": "inc"
         },
         {
-          "sid": showidstr + '_' + seasonno.toString() + '_' + episodeno.toString(),
-          "stat": "vid_lastplayed",
+          "sid": channel.channel,
+          "stat": "show_lastplayedlivech",
           "val": formattedDatetime
-        },
-        {
-          "sid": showidstr,
-          "stat": "show_playcounts",
-          "val": "inc"
-        },
-        {
-          "sid": showidstr,
-          "stat": "show_lastplayed",
-          "val": formattedDatetime
-        },
-        {
-          "sid": showidstr,
-          "stat": "show_lastplayedepi",
-          "val": seasonno.toString() + '_' + episodeno.toString()
         }
       ]
     };
     postUrl($serviceURLupdatestats, Json);
-
-    Json = {
-      "uid": userlocal['uid'],
-      "stats": [
-        {
-          "stat": "vid_lastplaytime",
-          "sid": videoId
-        }
-      ]
-    };
-
-    String response = await postUrl($serviceURLgetstats, Json);
-    var jsonresult = jsonDecode(response);
-    int playtime = jsonresult[0]['vid_lastplaytime'];
-    if (playtime < 0) {
-      playtime = 0;
-    }
-    await Future.delayed(Duration(seconds: 2));
-    _controller.seekTo(Duration(seconds: playtime));
-  }
-
-  void UpdateVideoIdLastPlayTime(int duration) async {
-    if(duration > 0) {
-      Map <String, dynamic> Json = {
-        "uid": userlocal['uid'],
-        "stats": [
-          {
-            "sid": videoId,
-            "stat": "vid_lastplaytime",
-            "val": duration
-          }
-        ]
-      };
-      postUrl($serviceURLupdatestats, Json);
-    }
   }
 
   Future<void> ShowSnackBarMessage(String message, int duration) async {
     var snackBar = SnackBar(content: Text(message), duration: Duration(milliseconds: duration));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  Future<void> ChangeEpisode(int episodeno) async {
-    if(episodeno != null) {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-              builder: (context) =>
-                  PlayScreen(
-                    show: show,
-                    channel: channel,
-                    seasonno: seasonno,
-                    episodeno: episodeno,
-                  )
-          )
-      );
-    }
   }
 
   @override
@@ -255,24 +144,11 @@ class _PlayScreenState extends State<PlayScreen> {
       controller: _controller,
       child: WillPopScope(
         onWillPop: ()async {
-          UpdateVideoIdLastPlayTime(_controller.value.position.inSeconds);
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ListScreen(
-                        show: show,
-                        channel: channel,
-                        refresh: false,
-                        lastplayedseasonLocal: seasonno,
-                        lastplayedepisodeLocal: episodeno,
-                      )
-              )
-          );
           return true;
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Play Video'),
+            title: const Text('Play Live Channel'),
               actions: <Widget> [
                 Container(
                     height: 50,
@@ -317,17 +193,6 @@ class _PlayScreenState extends State<PlayScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget> [
-                            IconButton(
-                              icon: const Icon(Icons.skip_previous),
-                              onPressed: () {
-                                if(previousepisode != null) {
-                                  ChangeEpisode(previousepisode);
-                                } else {
-                                  ShowSnackBarMessage('This is the first available Episode', 3000);
-                                }
-                              },
-                              color: Colors.white,
-                            ),
                             YoutubeValueBuilder(
                               builder: (context, value) {
                               return IconButton(
@@ -348,29 +213,18 @@ class _PlayScreenState extends State<PlayScreen> {
                               },
                             ),
                             ValueListenableBuilder<bool>(
-                            valueListenable: _isMuted,
-                            builder: (context, isMuted, _) {
-                              return IconButton(
-                              icon: Icon(isMuted ? Icons.volume_off : Icons.volume_up, color: Colors.white, ),
-                              onPressed: () {
-                                _isMuted.value = !isMuted;
-                                isMuted
-                                ? context.ytController.unMute()
-                                    : context.ytController.mute();
-                                },
-                              );
+                              valueListenable: _isMuted,
+                              builder: (context, isMuted, _) {
+                                return IconButton(
+                                icon: Icon(isMuted ? Icons.volume_off : Icons.volume_up, color: Colors.white, ),
+                                onPressed: () {
+                                  _isMuted.value = !isMuted;
+                                  isMuted
+                                  ? context.ytController.unMute()
+                                      : context.ytController.mute();
+                                  },
+                                );
                             },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.skip_next, color: Colors.white,),
-                              onPressed: () {
-                                if(nextepisode != null) {
-                                  ChangeEpisode(nextepisode);
-                                } else {
-                                  ShowSnackBarMessage('This is the last available Episode', 3000);
-                                }
-                              },
-                              color: Colors.white,
                             ),
                           ]
                         ),
@@ -389,8 +243,7 @@ class _PlayScreenState extends State<PlayScreen> {
                               highlightColor: Colors.redAccent,
                               splashColor: Colors.grey,
                               onPressed: () {
-                                String launchUrl;
-                                launchUrl = show.seasons[seasonno].episodes[episodeno].episodeUrl + '&t=' + _controller.value.position.inSeconds.toString();
+                                String launchUrl = 'https://www.youtube.com/watch?v=' + channel.videoId;
                                 _launchYoutubeVideo(launchUrl);
                               },
                               shape: RoundedRectangleBorder(
@@ -437,11 +290,11 @@ class _PlayScreenState extends State<PlayScreen> {
                     ),
                     ListTile(
                       leading: CachedNetworkImage(
-                        imageUrl: (show.seasons[seasonno].episodes[episodeno]?.episodeThumbnail ?? "") == "" ? show.posterUrl : show.seasons[seasonno].episodes[episodeno].episodeThumbnail,
+                        imageUrl: channel.logoUrl,
                         width: $defaultWidth,
                       ),
                       title: Text(
-                        'Episode ' + show.seasons[seasonno].episodes[episodeno].episodeno.toString(),
+                        channel.channel,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 25,
@@ -450,7 +303,7 @@ class _PlayScreenState extends State<PlayScreen> {
                       textAlign: TextAlign.left,
                       ),
                       subtitle: Text(
-                        show.seasons[seasonno].episodes[episodeno].episodetitle,
+                        'Live',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:daikhopk/models/channel.dart';
+import 'package:daikhopk/models/livechannel.dart';
 import 'package:daikhopk/models/show.dart';
+import 'package:daikhopk/screens/list_screen.dart';
+import 'package:daikhopk/screens/play_screen_live.dart';
 import 'package:daikhopk/screens/search_screen.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
@@ -14,27 +16,27 @@ import 'package:flappy_search_bar/search_bar_style.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
 
-class ChannelScreen extends StatefulWidget {
-  Map<String, Channel> channelsPassed;
+class LiveChannelScreen extends StatefulWidget {
+  Map<String, LiveChannel> channelsPassed;
   String searchHint;
 
-  ChannelScreen({@required this.channelsPassed, this.searchHint});
+  LiveChannelScreen({@required this.channelsPassed, this.searchHint});
 
   @override
-  _ChannelScreenState createState() => _ChannelScreenState(
+  _LiveChannelScreenState createState() => _LiveChannelScreenState(
     channelsPassed: channelsPassed,
     searchHint: searchHint,
   );
 }
 
-class _ChannelScreenState extends State<ChannelScreen> {
-  Map<String, Channel> channelsPassed;
+class _LiveChannelScreenState extends State<LiveChannelScreen> {
+  Map<String, LiveChannel> channelsPassed;
   String searchHint;
 
-  _ChannelScreenState({@required this.channelsPassed, this.searchHint});
-  List<Channel> channelsList = List();
+  _LiveChannelScreenState({@required this.channelsPassed, this.searchHint});
+  List<LiveChannel> channelsList = List();
 
-  final SearchBarController<Channel> _searchBarController = SearchBarController();
+  final SearchBarController<LiveChannel> _searchBarController = SearchBarController();
   Map<int, Show> filteredshows = Map();
   bool isReplay = false;
   int releasesort = 0;
@@ -50,7 +52,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
     _searchBarController.replayLastSearch();
   }
 
-  Future<List<Channel>> search(String search) async {
+  Future<List<LiveChannel>> search(String search) async {
     if(search == "") {
       return channelsList;
     }
@@ -58,7 +60,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
     if (search == "error") throw Error();
 
     search = search.toLowerCase();
-    List<Channel> channels = List();
+    List<LiveChannel> channels = List();
     final bestMatch = search.bestMatch(channelsPassed.keys.toList());
     if(bestMatch != null && bestMatch.bestMatch != null && bestMatch.bestMatch.rating > 0.0) {
       bestMatch.ratings.sort((a, b) => b.rating.compareTo(a.rating));
@@ -85,7 +87,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: SearchBar<Channel>(
+          child: SearchBar<LiveChannel>(
             onSearch: search,
             searchBarStyle: SearchBarStyle(
               backgroundColor: Colors.white,
@@ -136,7 +138,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                           setState(() {
                             channelsList.sort((a, b) => b.channel.compareTo(a.channel));
                           });
-                          _searchBarController.sortList((Channel a, Channel b) {
+                          _searchBarController.sortList((LiveChannel a, LiveChannel b) {
                             return b.channel.compareTo(a.channel);
                           });
                         } else {
@@ -144,7 +146,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                           setState(() {
                             channelsList.sort((a, b) => a.channel.compareTo(b.channel));
                           });
-                          _searchBarController.sortList((Channel a, Channel b) {
+                          _searchBarController.sortList((LiveChannel a, LiveChannel b) {
                             return a.channel.compareTo(b.channel);
                           });
                         }
@@ -280,19 +282,9 @@ class _ChannelScreenState extends State<ChannelScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      filteredshows.clear();
-                      showsHome.shows.forEach((key, value) {
-                        if(showsHome.shows[key].channel == channelsList[index].channel) {
-                          filteredshows.putIfAbsent(
-                              showsHome.shows[key].showid, () => showsHome
-                              .shows[key]);
-                        }
-                      });
-
                       Navigator.of(context).push(
-                          MyFadeRoute(builder: (context) => SearchScreen(
-                            showsPassed: filteredshows,
-                            searchHint: 'Show or Year Released',
+                          MyFadeRoute(builder: (context) => PlayScreenLive(
+                            channel: channelsList[index],
                           ))
                       );
                     },
@@ -306,7 +298,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                                 imageUrl: channelsList[index].logoUrl,
                                 height: $defaultHeight,
                                 width: $defaultWidth,
-                                fit: BoxFit.fitHeight,
+                                fit: BoxFit.fitWidth,
                               ),
                             ]
                         ),
@@ -315,7 +307,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                           height: 30,
                           width: $defaultWidth,
                           child: Text(
-                            channelsList[index].channel + ' ' + '(' + channelsList[index].shows.toString() + ')',
+                            channelsList[index].channel,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 12,
@@ -336,23 +328,13 @@ class _ChannelScreenState extends State<ChannelScreen> {
                 crossAxisSpacing: 10.0,
               )
             ),
-            onItemFound: (Channel channel, int index) {
+            onItemFound: (LiveChannel channel, int index) {
               return GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
-                  filteredshows.clear();
-                  showsHome.shows.forEach((key, value) {
-                    if(showsHome.shows[key].channel == channel.channel) {
-                      filteredshows.putIfAbsent(
-                          showsHome.shows[key].showid, () => showsHome
-                          .shows[key]);
-                    }
-                  });
-
                   Navigator.of(context).push(
-                      MyFadeRoute(builder: (context) => SearchScreen(
-                        showsPassed: filteredshows,
-                        searchHint: 'Show or Year Released',
+                      MyFadeRoute(builder: (context) => PlayScreenLive(
+                        channel: channel,
                       ))
                   );
                 },
@@ -363,7 +345,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                       imageUrl: channel.logoUrl,
                       width: 100,
                       height: 125,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fitWidth,
                       alignment: Alignment.topCenter,
                     ),
                     Expanded(
@@ -378,7 +360,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                           textAlign: TextAlign.left,
                         ),
                         subtitle: Text(
-                          channel.shows.toString() + ' Shows',
+                          'Live',
                           style: TextStyle(
                             color: Colors.white,
                             height: 1.5,
