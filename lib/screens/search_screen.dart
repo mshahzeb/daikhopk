@@ -248,7 +248,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            cancellationText: Text(
+            cancellationWidget: Text(
               'Clear',
               style: TextStyle(
                 color: Colors.white,

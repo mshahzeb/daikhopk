@@ -1,3 +1,4 @@
+import 'package:daikhopk/constants.dart';
 import 'package:daikhopk/models/channel.dart';
 import 'package:daikhopk/models/show.dart';
 import 'package:flutter/material.dart';
@@ -17,28 +18,57 @@ class HorizontalList extends StatelessWidget {
   List<Widget> buildTile() {
     int check = filtershowids?.length ?? 0;
     if (check == 0) {
-      shows.forEach((key, value) {
+      int key = 0;
+      for(int i=0; i<shows.length; i++) {
+        key = shows.keys.elementAt(i);
         _horizontalListItem.add(SizedBox(
           width: 10,
         ));
         _horizontalListItem.add(HorizontalListItem(
-            show: shows[key],
-            channel: channels[shows[key].channel],
+          show: shows[key],
+          channel: channels[shows[key].channel],
         ));
-      });
+        if( i == $maxtiles) {
+          break;
+        }
+      }
     } else {
       int key = 0;
-      filtershowids.forEach((element) {
-        key = int.parse(element);
+      for(int i=0; i<filtershowids.length; i++) {
+        key = int.parse(filtershowids[i]);
         _horizontalListItem.add(SizedBox(
           width: 10,
         ));
         _horizontalListItem.add(HorizontalListItem(
-            show: shows[key],
-            channel: channels[shows[key].channel],
+          show: shows[key],
+          channel: channels[shows[key].channel],
         ));
-      });
+        if( i == $maxtiles) {
+          break;
+        }
+      }
     }
+
+    _horizontalListItem.add(SizedBox(
+      width: 10,
+    ));
+    _horizontalListItem.add(Center(
+      child: TextButton(
+        child: Text(
+          'More',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        onPressed: () async {
+
+        },
+      ),
+    ));
+
     return _horizontalListItem;
   }
 

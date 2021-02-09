@@ -246,7 +246,7 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
                 ),
               ),
             ),
-            cancellationText: Text(
+            cancellationWidget: Text(
               'Clear',
               style: TextStyle(
                 color: Colors.white,

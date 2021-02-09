@@ -244,7 +244,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                 ),
               ),
             ),
-            cancellationText: Text(
+            cancellationWidget: Text(
               'Clear',
               style: TextStyle(
                 color: Colors.white,

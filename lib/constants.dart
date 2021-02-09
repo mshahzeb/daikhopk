@@ -1,10 +1,10 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 
+// Const numbers
 const int $middot = 0x00B7;
 final double $defaultWidth = 125;
 final double $defaultHeight = 75;
+final int $maxtiles = 20;
 
 // Web Service Configs
 final String $serverName = 'daikho.pk';

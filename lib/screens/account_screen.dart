@@ -157,7 +157,7 @@ class ProfileListItem extends StatelessWidget {
                 message: 'Please Leave a Rating',
                 actionsBuilder: (_, stars){
                   return [ // Returns a list of actions (that will be shown at the bottom of the dialog).
-                    FlatButton(
+                    TextButton(
                       child: Text(
                         'Submit',
                         textAlign: TextAlign.center,
