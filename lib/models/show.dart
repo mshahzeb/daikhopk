@@ -1,4 +1,7 @@
 import 'package:daikhopk/models/season.dart';
+import 'package:daikhopk/screens/splash_screen.dart';
+
+import '../constants.dart';
 
 class Show {
   int _showid;
@@ -58,7 +61,12 @@ class Show {
     _showid = json['showid']?? 0;
     _showname = json['showname']?? "";
     _showtype = json['showtype']?? "";
-    _posterUrl = json['posterUrl']?? "";
+    if(isWeb) {
+      _posterUrl = $firebasestorageurl + 'daikhopk-imagedata%2F' + _showid.toString() + '%2Fposter.jpg?alt=media&' + $firebasetoken;
+      //https://firebasestorage.googleapis.com/v0/b/daikhopk-17b2f.appspot.com/o/daikhopk-imagedata%2F10001%2Fposter.jpg?alt=media&token=7bd07c88-fee4-45a2-bb18-5903490ffe6c
+    } else {
+      _posterUrl = json['posterUrl'] ?? "";
+    }
     _trailerVideoId = json['trailerVideoId']?? "";
     _trailerUrl = 'https://www.youtube.com/watch?v=' + _trailerVideoId?? "";
     _embed = json['embed']?? 0;
@@ -66,14 +74,22 @@ class Show {
     _totalseasons = json['totalseasons']?? 0;
     _totalepisodes = json['totalepisodes']?? 0;
     _completed = json['completed']?? 0;
-    _releaseDatetime = DateTime.parse(json['releaseDatetime']?? "2021-01-01");
-    _updateDatetime = DateTime.parse(json['updateDatetime']?? "2021-01-01");
+    try {
+      _releaseDatetime = DateTime.parse(json['releaseDatetime']?? "2021-01-01");
+    } catch (e) {
+      _releaseDatetime = DateTime.parse('2021-01-01');
+    }
+    try {
+      _updateDatetime = DateTime.parse(json['updateDatetime']?? "2021-01-01");
+    } catch (e) {
+      _updateDatetime = DateTime.parse('2021-01-01');
+    };
     _viewCount = json['viewCount']?? 0;
     _likeCount = json['likeCount']?? 0;
     if (json['seasons'] != null) {
       _seasons = new Map<int, Season>();
       json['seasons'].forEach((v) {
-        _seasons.putIfAbsent(v['seasonno'], () => Season.fromJson(v));
+        _seasons.putIfAbsent(v['seasonno'], () => Season.fromJson(v, _showid));
       });
     }
   }

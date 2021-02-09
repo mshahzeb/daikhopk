@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/utils/deviceSize.dart';
 import 'package:daikhopk/screens/login_screen.dart';
@@ -26,6 +27,7 @@ Future<Shows> dataRequiredForHome;
 List<String> lastplayedshowidsHome = List();
 bool authSignedIn;
 int errorHome = 0;
+bool isWeb = kIsWeb;
 
 final numdisplay = createDisplay(
   length: 5,

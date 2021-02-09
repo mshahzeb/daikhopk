@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 const int $middot = 0x00B7;
@@ -43,3 +45,7 @@ daikho.pk is a free content delivery platform focused primarily on Pakistani tel
 final String $faqurl = 'https://daikho.pk';
 final String $privacypolicyurl = 'https://daikho.pk';
 final String $supportemail = 'support@daikho.pk';
+
+//FIrebase Storage
+final String $firebasestorageurl = 'https://firebasestorage.googleapis.com/v0/b/daikhopk-17b2f.appspot.com/o/';
+final String $firebasetoken  = 'token=7bd07c88-fee4-45a2-bb18-5903490ffe6c';

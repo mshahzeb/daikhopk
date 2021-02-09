@@ -3,6 +3,8 @@ import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:daikhopk/utils/prefer.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:responsive_framework/utils/scroll_behavior.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,18 +45,29 @@ class _MyAppState extends State<MyApp> {
         statusBarIconBrightness:
         Brightness.light //or set color with: Color(0xFF0000FF)
     ));
-    return Center(
-        child: MaterialApp(
-          initialRoute: '/',
-          routes: {
-            '/': (_) => Splash(),
-          },
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primaryColor:Colors.black,
-            fontFamily: 'FA',
-          ),
-        ),
-      );
+    return MaterialApp(
+      builder: (context, widget) => ResponsiveWrapper.builder(
+          BouncingScrollWrapper.builder(context, widget),
+          maxWidth: 1200,
+          minWidth: 450,
+          defaultScale: true,
+          breakpoints: [
+            ResponsiveBreakpoint.resize(450, name: MOBILE),
+            ResponsiveBreakpoint.autoScale(800, name: TABLET),
+            ResponsiveBreakpoint.resize(1000, name: TABLET),
+            ResponsiveBreakpoint.resize(1200, name: DESKTOP),
+            ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+          ],
+          background: Container(color: Colors.black)),
+      initialRoute: "/",
+      routes: {
+        '/': (_) => Splash(),
+      },
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor:Colors.black,
+        fontFamily: 'FA',
+      ),
+    );
   }
 }

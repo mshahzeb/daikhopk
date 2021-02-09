@@ -1,3 +1,7 @@
+import 'package:daikhopk/screens/splash_screen.dart';
+
+import '../constants.dart';
+
 class Episode {
   int _episodeid;
   int _episodeno;
@@ -22,11 +26,18 @@ class Episode {
   set episodeThumbnail(String episodeThumbnail) => _episodeThumbnail = episodeThumbnail; // ignore: unnecessary_getters_setters
 
   // named constructor
-  Episode.fromJson(Map<String, dynamic> json)
-      : _episodeid = json['episodeid'],
-        _episodeno = json['episodeno'],
-        _episodetitle = json['episodetitle'],
-        _episodeUrl = json['episodeUrl'],
-        _episodeVideoId = json['episodeVideoId'],
-        _episodeThumbnail = json['episodeThumbnail'];
+  Episode.fromJson(Map<String, dynamic> json, int showid) {
+    _episodeid = json['episodeid'];
+    _episodeno = json['episodeno'];
+    _episodetitle = json['episodetitle'];
+    _episodeUrl = json['episodeUrl'];
+    _episodeVideoId = json['episodeVideoId'];
+    _episodeThumbnail = json['episodeThumbnail'];
+    if(isWeb) {
+      _episodeThumbnail = $firebasestorageurl + 'daikhopk-imagedata%2F' + showid.toString() + '%2F' + _episodeno.toString() + '.jpg?alt=media&' + $firebasetoken;
+      //https://firebasestorage.googleapis.com/v0/b/daikhopk-17b2f.appspot.com/o/daikhopk-imagedata%2F10001%2Fposter.jpg?alt=media&token=7bd07c88-fee4-45a2-bb18-5903490ffe6c
+    } else {
+      _episodeThumbnail = json['posterUrl'] ?? "";
+    }
+  }
 }

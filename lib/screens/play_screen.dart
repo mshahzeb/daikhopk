@@ -6,7 +6,6 @@ import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -72,7 +71,7 @@ class _PlayScreenState extends State<PlayScreen> {
         showFullscreenButton: true,
         enableCaption: false,
         enableJavaScript: true,
-        desktopMode: kIsWeb,
+        desktopMode: isWeb,
         autoPlay: true,
         playsInline: true,
         startAt: Duration(seconds: 0)
@@ -292,7 +291,7 @@ class _PlayScreenState extends State<PlayScreen> {
             color: Colors.black,
             child: LayoutBuilder(
               builder: (context, constraints) {
-                if (kIsWeb && constraints.maxWidth > 800) {
+                if (isWeb && constraints.maxWidth > 800) {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

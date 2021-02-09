@@ -12,12 +12,12 @@ class Season {
   set episodes(Map<int, Episode> episodes) => _episodes = episodes; // ignore: unnecessary_getters_setters
 
   // named constructor
-  Season.fromJson(Map<String, dynamic> json) {
+  Season.fromJson(Map<String, dynamic> json, int showid) {
     _seasonno = json['showid']?? 0;
     if (json['episodes'] != null) {
       _episodes = new Map<int, Episode>();
       json['episodes'].forEach((v) {
-        _episodes.putIfAbsent(v['episodeno'], () => Episode.fromJson(v));
+        _episodes.putIfAbsent(v['episodeno'], () => Episode.fromJson(v, showid));
       });
     }
   }

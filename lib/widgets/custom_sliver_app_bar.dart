@@ -46,7 +46,7 @@ class CustomSliverAppBar extends StatelessWidget {
                         imageUrl: showsHome.shows[featured[index]].posterUrl,
                         height: deviceSize.height/2,
                         width: deviceSize.width,
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.contain,
                       ),
                     ),
                     Container(

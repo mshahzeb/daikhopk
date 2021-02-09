@@ -298,7 +298,7 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
                                 imageUrl: channelsList[index].logoUrl,
                                 height: $defaultHeight,
                                 width: $defaultWidth,
-                                fit: BoxFit.fitWidth,
+                                fit: BoxFit.contain,
                               ),
                             ]
                         ),
@@ -345,7 +345,7 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
                       imageUrl: channel.logoUrl,
                       width: 100,
                       height: 125,
-                      fit: BoxFit.fitWidth,
+                      fit: BoxFit.contain,
                       alignment: Alignment.topCenter,
                     ),
                     Expanded(

@@ -191,7 +191,7 @@ class _ListScreenState extends State<ListScreen> {
                     imageUrl: show.posterUrl,
                     height: deviceSize.height/3,
                     width: deviceSize.width,
-                    fit:BoxFit.cover,
+                    fit:BoxFit.contain,
                     alignment: Alignment.topLeft,
                   ),
                   SizedBox(height: 10),
@@ -433,8 +433,8 @@ class _ListScreenState extends State<ListScreen> {
                                     shrinkWrap: true,
                                     itemCount: showLocal.seasons[seasonno].episodes.length,
                                     itemBuilder: (context, index) {
-                                      index++;
-                                      if(showLocal.seasons[seasonno].episodes[index] != null) {
+                                      int key = showLocal.seasons[seasonno].episodes.keys.elementAt(index);
+                                      if(showLocal.seasons[seasonno].episodes[key] != null) {
                                         return GestureDetector(
                                           behavior: HitTestBehavior.translucent,
                                           onTap: () {
@@ -445,17 +445,17 @@ class _ListScreenState extends State<ListScreen> {
                                                           show: showLocal,
                                                           channel: channel,
                                                           seasonno: seasonno,
-                                                          episodeno: index,
+                                                          episodeno: key,
                                                       )
                                               ),
                                             );
                                           },
                                           child: ListTile(
                                             leading: CachedNetworkImage(
-                                              imageUrl: (showLocal.seasons[seasonno].episodes[index]
+                                              imageUrl: (showLocal.seasons[seasonno].episodes[key]
                                                   ?.episodeThumbnail ?? "") == ""
                                                   ? show.posterUrl
-                                                  : showLocal.seasons[seasonno].episodes[index]
+                                                  : showLocal.seasons[seasonno].episodes[key]
                                                   .episodeThumbnail,
                                               width: 100,
                                               fit: BoxFit.fitWidth,
@@ -463,7 +463,7 @@ class _ListScreenState extends State<ListScreen> {
                                             ),
                                             title: Text(
                                               'Episode ' +
-                                                  showLocal.seasons[seasonno].episodes[index].episodeno
+                                                  showLocal.seasons[seasonno].episodes[key].episodeno
                                                       .toString(),
                                               style: TextStyle(
                                                 color: Colors.white,
@@ -473,7 +473,7 @@ class _ListScreenState extends State<ListScreen> {
                                               textAlign: TextAlign.left,
                                             ),
                                             subtitle: Text(
-                                              showLocal.seasons[seasonno].episodes[index].episodetitle,
+                                              showLocal.seasons[seasonno].episodes[key].episodetitle,
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 15,
