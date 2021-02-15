@@ -12,7 +12,7 @@ class CustomSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: deviceSize.height/2.5,
+      expandedHeight: deviceSize.height/2.45,
       floating: false,
       pinned: false,
       snap: false,
@@ -40,18 +40,18 @@ class CustomSliverAppBar extends StatelessWidget {
                 },
                 child: Stack(
                   children: <Widget> [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 40),
+                    Container(
+                      alignment: Alignment.bottomCenter,
                       child: CachedNetworkImage(
                         imageUrl: showsHome.shows[featured[index]].posterUrl,
-                        height: deviceSize.height/2,
+                        //height: deviceSize.height/2,
                         width: deviceSize.width,
                         fit: BoxFit.contain,
                       ),
                     ),
                     Container(
                       alignment: Alignment.bottomRight,
-                      padding: EdgeInsets.only(right: 10),
+                      padding: EdgeInsets.only(right: 10, bottom: 50),
                       child: CachedNetworkImage(
                         imageUrl: showsHome.channels[showsHome.shows[featured[index]].channel].logoUrl,
                         height: 50,
@@ -60,27 +60,29 @@ class CustomSliverAppBar extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      alignment: Alignment.bottomCenter,
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.only(top: 20),
                       child: Text(
                         showsHome.shows[featured[index]].showname,
                         style: TextStyle(
-                          fontSize: 15,
-                          fontFamily: 'Comfortaa',
-                          fontWeight: FontWeight.w600,
+                          fontSize: 24,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w900,
                           color: Colors.white,
                         ),
                       ),
                     ),
                     Container(
-                      alignment: Alignment.bottomLeft,
-                      padding: EdgeInsets.only(left: 10),
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.only(top: 50),
+
                       child: Text(
                         numdisplay(showsHome.shows[featured[index]].viewCount) + ' Views',
                         style: TextStyle(
                           fontSize: 15,
-                          fontFamily: 'Comfortaa',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xffaaaaaa),
                         ),
                       ),
                     ),
@@ -92,9 +94,10 @@ class CustomSliverAppBar extends StatelessWidget {
             autoplayDelay: 5000,
             layout: SwiperLayout.DEFAULT,
             pagination: new SwiperPagination(
-              alignment: Alignment.topCenter,
-              builder: new DotSwiperPaginationBuilder(
-                color: Colors.black, activeColor: Colors.redAccent),
+              alignment: Alignment.bottomCenter,
+                builder: new DotSwiperPaginationBuilder(
+                  color: Color(0xffaaaaaa), activeColor: Color(0xffDF1B25),
+                ),
             ),
           ),
         )

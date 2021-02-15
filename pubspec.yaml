@@ -44,6 +44,7 @@ dependencies:
   android_intent: ^0.3.7+7
   firebase_messaging:
   flutter_local_notifications: ^4.0.1
+  list_wheel_scroll_view_x: ^0.0.2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.8.0"

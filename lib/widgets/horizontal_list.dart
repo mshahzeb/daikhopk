@@ -6,6 +6,11 @@ import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/widgets/horizontal_list_item.dart';
+<<<<<<< HEAD
+=======
+import 'package:list_wheel_scroll_view_x/list_wheel_scroll_view_x.dart';
+
+>>>>>>> c88ee12dc24cf7481cf99138cba061c87dc9f8c9
 import 'horizontal_list_item.dart';
 
 class HorizontalList extends StatefulWidget {
@@ -15,6 +20,7 @@ class HorizontalList extends StatefulWidget {
 
   HorizontalList({@required final this.shows, final this.channels, final this.filtershowids});
 
+<<<<<<< HEAD
   @override
   _HorizontalListState createState() => _HorizontalListState(
     shows: shows,
@@ -30,6 +36,8 @@ class _HorizontalListState extends State<HorizontalList> {
 
   _HorizontalListState({@required final this.shows, final this.channels, final this.filtershowids});
 
+=======
+>>>>>>> c88ee12dc24cf7481cf99138cba061c87dc9f8c9
   final List<Widget> _horizontalListItem = [];
 
   List<Widget> buildTile() {
@@ -72,12 +80,14 @@ class _HorizontalListState extends State<HorizontalList> {
     _horizontalListItem.add(Center(
       child: TextButton(
         child: Text(
-          'More',
+          'MORE',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xffaaaaaa),
             fontSize: 15,
-            fontWeight: FontWeight.w700,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w600,
+
           ),
         ),
         onPressed: () async {
@@ -96,15 +106,15 @@ class _HorizontalListState extends State<HorizontalList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      // This next line does the trick.
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemCount: 1,
-      itemBuilder: (context, position) {
-        return Row(
-          children: buildTile()
-        );
-      });
+    return ListWheelScrollViewX(
+        scrollDirection: Axis.horizontal,
+        itemExtent: 100,
+        diameterRatio: 10,
+        squeeze: 2,
+        magnification: 1.5,
+        useMagnifier: true,
+        physics: FixedExtentScrollPhysics(),
+        children: buildTile()
+    );
   }
 }
