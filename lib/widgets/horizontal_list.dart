@@ -3,6 +3,7 @@ import 'package:daikhopk/models/channel.dart';
 import 'package:daikhopk/models/show.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/widgets/horizontal_list_item.dart';
+import 'package:list_wheel_scroll_view_x/list_wheel_scroll_view_x.dart';
 
 import 'horizontal_list_item.dart';
 
@@ -13,7 +14,7 @@ class HorizontalList extends StatelessWidget {
 
   HorizontalList({@required final this.shows, final this.channels, final this.filtershowids});
 
-  final List<Widget> _horizontalListItem = List<Widget>();
+  final List<Widget> _horizontalListItem = [];
 
   List<Widget> buildTile() {
     int check = filtershowids?.length ?? 0;
@@ -55,12 +56,14 @@ class HorizontalList extends StatelessWidget {
     _horizontalListItem.add(Center(
       child: TextButton(
         child: Text(
-          'More',
+          'MORE',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xffaaaaaa),
             fontSize: 15,
-            fontWeight: FontWeight.w700,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w600,
+
           ),
         ),
         onPressed: () async {
@@ -74,15 +77,15 @@ class HorizontalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        // This next line does the trick.
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: 1,
-        itemBuilder: (context, position) {
-          return Row(
-            children: buildTile()
-          );
-        });
+    return  ListWheelScrollViewX(
+      scrollDirection: Axis.horizontal,
+      itemExtent: 100,
+      diameterRatio: 10,
+      squeeze: 2,
+      magnification: 1.5,
+      useMagnifier: true,
+      physics: FixedExtentScrollPhysics(),
+      children: buildTile()
+    );
   }
 }

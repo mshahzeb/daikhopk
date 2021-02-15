@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
   @override
   _HomeScreenState createState() => _HomeScreenState(
-    refresh: refresh
+      refresh: refresh
   );
 }
 
@@ -66,148 +66,152 @@ class _HomeScreenState extends State<HomeScreen> {
         } else if (snapshot.hasData && errorHome == 0) {
           return WillPopScope(
             onWillPop: _onBackPressed,
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: NestedScrollView(
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return <Widget>[
-                    CustomSliverAppBar(
+            child: SafeArea(
+              child: Scaffold(
+                resizeToAvoidBottomInset: false,
+                body: NestedScrollView(
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return <Widget>[
+                      CustomSliverAppBar(
                         featured: showsHome.featured,
-                    ),
-                  ];
-                },
-                body: Container(
-                  color: Colors.black,
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Conditional.single(
-                            context: context,
-                            conditionBuilder: (BuildContext context) =>
-                            ((lastplayedshowidsHome?.length ?? 0) > 0) == true,
-                            widgetBuilder: (BuildContext context) =>
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 10),
-                                          ),
-                                          Text(
-                                            'Last Played',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: $defaultHeight + 50,
-                                      child: HorizontalList(
-                                        shows: showsHome.shows,
-                                        channels: showsHome.channels,
-                                        filtershowids: lastplayedshowidsHome,
-                                      ),
-                                    ),
-                                  ]
-                                ),
-                            fallbackBuilder: (BuildContext context) =>
-                              SizedBox(height: 0.0,),
-                          ),
-                          for (var i=0; i<listdataHomeCategories.length; i++)
-                            Conditional.single(
-                              context: context,
-                              conditionBuilder: (BuildContext context) =>
-                                listdataHome[i].data.length > 0,
-                              widgetBuilder: (BuildContext context) =>
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 10),
-                                          ),
-                                          Text(
-                                            listdataHome[i].title,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: $defaultHeight + 50,
-                                      child: HorizontalList(
-                                        shows: listdataHome[i].data,
-                                        channels: showsHome.channels,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              fallbackBuilder: (BuildContext context) =>
-                                SizedBox(height: 0.0,),
-                            ),
-                        ],
                       ),
-                    ]
+                    ];
+                  },
+                  body: Container(
+                    color: Colors.black,
+                    child: ListView(
+                        shrinkWrap: true,
+                        children: <Widget>[
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Conditional.single(
+                                context: context,
+                                conditionBuilder: (BuildContext context) =>
+                                ((lastplayedshowidsHome?.length ?? 0) > 0) == true,
+                                widgetBuilder: (BuildContext context) =>
+                                    Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 10),
+                                                ),
+                                                Text(
+                                                  'Last Played',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 22,
+                                                    fontFamily: 'Roboto',
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: $defaultHeight + 70,
+                                            child: HorizontalList(
+                                              shows: showsHome.shows,
+                                              channels: showsHome.channels,
+                                              filtershowids: lastplayedshowidsHome,
+                                            ),
+                                          ),
+                                        ]
+                                    ),
+                                fallbackBuilder: (BuildContext context) =>
+                                    SizedBox(height: 0.0,),
+                              ),
+                              for (var i=0; i<listdataHomeCategories.length; i++)
+                                Conditional.single(
+                                  context: context,
+                                  conditionBuilder: (BuildContext context) =>
+                                  listdataHome[i].data.length > 0,
+                                  widgetBuilder: (BuildContext context) =>
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: EdgeInsets.only(left: 10),
+                                                ),
+                                                Text(
+                                                  listdataHome[i].title,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 22,
+                                                    fontFamily: 'Roboto',
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: $defaultHeight + 70,
+                                            child: HorizontalList(
+                                              shows: listdataHome[i].data,
+                                              channels: showsHome.channels,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                  fallbackBuilder: (BuildContext context) =>
+                                      SizedBox(height: 0.0,),
+                                ),
+                            ],
+                          ),
+                        ]
+                    ),
                   ),
                 ),
+                bottomNavigationBar: CustomBottomNavBar(currentscreen: "Home",),
               ),
-              bottomNavigationBar: CustomBottomNavBar(currentscreen: "Home",),
-            ),
+           ),
           );
         } else {
           return Center(
-            child: ListView(
-              shrinkWrap: true,
-              children: <Widget> [
-                Text(
-                  "An Error Occured - Please check your connection & try again",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    refreshdata();
-                  },
-                  color: Colors.black,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Refresh',
+              child: ListView(
+                  shrinkWrap: true,
+                  children: <Widget> [
+                    Text(
+                      "An Error Occured - Please check your connection & try again",
                       style: TextStyle(
-                          fontSize: 25, color: Colors.white),
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                  ),
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40)),
-                ),
-              ]
-            )
+                    RaisedButton(
+                      onPressed: () {
+                        refreshdata();
+                      },
+                      color: Colors.black,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Refresh',
+                          style: TextStyle(
+                              fontSize: 25, color: Colors.white),
+                        ),
+                      ),
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40)),
+                    ),
+                  ]
+              )
           );
         }
       },

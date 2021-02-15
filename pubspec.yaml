@@ -41,6 +41,7 @@ dependencies:
   rate_my_app: ^0.7.2
   string_similarity: ^1.1.0
   responsive_framework: ^0.0.14
+  list_wheel_scroll_view_x: ^0.0.2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.8.0"
@@ -68,7 +69,6 @@ flutter:
   assets:
     - assets/logo/
     - assets/images/
-    - assets/icon/
   #  - assets/
   #  - images/a_dot_ham.jpeg
   #  - images/a_dot_burr.jpeg

@@ -31,7 +31,7 @@ class HorizontalListItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Stack(
-          alignment: Alignment.topRight,
+          alignment: Alignment.bottomRight,
           children: <Widget> [
             CachedNetworkImage(
               imageUrl: show.posterUrl,
@@ -48,14 +48,15 @@ class HorizontalListItem extends StatelessWidget {
             ]
           ),
           SizedBox(
-            height: 30,
+            height: 50,
             width: $defaultWidth,
             child: Text(
               show.showname,
+              textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 12,
-                fontFamily: 'Comfortaa',
-                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.w400,
                 color: Colors.white,
               ),
             ),
