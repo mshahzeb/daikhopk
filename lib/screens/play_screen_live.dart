@@ -1,9 +1,8 @@
-import 'dart:convert';
+import 'dart:io' show Platform;
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/models/livechannel.dart';
 import 'package:daikhopk/models/show.dart';
-import 'package:daikhopk/screens/livechannels_screen.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';

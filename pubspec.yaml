@@ -41,6 +41,9 @@ dependencies:
   rate_my_app: ^0.7.2
   string_similarity: ^1.1.0
   responsive_framework: ^0.0.14
+  android_intent: ^0.3.7+7
+  firebase_messaging:
+  flutter_local_notifications: ^4.0.1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.8.0"
@@ -68,7 +71,6 @@ flutter:
   assets:
     - assets/logo/
     - assets/images/
-    - assets/icon/
   #  - assets/
   #  - images/a_dot_ham.jpeg
   #  - images/a_dot_burr.jpeg

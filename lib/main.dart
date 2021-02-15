@@ -5,9 +5,47 @@ import 'package:flutter/services.dart';
 import 'package:daikhopk/utils/prefer.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-void main() {
+import 'constants.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  'This channel is used for important notifications.', // description
+  importance: Importance.high,
+);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  String token = await FirebaseMessaging.instance.getToken();
+  print('FCM Token: ' + token);
+
   Prefs.init();
   runApp(MyApp());
 }
@@ -26,6 +64,41 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     print('initState()');
+
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage message) {
+      if (message != null) {
+
+      }
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                icon: '@daikho_icon',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+
+    });
+
+    FirebaseMessaging.instance.subscribeToTopic('daikhopk-notifications');
   }
 
   @override
@@ -61,7 +134,7 @@ class _MyAppState extends State<MyApp> {
           background: Container(color: Colors.black)),
       initialRoute: "/",
       routes: {
-        '/': (_) => Splash(),
+        '/': (_) => SplashScreen(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
 import 'dart:developer';
+import 'package:android_intent/android_intent.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/models/channel.dart';
 import 'package:daikhopk/models/show.dart';
@@ -82,14 +84,32 @@ class _PlayScreenState extends State<PlayScreen> {
           if(show.embed == 1) {
             _controller.play();
           } else {
-            _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
+            if(Platform.isAndroid) {
+              AndroidIntent intent = AndroidIntent(
+                  action: 'action_view',
+                  data: show.seasons[seasonno].episodes[episodeno].episodeUrl,
+                  arguments: {'force_fullscreen': true}
+              );
+              intent.launch();
+            } else {
+              _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
+            }
           }
           played = true;
         }
         if(_controller.value.error == YoutubeError.sameAsNotEmbeddable) {
           _controller.stop();
           _controller.reset();
-          _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
+          if(Platform.isAndroid) {
+            AndroidIntent intent = AndroidIntent(
+                action: 'action_view',
+                data: show.seasons[seasonno].episodes[episodeno].episodeUrl,
+                arguments: {'force_fullscreen': true}
+            );
+            intent.launch();
+          } else {
+            _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
+          }
         }
       }
       if(nextepisode != null && played && (value.metaData.duration.inSeconds > 0) && (value.position.inSeconds >= (value.metaData.duration.inSeconds - 10))) {

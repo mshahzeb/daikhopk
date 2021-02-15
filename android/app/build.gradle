@@ -63,7 +63,7 @@ android {
     buildTypes {
         release {
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -76,4 +76,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:26.1.1')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
 }

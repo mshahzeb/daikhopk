@@ -32,7 +32,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
   String searchHint;
 
   _ChannelScreenState({@required this.channelsPassed, this.searchHint});
-  List<Channel> channelsList = List();
+  List<Channel> channelsList = [];
 
   final SearchBarController<Channel> _searchBarController = SearchBarController();
   Map<int, Show> filteredshows = Map();

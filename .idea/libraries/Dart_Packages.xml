@@ -2,6 +2,13 @@
   <library name="Dart Packages" type="DartPackagesLibraryType">
     <properties>
       <option name="packageNameToDirsMap">
+        <entry key="android_intent">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/android_intent-0.3.7+7/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="archive">
           <value>
             <list>
@@ -142,6 +149,27 @@
             </list>
           </value>
         </entry>
+        <entry key="firebase_messaging">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-8.0.0-dev.14/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="firebase_messaging_platform_interface">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging_platform_interface-1.0.0-dev.10/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="firebase_messaging_web">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging_web-0.1.0-dev.5/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flappy_search_bar">
           <value>
             <list>
@@ -209,6 +237,20 @@
           <value>
             <list>
               <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_launcher_icons-0.8.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_local_notifications">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-4.0.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="flutter_local_notifications_platform_interface">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications_platform_interface-2.0.0+1/lib" />
             </list>
           </value>
         </entry>
@@ -464,6 +506,13 @@
             </list>
           </value>
         </entry>
+        <entry key="service_worker">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/service_worker-0.2.4/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="shared_preferences">
           <value>
             <list>
@@ -590,6 +639,13 @@
             </list>
           </value>
         </entry>
+        <entry key="timezone">
+          <value>
+            <list>
+              <option value="C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/timezone-0.6.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="transformer_page_view">
           <value>
             <list>
@@ -698,6 +754,7 @@
       </option>
     </properties>
     <CLASSES>
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/android_intent-0.3.7+7/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/archive-2.0.13/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/args-1.6.0/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.5.0-nullsafety.3/lib" />
@@ -718,6 +775,9 @@
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.7.0/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-3.0.1/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.2.1+3/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-8.0.0-dev.14/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging_platform_interface-1.0.0-dev.10/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging_web-0.1.0-dev.5/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flappy_search_bar-1.7.2/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_blurhash-0.5.0/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_cache_manager-2.1.1/lib" />
@@ -727,6 +787,8 @@
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth_web-1.0.6/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_inappwebview-4.0.0+4/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_launcher_icons-0.8.1/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-4.0.1/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications_platform_interface-2.0.0+1/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_page_indicator-0.0.3/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_staggered_grid_view-0.3.4/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_swiper-1.1.6/lib" />
@@ -761,6 +823,7 @@
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/rate_my_app-0.7.2/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/responsive_framework-0.0.14/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.25.0/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/service_worker-0.2.4/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+4/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-0.0.2+4/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+11/lib" />
@@ -778,6 +841,7 @@
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-2.2.0+2/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0-nullsafety.3/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/test_api-0.2.19-nullsafety.6/lib" />
+      <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/timezone-0.6.1/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/transformer_page_view-0.1.6/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/typed_data-1.3.0-nullsafety.5/lib" />
       <root url="file://C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-5.7.10/lib" />

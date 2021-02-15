@@ -1,19 +1,36 @@
 import 'package:daikhopk/constants.dart';
 import 'package:daikhopk/models/channel.dart';
 import 'package:daikhopk/models/show.dart';
+import 'package:daikhopk/screens/search_screen.dart';
+import 'package:daikhopk/screens/splash_screen.dart';
+import 'package:daikhopk/utils/customroute.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/widgets/horizontal_list_item.dart';
-
 import 'horizontal_list_item.dart';
 
-class HorizontalList extends StatelessWidget {
+class HorizontalList extends StatefulWidget {
   final Map<int, Show> shows;
   final Map<String, Channel> channels;
   final List<String> filtershowids;
 
   HorizontalList({@required final this.shows, final this.channels, final this.filtershowids});
 
-  final List<Widget> _horizontalListItem = List<Widget>();
+  @override
+  _HorizontalListState createState() => _HorizontalListState(
+    shows: shows,
+    channels: channels,
+    filtershowids: filtershowids,
+  );
+}
+
+class _HorizontalListState extends State<HorizontalList> {
+  final Map<int, Show> shows;
+  final Map<String, Channel> channels;
+  final List<String> filtershowids;
+
+  _HorizontalListState({@required final this.shows, final this.channels, final this.filtershowids});
+
+  final List<Widget> _horizontalListItem = [];
 
   List<Widget> buildTile() {
     int check = filtershowids?.length ?? 0;
@@ -64,7 +81,12 @@ class HorizontalList extends StatelessWidget {
           ),
         ),
         onPressed: () async {
-
+          Navigator.of(context).push(
+              MyFadeRoute(builder: (context) => SearchScreen(
+                showsPassed: shows,
+                searchHint: 'Show, Channel or Year Released',
+              ))
+          );
         },
       ),
     ));
@@ -75,14 +97,14 @@ class HorizontalList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        // This next line does the trick.
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: 1,
-        itemBuilder: (context, position) {
-          return Row(
-            children: buildTile()
-          );
-        });
+      // This next line does the trick.
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemCount: 1,
+      itemBuilder: (context, position) {
+        return Row(
+          children: buildTile()
+        );
+      });
   }
 }
