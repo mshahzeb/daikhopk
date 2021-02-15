@@ -2,15 +2,10 @@ import 'package:daikhopk/constants.dart';
 import 'package:daikhopk/models/channel.dart';
 import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/search_screen.dart';
-import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/widgets/horizontal_list_item.dart';
-<<<<<<< HEAD
-=======
 import 'package:list_wheel_scroll_view_x/list_wheel_scroll_view_x.dart';
-
->>>>>>> c88ee12dc24cf7481cf99138cba061c87dc9f8c9
 import 'horizontal_list_item.dart';
 
 class HorizontalList extends StatefulWidget {
@@ -20,7 +15,6 @@ class HorizontalList extends StatefulWidget {
 
   HorizontalList({@required final this.shows, final this.channels, final this.filtershowids});
 
-<<<<<<< HEAD
   @override
   _HorizontalListState createState() => _HorizontalListState(
     shows: shows,
@@ -36,8 +30,6 @@ class _HorizontalListState extends State<HorizontalList> {
 
   _HorizontalListState({@required final this.shows, final this.channels, final this.filtershowids});
 
-=======
->>>>>>> c88ee12dc24cf7481cf99138cba061c87dc9f8c9
   final List<Widget> _horizontalListItem = [];
 
   List<Widget> buildTile() {
