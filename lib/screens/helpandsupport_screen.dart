@@ -20,7 +20,9 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       appBar: AppBar(
-          title: const Text('Help & Support'),
+        backgroundColor: Colors.black,
+        brightness: Brightness.dark,
+        title: const Text('Help & Support'),
       ),
       body: ListView(
         children: <Widget>[

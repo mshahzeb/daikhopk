@@ -9,8 +9,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import 'constants.dart';
-
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
@@ -115,8 +113,7 @@ class _MyAppState extends State<MyApp> {
     ]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.black,
-        statusBarIconBrightness:
-        Brightness.light //or set color with: Color(0xFF0000FF)
+        statusBarIconBrightness: Brightness.light
     ));
     return MaterialApp(
       builder: (context, widget) => ResponsiveWrapper.builder(

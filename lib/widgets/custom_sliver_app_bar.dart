@@ -73,9 +73,8 @@ class CustomSliverAppBar extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      alignment: Alignment.topCenter,
-                      padding: EdgeInsets.only(top: 50),
-
+                      alignment: Alignment.topRight,
+                      padding: EdgeInsets.only(top: 30),
                       child: Text(
                         numdisplay(showsHome.shows[featured[index]].viewCount) + ' Views',
                         style: TextStyle(

@@ -27,41 +27,44 @@ class HorizontalListItem extends StatelessWidget {
         ),
         );
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Stack(
-          alignment: Alignment.bottomRight,
-          children: <Widget> [
-            CachedNetworkImage(
-              imageUrl: show.posterUrl,
-              height: $defaultHeight,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 5),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: <Widget> [
+                CachedNetworkImage(
+                  imageUrl: show.posterUrl,
+                  height: $defaultHeight,
+                  width: $defaultWidth,
+                  fit: BoxFit.fitWidth,
+                ),
+                CachedNetworkImage(
+                    imageUrl: channel.logoUrl,
+                    height: 25,
+                    width: 25,
+                    fit: BoxFit.fitHeight,
+                ),
+              ]
+            ),
+            SizedBox(
+              height: 50,
               width: $defaultWidth,
-              fit: BoxFit.fitWidth,
-            ),
-            CachedNetworkImage(
-                imageUrl: channel.logoUrl,
-                height: 25,
-                width: 25,
-                fit: BoxFit.fitHeight,
-            ),
-            ]
-          ),
-          SizedBox(
-            height: 50,
-            width: $defaultWidth,
-            child: Text(
-              show.showname,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
+              child: Text(
+                show.showname,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        )
       )
     );
   }

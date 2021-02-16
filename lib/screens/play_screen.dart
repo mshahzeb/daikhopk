@@ -291,6 +291,8 @@ class _PlayScreenState extends State<PlayScreen> {
         },
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.black,
+            brightness: Brightness.dark,
             title: const Text('Play Video'),
               actions: <Widget> [
                 Container(

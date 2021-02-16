@@ -21,6 +21,7 @@ Shows showsHome;
 Show showLocal;
 List<HorizontalListData> listdataHome;
 
+Map <int, Show> lastplayedshows = new Map();
 var userlocal = new Map();
 Future<Shows> dataRequiredForHome;
 
@@ -164,6 +165,12 @@ Future<Shows> fetchDataHome() async {
 
     showsHome = Shows.fromJson(jsonDecode(featured));
     showsHome.featured.shuffle();
+
+    if(lastplayedshowidsHome.length > 0) {
+      lastplayedshowidsHome.forEach((element) {
+        lastplayedshows.putIfAbsent(showsHome.shows[int.parse(element)].showid, () => showsHome.shows[int.parse(element)]);
+      });
+    }
 
     //['New Episodes','Released This Month','Most Watched','Top Rated']
     listdataHome = [];

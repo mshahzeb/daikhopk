@@ -25,7 +25,9 @@ class _AccountScreenState extends State<AccountScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       appBar: AppBar(
-          title: const Text('My Account'),
+        backgroundColor: Colors.black,
+        brightness: Brightness.dark,
+        title: const Text('My Account'),
       ),
       body: Stack(
         children: <Widget>[

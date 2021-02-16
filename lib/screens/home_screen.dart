@@ -69,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: SafeArea(
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
+                backgroundColor: Colors.black,
                 body: NestedScrollView(
                   headerSliverBuilder:
                       (BuildContext context, bool innerBoxIsScrolled) {
@@ -79,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ];
                   },
                   body: Container(
+                    margin: EdgeInsets.all(10),
                     color: Colors.black,
                     child: ListView(
                         shrinkWrap: true,
@@ -106,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   'Last Played',
                                                   style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 22,
+                                                    fontSize: 18,
                                                     fontFamily: 'Roboto',
                                                     fontWeight: FontWeight.w700,
                                                   ),
@@ -120,7 +122,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: HorizontalList(
                                               shows: showsHome.shows,
                                               channels: showsHome.channels,
-                                              filtershowids: lastplayedshowidsHome,
                                             ),
                                           ),
                                         ]
@@ -148,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   listdataHome[i].title,
                                                   style: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 22,
+                                                    fontSize: 18,
                                                     fontFamily: 'Roboto',
                                                     fontWeight: FontWeight.w700,
                                                   ),

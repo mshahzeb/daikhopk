@@ -21,7 +21,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       appBar: AppBar(
-          title: const Text('Contact Us'),
+        backgroundColor: Colors.black,
+        brightness: Brightness.dark,
+        title: const Text('Contact Us'),
       ),
       body: ListView(
         children: [

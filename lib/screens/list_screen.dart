@@ -153,13 +153,14 @@ class _ListScreenState extends State<ListScreen> {
         if(backroute == 1) {
           return true;
         } else {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                  builder: (context) =>
-                      HomeScreen(
-                        refresh: false,
-                      )
-              )
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) =>
+                HomeScreen(
+                  refresh: false,
+                )
+            ),
+            (Route<dynamic> route) => false
           );
           return true;
         }
@@ -167,6 +168,8 @@ class _ListScreenState extends State<ListScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          backgroundColor: Colors.black,
+          brightness: Brightness.dark,
           title: Text(show.showname),
           actions: <Widget> [
             Container(
@@ -192,7 +195,7 @@ class _ListScreenState extends State<ListScreen> {
                     height: deviceSize.height/3,
                     width: deviceSize.width,
                     fit:BoxFit.contain,
-                    alignment: Alignment.topLeft,
+                    alignment: Alignment.topCenter,
                   ),
                   SizedBox(height: 10),
                   Row(

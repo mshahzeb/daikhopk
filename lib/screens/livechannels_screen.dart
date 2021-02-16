@@ -1,10 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/models/livechannel.dart';
 import 'package:daikhopk/models/show.dart';
-import 'package:daikhopk/screens/list_screen.dart';
 import 'package:daikhopk/screens/play_screen_live.dart';
-import 'package:daikhopk/screens/search_screen.dart';
-import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

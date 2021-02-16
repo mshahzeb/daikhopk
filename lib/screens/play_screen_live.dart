@@ -147,6 +147,8 @@ class _PlayScreenLiveState extends State<PlayScreenLive> {
         },
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.black,
+            brightness: Brightness.dark,
             title: const Text('Play Live Channel'),
               actions: <Widget> [
                 Container(
