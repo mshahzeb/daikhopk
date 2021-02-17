@@ -23,10 +23,20 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         brightness: Brightness.dark,
-        title: const Text('Contact Us'),
+        title: Text(
+          'Contact Us',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: ListView(
         children: [
+          SizedBox(height: 10),
           Form(
             key: _formKey1,
             child: Column(
@@ -36,9 +46,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 'Report a Missing Show ?',
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600
+                  fontSize: 18,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
                 ),
               ),
               TextFormField(
@@ -69,8 +80,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   return null;
                 },
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
+              Container(
+                padding: EdgeInsets.all(5),
                 child: RaisedButton(
                   color: Colors.redAccent,
                   onPressed: () {
@@ -93,9 +104,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     'Report',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600
+                      fontSize: 18,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -113,9 +125,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   'OR Write to Us',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600
+                    fontSize: 18,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
                   ),
                 ),
                 TextFormField(
@@ -146,8 +159,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     return null;
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                Container(
+                  padding: EdgeInsets.all(5),
                   child: RaisedButton(
                     color: Colors.redAccent,
                     onPressed: () {
@@ -170,9 +183,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       'Send',
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600
+                        fontSize: 18,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -180,18 +194,20 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 25.0,),
+            SizedBox(height: 50.0,),
             Text(
               'OR Send us an email directly',
               textAlign: TextAlign.left,
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600
+                fontSize: 18,
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+            Container(
+              padding: EdgeInsets.all(5),
+              width: 50,
               child: RaisedButton(
                 color: Colors.redAccent,
                 onPressed: () {
@@ -204,9 +220,10 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   'Email',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600
+                    fontSize: 18,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
                   ),
                 ),
               ),

@@ -72,9 +72,10 @@ class _FacebookButtonState extends State<FacebookButton> {
                 child: Text(
                   'Sign in with Facebook',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w600,
                     color: Colors.grey,
-
                   ),
                 ),
               )

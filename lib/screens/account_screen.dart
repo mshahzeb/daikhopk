@@ -27,7 +27,16 @@ class _AccountScreenState extends State<AccountScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         brightness: Brightness.dark,
-        title: const Text('My Account'),
+        title: Text(
+          'My Account',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Stack(
         children: <Widget>[
@@ -164,9 +173,10 @@ class ProfileListItem extends StatelessWidget {
                         'Submit',
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w900,
                           color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       onPressed: () async {
@@ -197,6 +207,18 @@ class ProfileListItem extends StatelessWidget {
                   titleAlign: TextAlign.center,
                   messageAlign: TextAlign.center,
                   messagePadding: EdgeInsets.only(bottom: 20.0),
+                  titleStyle: TextStyle(
+                    fontSize: 24,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w900,
+                    color: Colors.black,
+                  ),
+                  messageStyle: TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
                 ),
                 starRatingOptions: StarRatingOptions(
                   starsBorderColor: Colors.redAccent,

@@ -72,7 +72,9 @@ class _GoogleButtonState extends State<GoogleButton> {
                 child: Text(
                   'Sign in with Google',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w600,
                     color: Colors.grey,
                   ),
                 ),

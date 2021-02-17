@@ -84,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.black,
                     child: ListView(
                         shrinkWrap: true,
+                        physics: AlwaysScrollableScrollPhysics(),
                         children: <Widget>[
                           Column(
                             mainAxisSize: MainAxisSize.min,

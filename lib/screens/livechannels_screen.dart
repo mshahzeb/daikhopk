@@ -36,9 +36,7 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
   final SearchBarController<LiveChannel> _searchBarController = SearchBarController();
   Map<int, Show> filteredshows = Map();
   bool isReplay = false;
-  int releasesort = 0;
-  int ratingssort = 0;
-  int viewssort = 0;
+  int namesort = 0;
 
   @override
   void initState() {
@@ -122,16 +120,17 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
                           Text(
                             'Name',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 18,
+                              fontFamily: 'Roboto',
                               fontWeight: FontWeight.w600,
+                              color: Colors.white,
                             ),
                           ),
                         ]
                       ),
                       onPressed: () {
-                        if(releasesort == 0) {
-                          releasesort = 1;
+                        if(namesort == 0) {
+                          namesort = 1;
                           setState(() {
                             channelsList.sort((a, b) => b.channel.compareTo(a.channel));
                           });
@@ -139,93 +138,13 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
                             return b.channel.compareTo(a.channel);
                           });
                         } else {
-                          releasesort = 0;
+                          namesort = 0;
                           setState(() {
                             channelsList.sort((a, b) => a.channel.compareTo(b.channel));
                           });
                           _searchBarController.sortList((LiveChannel a, LiveChannel b) {
                             return a.channel.compareTo(b.channel);
                           });
-                        }
-                      },
-                    ),
-                    Spacer(),
-                    RaisedButton(
-                      color: Colors.black,
-                      child: Row(
-                          children: <Widget> [
-                            Icon(
-                              LineAwesomeIcons.sort,
-                              color: Colors.white,
-                              size: 25,
-                            ),
-                            Text(
-                              'Rating',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ]
-                      ),
-                      onPressed: () {
-                        if(ratingssort == 0) {
-                          ratingssort = 1;
-                          setState(() {
-                          //  showsList.sort((a, b) => b.likeCount.compareTo(a.likeCount));
-                          });
-                          //_searchBarController.sortList((Show a, Show b) {
-                          //  return b.likeCount.compareTo(a.likeCount);
-                          //});
-                        } else {
-                          ratingssort = 0;
-                          setState(() {
-                          //  showsList.sort((a, b) => a.likeCount.compareTo(b.likeCount));
-                          });
-                          //_searchBarController.sortList((Show a, Show b) {
-                          //  return a.likeCount.compareTo(b.likeCount);
-                          //});
-                        }
-                      },
-                    ),
-                    Spacer(),
-                    RaisedButton(
-                      color: Colors.black,
-                      child: Row(
-                          children: <Widget> [
-                            Icon(
-                              LineAwesomeIcons.sort,
-                              color: Colors.white,
-                              size: 25,
-                            ),
-                            Text(
-                              'Views',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ]
-                      ),
-                      onPressed: () {
-                        if(viewssort == 0) {
-                          viewssort = 1;
-                          setState(() {
-                            //showsList.sort((a, b) => b.viewCount.compareTo(a.viewCount));
-                          });
-                          //_searchBarController.sortList((Show a, Show b) {
-                          //  return b.viewCount.compareTo(a.viewCount);
-                          //});
-                        } else {
-                          viewssort = 0;
-                          setState(() {
-                            //showsList.sort((a, b) => a.viewCount.compareTo(b.viewCount));
-                          });
-                          //_searchBarController.sortList((Show a, Show b) {
-                          //  return a.viewCount.compareTo(b.viewCount);
-                          //});
                         }
                       },
                     ),
@@ -237,35 +156,39 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
               child: Text(
                 'Nothing Found',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
+                  fontSize: 18,
+                  fontFamily: 'Roboto',
                   fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
               ),
             ),
             cancellationWidget: Text(
               'Clear',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
+                fontSize: 18,
+                fontFamily: 'Roboto',
                 fontWeight: FontWeight.w600,
+                color: Colors.white,
               ),
             ),
             loader: Center(
               child: Text(
                 'Searching',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
+                  fontSize: 18,
+                  fontFamily: 'Roboto',
                   fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
               ),
             ),
             hintText: searchHint,
             hintStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
+              fontSize: 18,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
               ),
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
@@ -307,9 +230,9 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
                             channelsList[index].channel,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: 'Comfortaa',
-                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w400,
                               color: Colors.white,
                             ),
                           ),
@@ -350,9 +273,10 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
                         title: Text(
                           channel.channel,
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 18,
+                            fontFamily: 'Roboto',
                             fontWeight: FontWeight.w600,
+                            color: Colors.white,
                           ),
                           textAlign: TextAlign.left,
                         ),

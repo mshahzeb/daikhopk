@@ -1,12 +1,10 @@
 import 'package:daikhopk/constants.dart';
 import 'package:daikhopk/models/channel.dart';
 import 'package:daikhopk/models/show.dart';
-import 'package:daikhopk/screens/contactus_screen.dart';
 import 'package:daikhopk/screens/search_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:flutter/material.dart';
 import 'package:daikhopk/widgets/horizontal_list_item.dart';
-import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'horizontal_list_item.dart';
 
 class HorizontalList extends StatefulWidget {
@@ -29,11 +27,33 @@ class _HorizontalListState extends State<HorizontalList> {
   _HorizontalListState({@required final this.shows, final this.channels});
 
   Widget _buildListItem(BuildContext context, int index) {
-    int key = shows.keys.elementAt(index);
-    return HorizontalListItem(
-      show: shows[key],
-      channel: channels[shows[key].channel],
-    );
+    if(index < $maxtiles) {
+      int key = shows.keys.elementAt(index);
+      return HorizontalListItem(
+        show: shows[key],
+        channel: channels[shows[key].channel],
+      );
+    } else {
+      return TextButton(
+        child: Text(
+          'More',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        onPressed: () async {
+          Navigator.of(context).push(
+              MyFadeRoute(builder: (context) => SearchScreen(
+                showsPassed: shows,
+                searchHint: 'Show, Channel or Year Released',
+              ))
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -47,7 +67,7 @@ class _HorizontalListState extends State<HorizontalList> {
               // This next line does the trick.
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemCount: (shows.length < 20 ? shows.length:20) + 1,
+              itemCount: (shows.length < $maxtiles ? shows.length:$maxtiles) + 1,
               itemBuilder: _buildListItem,
             ),
           ),

@@ -67,7 +67,18 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black,
       appBar: AppBar(
-          title: const Text('Viewing History'),
+        backgroundColor: Colors.black,
+        brightness: Brightness.dark,
+        title: Text(
+          'Viewing History',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: FutureBuilder<int>(
         future: _dataRequiredForBuild,
@@ -96,9 +107,10 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                 Text(
                                   'Shows\nWatched\n',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
+                                    fontSize: 18,
+                                    fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w600,
+                                    color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -113,9 +125,10 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                     child: Text(
                                       lastplayedshowidsHome.length.toString(),
                                       style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
+                                        fontSize: 22,
+                                        fontFamily: 'Roboto',
                                         fontWeight: FontWeight.w600,
+                                        color: Colors.black,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -129,9 +142,10 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                 Text(
                                   'Episodes\nWatched\n',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
+                                    fontSize: 18,
+                                    fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w600,
+                                    color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -146,9 +160,10 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                     child: Text(
                                       lastplayedvideos.length.toString(),
                                       style: TextStyle(
-                                        color: Colors.black,
                                         fontSize: 20,
+                                        fontFamily: 'Roboto',
                                         fontWeight: FontWeight.w600,
+                                        color: Colors.black,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -162,9 +177,10 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                 Text(
                                   'Viewing\nHours\n',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
+                                    fontSize: 18,
+                                    fontFamily: 'Roboto',
                                     fontWeight: FontWeight.w600,
+                                    color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -179,9 +195,10 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                     child: Text(
                                       '150',
                                       style: TextStyle(
-                                        color: Colors.black,
                                         fontSize: 20,
+                                        fontFamily: 'Roboto',
                                         fontWeight: FontWeight.w600,
+                                        color: Colors.black,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -196,9 +213,10 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                       Text(
                         'Recently Played Videos',
                         style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w900,
                           color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -228,30 +246,35 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                   ),
                                 );
                               },
-                              child: ListTile(
-                                leading: CachedNetworkImage(
-                                  imageUrl: showsHome.shows[showid].posterUrl,
-                                  width: 100,
-                                  fit: BoxFit.fitWidth,
-                                  alignment: Alignment.topLeft,
-                                ),
-                                title: Text(
-                                  showsHome.shows[showid].showname + ' ' + 'Episode ' + episodeno.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w600,
+                              child: Container(
+                                margin: EdgeInsets.all(5),
+                                child: ListTile(
+                                  leading: CachedNetworkImage(
+                                    imageUrl: showsHome.shows[showid].posterUrl,
+                                    width: 100,
+                                    fit: BoxFit.fitWidth,
+                                    alignment: Alignment.topLeft,
                                   ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                subtitle: Text(
-                                    formattedDatetime,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
+                                  title: Text(
+                                    showsHome.shows[showid].showname + ' ' + 'Episode ' + episodeno.toString(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.left,
                                   ),
-                                  textAlign: TextAlign.left,
+                                  subtitle: Text(
+                                      formattedDatetime,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xffaaaaaa),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
                                 ),
                               ),
                             );

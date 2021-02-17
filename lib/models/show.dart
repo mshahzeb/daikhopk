@@ -67,6 +67,9 @@ class Show {
     } else {
       _posterUrl = json['posterUrl'] ?? "";
     }
+    if(_posterUrl == "") {
+      _posterUrl = $firebasestorageurl + 'daikhopk-imagedata%2F' + 'daikho_icon_blackbgsquare.png?alt=media&' + $firebasetoken;
+    }
     _trailerVideoId = json['trailerVideoId']?? "";
     _trailerUrl = 'https://www.youtube.com/watch?v=' + _trailerVideoId?? "";
     _embed = json['embed']?? 0;

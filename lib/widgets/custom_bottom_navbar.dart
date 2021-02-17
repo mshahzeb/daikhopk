@@ -25,7 +25,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   bool refresh;
 
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 11, fontWeight: FontWeight.w300, fontFamily: 'Comfortaa');
+      TextStyle(fontSize: 15, fontWeight: FontWeight.w600, fontFamily: 'Roboto');
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Account',
@@ -154,7 +154,18 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         backgroundColor: Colors.black,
         unselectedItemColor: Colors.white,
         fixedColor: Colors.white,
-
+        unselectedLabelStyle: TextStyle(
+          fontSize: 14,
+          fontFamily: 'Roboto',
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+        selectedLabelStyle: TextStyle(
+          fontSize: 12,
+          fontFamily: 'Roboto',
+          fontWeight: FontWeight.w900,
+          color: Colors.white,
+        ),
         onTap: _onItemTapped,
       );
   }

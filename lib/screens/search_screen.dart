@@ -127,9 +127,10 @@ class _SearchScreenState extends State<SearchScreen> {
                           Text(
                             'Released',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 18,
+                              fontFamily: 'Roboto',
                               fontWeight: FontWeight.w600,
+                              color: Colors.white,
                             ),
                           ),
                         ]
@@ -167,9 +168,10 @@ class _SearchScreenState extends State<SearchScreen> {
                             Text(
                               'Rating',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
+                                fontSize: 18,
+                                fontFamily: 'Roboto',
                                 fontWeight: FontWeight.w600,
+                                color: Colors.white,
                               ),
                             ),
                           ]
@@ -207,9 +209,10 @@ class _SearchScreenState extends State<SearchScreen> {
                             Text(
                               'Views',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
+                                fontSize: 18,
+                                fontFamily: 'Roboto',
                                 fontWeight: FontWeight.w600,
+                                color: Colors.white,
                               ),
                             ),
                           ]
@@ -242,35 +245,39 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Text(
                 'Nothing Found',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
+                  fontSize: 18,
+                  fontFamily: 'Roboto',
                   fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
               ),
             ),
             cancellationWidget: Text(
               'Clear',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
+                fontSize: 18,
+                fontFamily: 'Roboto',
                 fontWeight: FontWeight.w600,
+                color: Colors.white,
               ),
             ),
             loader: Center(
               child: Text(
                 'Searching',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
+                  fontSize: 18,
+                  fontFamily: 'Roboto',
                   fontWeight: FontWeight.w600,
+                  color: Colors.white,
                 ),
               ),
             ),
             hintText: searchHint,
             hintStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 15,
+                fontSize: 18,
+                fontFamily: 'Roboto',
                 fontWeight: FontWeight.w600,
+                color: Colors.black,
               ),
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
@@ -323,9 +330,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             showsList[index].showname,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: 'Comfortaa',
-                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w400,
                               color: Colors.white,
                             ),
                           ),
@@ -380,9 +387,10 @@ class _SearchScreenState extends State<SearchScreen> {
                         title: Text(
                           show.showname,
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 18,
+                            fontFamily: 'Roboto',
                             fontWeight: FontWeight.w600,
+                            color: Colors.white,
                           ),
                           textAlign: TextAlign.left,
                         ),

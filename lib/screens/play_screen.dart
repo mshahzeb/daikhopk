@@ -84,15 +84,19 @@ class _PlayScreenState extends State<PlayScreen> {
           if(show.embed == 1) {
             _controller.play();
           } else {
-            if(Platform.isAndroid) {
-              AndroidIntent intent = AndroidIntent(
-                  action: 'action_view',
-                  data: show.seasons[seasonno].episodes[episodeno].episodeUrl,
-                  arguments: {'force_fullscreen': true}
-              );
-              intent.launch();
-            } else {
+            if (show.embed == 2) {
               _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
+            } else {
+              if (Platform.isAndroid) {
+                AndroidIntent intent = AndroidIntent(
+                    action: 'action_view',
+                    data: show.seasons[seasonno].episodes[episodeno].episodeUrl,
+                    arguments: {'force_fullscreen': true}
+                );
+                intent.launch();
+              } else {
+                _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
+              }
             }
           }
           played = true;
@@ -432,6 +436,8 @@ class _PlayScreenState extends State<PlayScreen> {
                                         'Open Video in',
                                         style: TextStyle(
                                           fontSize: 18,
+                                          fontFamily: 'Roboto',
+                                          fontWeight: FontWeight.w900,
                                           color: Colors.grey,
                                         ),
                                       ),
@@ -459,23 +465,26 @@ class _PlayScreenState extends State<PlayScreen> {
                     ListTile(
                       leading: CachedNetworkImage(
                         imageUrl: (show.seasons[seasonno].episodes[episodeno]?.episodeThumbnail ?? "") == "" ? show.posterUrl : show.seasons[seasonno].episodes[episodeno].episodeThumbnail,
-                        width: $defaultWidth,
+                        width: deviceSize.width/3,
+                        fit: BoxFit.fitWidth,
                       ),
                       title: Text(
                         'Episode ' + show.seasons[seasonno].episodes[episodeno].episodeno.toString(),
                       style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w900,
                         color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.left,
                       ),
                       subtitle: Text(
                         show.seasons[seasonno].episodes[episodeno].episodetitle,
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xffaaaaaa),
                           ),
                           textAlign: TextAlign.left,
                         ),

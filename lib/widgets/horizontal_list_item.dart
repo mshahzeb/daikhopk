@@ -49,20 +49,23 @@ class HorizontalListItem extends StatelessWidget {
                 ),
               ]
             ),
-            SizedBox(
-              height: 50,
-              width: $defaultWidth,
-              child: Text(
-                show.showname,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 5),
+              child: SizedBox(
+                //height: 40,
+                width: $defaultWidth,
+                child: Text(
+                  show.showname,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
+            )
           ],
         )
       )

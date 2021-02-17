@@ -170,7 +170,16 @@ class _ListScreenState extends State<ListScreen> {
         appBar: AppBar(
           backgroundColor: Colors.black,
           brightness: Brightness.dark,
-          title: Text(show.showname),
+          title:  Text(
+            show.showname,
+            style: TextStyle(
+              fontSize: 24,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+          ),
           actions: <Widget> [
             Container(
                 height: 50,
@@ -208,14 +217,15 @@ class _ListScreenState extends State<ListScreen> {
                         widgetBuilder: (BuildContext context) =>
                           Container(
                             height: 50,
-                            //width: 100,
+                            margin: EdgeInsets.symmetric(horizontal: 5),
                             child: Center(
                               child: Text(
                                 'Seasons\n' + show.totalseasons.toString(),
                                 style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w900,
                                   color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -227,14 +237,15 @@ class _ListScreenState extends State<ListScreen> {
                       SizedBox(width: 10.0,),
                       Container(
                         height: 50,
-                        //width: 100,
+                        margin: EdgeInsets.symmetric(horizontal: 5),
                         child: Center(
                           child: Text(
                             'Episodes\n' + show.totalepisodes.toString(),
                             style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w900,
                               color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -243,14 +254,15 @@ class _ListScreenState extends State<ListScreen> {
                       SizedBox(width: 10.0,),
                       Container(
                         height: 50,
-                        //width: 100,
+                        margin: EdgeInsets.symmetric(horizontal: 5),
                         child: Center(
                           child: Text(
                             'Released\n' + DateFormat("MMM").format(show.releaseDatetime) + ' ' + show.releaseDatetime.year.toString(),
                             style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w900,
                               color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -259,14 +271,15 @@ class _ListScreenState extends State<ListScreen> {
                       SizedBox(width: 10.0,),
                       Container(
                         height: 50,
-                        //width: 100,
+                        margin: EdgeInsets.symmetric(horizontal: 5),
                         child: Center(
                           child: Text(
                             'Views\n' + numdisplay(show.viewCount),
                             style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w900,
                               color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -359,9 +372,10 @@ class _ListScreenState extends State<ListScreen> {
                                           Text(
                                             'Continue Watching',
                                             style: TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: 'Roboto',
+                                              fontWeight: FontWeight.w900,
                                               color: Colors.white,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
                                             ),
                                             textAlign: TextAlign.left,
                                           ),
@@ -385,32 +399,37 @@ class _ListScreenState extends State<ListScreen> {
                                                   ),
                                                 );
                                               },
-                                              child: ListTile(
-                                                leading: CachedNetworkImage(
-                                                  imageUrl: (showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode]?.episodeThumbnail ?? "") == "" ? show.posterUrl : showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode].episodeThumbnail,
-                                                  width: 100,
-                                                  fit: BoxFit.fitWidth,
-                                                  alignment: Alignment.topLeft,
-                                                ),
-                                                title: Text(
-                                                  'Episode ' +
-                                                      showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode].episodeno
-                                                          .toString(),
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 25,
-                                                    fontWeight: FontWeight.w600,
+                                              child: Container(
+                                                margin: EdgeInsets.all(5),
+                                                child: ListTile(
+                                                  leading: CachedNetworkImage(
+                                                    imageUrl: (showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode]?.episodeThumbnail ?? "") == "" ? show.posterUrl : showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode].episodeThumbnail,
+                                                    width: 100,
+                                                    fit: BoxFit.fitWidth,
+                                                    alignment: Alignment.topLeft,
                                                   ),
-                                                  textAlign: TextAlign.left,
-                                                ),
-                                                subtitle: Text(
-                                                  showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode].episodetitle,
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w600,
+                                                  title: Text(
+                                                    'Episode ' +
+                                                        showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode].episodeno
+                                                            .toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontFamily: 'Roboto',
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.white,
+                                                    ),
+                                                    textAlign: TextAlign.left,
                                                   ),
-                                                  textAlign: TextAlign.left,
+                                                  subtitle: Text(
+                                                    showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode].episodetitle,
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontFamily: 'Roboto',
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Color(0xffaaaaaa),
+                                                    ),
+                                                    textAlign: TextAlign.left,
+                                                  ),
                                                 ),
                                               ),
                                             );
@@ -425,9 +444,10 @@ class _ListScreenState extends State<ListScreen> {
                                   Text(
                                     'All Episodes',
                                     style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w900,
                                       color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
                                     ),
                                     textAlign: TextAlign.left,
                                   ),
@@ -453,36 +473,41 @@ class _ListScreenState extends State<ListScreen> {
                                               ),
                                             );
                                           },
-                                          child: ListTile(
-                                            leading: CachedNetworkImage(
-                                              imageUrl: (showLocal.seasons[seasonno].episodes[key]
-                                                  ?.episodeThumbnail ?? "") == ""
-                                                  ? show.posterUrl
-                                                  : showLocal.seasons[seasonno].episodes[key]
-                                                  .episodeThumbnail,
-                                              width: 100,
-                                              fit: BoxFit.fitWidth,
-                                              alignment: Alignment.topLeft,
-                                            ),
-                                            title: Text(
-                                              'Episode ' +
-                                                  showLocal.seasons[seasonno].episodes[key].episodeno
-                                                      .toString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w600,
+                                          child: Container(
+                                            margin: EdgeInsets.all(5),
+                                            child: ListTile(
+                                              leading: CachedNetworkImage(
+                                                imageUrl: (showLocal.seasons[seasonno].episodes[key]
+                                                    ?.episodeThumbnail ?? "") == ""
+                                                    ? show.posterUrl
+                                                    : showLocal.seasons[seasonno].episodes[key]
+                                                    .episodeThumbnail,
+                                                width: 100,
+                                                fit: BoxFit.fitWidth,
+                                                alignment: Alignment.topLeft,
                                               ),
-                                              textAlign: TextAlign.left,
-                                            ),
-                                            subtitle: Text(
-                                              showLocal.seasons[seasonno].episodes[key].episodetitle,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
+                                              title: Text(
+                                                'Episode ' +
+                                                    showLocal.seasons[seasonno].episodes[key].episodeno
+                                                        .toString(),
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontFamily: 'Roboto',
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
+                                                ),
+                                                textAlign: TextAlign.left,
                                               ),
-                                              textAlign: TextAlign.left,
+                                              subtitle: Text(
+                                                showLocal.seasons[seasonno].episodes[key].episodetitle,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontFamily: 'Roboto',
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xffaaaaaa),
+                                                ),
+                                                textAlign: TextAlign.left,
+                                              ),
                                             ),
                                           ),
                                         );

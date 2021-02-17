@@ -22,7 +22,16 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         brightness: Brightness.dark,
-        title: const Text('Help & Support'),
+        title: Text(
+          'Help & Support',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: ListView(
         children: <Widget>[
@@ -43,9 +52,10 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
                   'daikho.pk',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w300
+                    fontSize: 18,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 30),
@@ -53,9 +63,10 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
                   $aboutus,
                   textAlign: TextAlign.justify,
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w300
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 20),
