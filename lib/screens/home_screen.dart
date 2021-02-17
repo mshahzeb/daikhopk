@@ -4,7 +4,6 @@ import 'package:daikhopk/widgets/horizontal_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_conditional_rendering/conditional.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:daikhopk/widgets/custom_sliver_app_bar.dart';
 import '../constants.dart';
@@ -121,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           SizedBox(
                                             height: $defaultHeight + 70,
                                             child: HorizontalList(
-                                              shows: showsHome.shows,
+                                              shows: lastplayedshows,
                                               channels: showsHome.channels,
                                             ),
                                           ),

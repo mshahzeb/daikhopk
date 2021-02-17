@@ -297,21 +297,23 @@ class _PlayScreenLiveState extends State<PlayScreenLive> {
                       title: Text(
                         channel.channel,
                       style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w900,
                         color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.left,
                       ),
                       subtitle: Text(
                         'Live',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          ),
-                          textAlign: TextAlign.left,
+                          fontSize: 18,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xffaaaaaa),
                         ),
+                        textAlign: TextAlign.left,
+                      ),
                     )
                     ]
                   );

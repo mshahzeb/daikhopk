@@ -27,7 +27,7 @@ class _HorizontalListState extends State<HorizontalList> {
   _HorizontalListState({@required final this.shows, final this.channels});
 
   Widget _buildListItem(BuildContext context, int index) {
-    if(index < $maxtiles) {
+    if((index < shows.length) && (index < $maxtiles)) {
       int key = shows.keys.elementAt(index);
       return HorizontalListItem(
         show: shows[key],
@@ -39,9 +39,10 @@ class _HorizontalListState extends State<HorizontalList> {
           'More',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
+            fontSize: 18,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w600,
+            color: Color(0xffaaaaaa),
           ),
         ),
         onPressed: () async {
