@@ -181,38 +181,60 @@ class _HomeScreenState extends State<HomeScreen> {
            ),
           );
         } else {
-          return Center(
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(
               child: ListView(
-                  shrinkWrap: true,
-                  children: <Widget> [
-                    Text(
-                      "An Error Occured - Please check your connection & try again",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.left,
+                shrinkWrap: true,
+                children: <Widget> [
+                  Image.asset(
+                    $iconpath,
+                    height: 200,
+                  ),
+                  SizedBox(height: 100),
+                  Image.asset(
+                    $problempath,
+                    height: 50,
+                  ),
+                  SizedBox(height: 25),
+                  Text(
+                    "An Error Occured\n" + "Please check your connection & try again",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      height: 1.5,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w600,
                     ),
-                    RaisedButton(
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 25),
+                  Align(
+                    child:ElevatedButton(
                       onPressed: () {
                         refreshdata();
                       },
-                      color: Colors.black,
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black,
+                        onPrimary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(color: Colors.grey, width: 2),
+                        ),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           'Refresh',
                           style: TextStyle(
-                              fontSize: 25, color: Colors.white),
+                            fontSize: 25, color: Colors.white),
                         ),
                       ),
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40)),
                     ),
-                  ]
-              )
+                  ),
+                ]
+              ),
+            ),
           );
         }
       },

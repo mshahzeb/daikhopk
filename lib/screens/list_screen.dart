@@ -5,7 +5,9 @@ import 'package:daikhopk/models/shows.dart';
 import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/screens/play_screen.dart';
+import 'package:daikhopk/screens/search_screen.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
+import 'package:daikhopk/utils/customroute.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -182,16 +184,35 @@ class _ListScreenState extends State<ListScreen> {
           ),
           actions: <Widget> [
             Container(
-                height: 50,
-                width: 50,
-                padding: EdgeInsets.only(right: 10),
+              height: 50,
+              width: 50,
+              padding: EdgeInsets.only(right: 10),
+              child: GestureDetector(
+                onTap: () {
+                  Map<int, Show> filteredshows = Map();
+                  showsHome.shows.forEach((key, value) {
+                    if(showsHome.shows[key].channel == channel.channel) {
+                      filteredshows.putIfAbsent(
+                          showsHome.shows[key].showid, () => showsHome
+                          .shows[key]);
+                    }
+                  });
+
+                  Navigator.of(context).push(
+                      MyFadeRoute(builder: (context) => SearchScreen(
+                        showsPassed: filteredshows,
+                        searchHint: 'Show or Year Released',
+                      ))
+                  );
+                },
                 child: Center(
                   child: CachedNetworkImage(
                     imageUrl: channel.logoUrl,
                     fit: BoxFit.fitHeight,
                     alignment: Alignment.topLeft,
                   ),
-                )
+                ),
+              ),
             ),
           ]
         ),
@@ -521,38 +542,60 @@ class _ListScreenState extends State<ListScreen> {
                         );
                       }
                       else {
-                        return Center(
+                        return Scaffold(
+                          backgroundColor: Colors.black,
+                          body: Center(
                             child: ListView(
                                 shrinkWrap: true,
                                 children: <Widget> [
+                                  Image.asset(
+                                    $iconpath,
+                                    height: 200,
+                                  ),
+                                  SizedBox(height: 100),
+                                  Image.asset(
+                                    $problempath,
+                                    height: 50,
+                                  ),
+                                  SizedBox(height: 25),
                                   Text(
-                                    "An Error Occured - Please check your connection & try again",
+                                    "An Error Occured\n" + "Please check your connection & try again",
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 15,
+                                      fontSize: 20,
+                                      height: 1.5,
+                                      fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w600,
                                     ),
-                                    textAlign: TextAlign.left,
+                                    textAlign: TextAlign.center,
                                   ),
-                                  RaisedButton(
-                                    onPressed: () {
-                                      refreshdata();
-                                    },
-                                    color: Colors.black,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Refresh',
-                                        style: TextStyle(
-                                            fontSize: 25, color: Colors.white),
+                                  SizedBox(height: 25),
+                                  Align(
+                                    child:ElevatedButton(
+                                      onPressed: () {
+                                        refreshdata();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.black,
+                                        onPrimary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20),
+                                          side: BorderSide(color: Colors.grey, width: 2),
+                                        ),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Refresh',
+                                          style: TextStyle(
+                                              fontSize: 25, color: Colors.white),
+                                        ),
                                       ),
                                     ),
-                                    elevation: 5,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(40)),
                                   ),
                                 ]
-                            )
+                            ),
+                          ),
                         );
                       }
                     },
