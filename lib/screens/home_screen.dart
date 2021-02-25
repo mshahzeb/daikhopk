@@ -67,23 +67,21 @@ class _HomeScreenState extends State<HomeScreen> {
             onWillPop: _onBackPressed,
             child: SafeArea(
               child: Scaffold(
-                resizeToAvoidBottomInset: false,
                 backgroundColor: Colors.black,
                 body: NestedScrollView(
                   headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      CustomSliverAppBar(
-                        featured: showsHome.featured,
-                      ),
-                    ];
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                      return <Widget>[
+                         CustomSliverAppBar(
+                              featured: showsHome.featured,
+                            ),
+                      ];
                   },
                   body: Container(
                     margin: EdgeInsets.all(10),
                     color: Colors.black,
                     child: ListView(
                         shrinkWrap: true,
-                        physics: AlwaysScrollableScrollPhysics(),
                         children: <Widget>[
                           Column(
                             mainAxisSize: MainAxisSize.min,

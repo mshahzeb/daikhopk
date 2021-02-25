@@ -27,7 +27,7 @@ class CustomSliverAppBar extends StatelessWidget {
         child: FlexibleSpaceBar(
           centerTitle: false,
           background: Container(
-          margin: EdgeInsets.all(10),
+            margin: EdgeInsets.all(10),
             child: Swiper(
               itemCount: featured.length,
               itemBuilder: (BuildContext context, int index) {

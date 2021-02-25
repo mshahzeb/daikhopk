@@ -286,7 +286,7 @@ class _SearchScreenState extends State<SearchScreen> {
             indexedScaledTileBuilder: (int index) => ScaledTile.fit(1),
             placeHolder: Container(
               child: StaggeredGridView.countBuilder(
-                crossAxisCount: 3,
+                crossAxisCount: (deviceSize.width/($defaultWidth)).floor(),
                 itemCount: showsList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
@@ -324,7 +324,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           ]
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 50,
                           width: $defaultWidth,
                           child: Text(
                             showsList[index].showname,
