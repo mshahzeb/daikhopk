@@ -5,6 +5,7 @@ const int $middot = 0x00B7;
 final double $defaultWidth = 125;
 final double $defaultHeight = 75;
 final int $maxtiles = 20;
+final int $webbuttonspadding = 250;
 
 // Web Service Configs
 final String $serverName = 'daikho.pk';
@@ -43,8 +44,10 @@ final String $aboutus = '''
 daikho.pk is a free content delivery platform focused primarily on Pakistani television content. It is the largest collection of Pakistani TV Serials & TV Series.
 \nOur platform links & hosts content that is available to watch freely on platforms like YouTube, Daily Motion and does not own any of the content. All rights are reserved with the content providers. We comply with all the Terms & Services of the platform’s videos embedding policies. All views of the videos on our platform are attributed to the content owners on their respective platforms.
 ''';
-final String $faqurl = 'https://daikho.pk';
-final String $privacypolicyurl = 'https://daikho.pk';
+final String $faqurl = 'https://daikho.pk/#FAQs';
+final String $privacypolicyurl = 'https://daikho.pk/privacy-policy/';
+final String $termscondiitonsurl = 'https://daikho.pk/terms-conditions/';
+final String $facebookurl = 'https://facebook.com/daikho.pk';
 final String $supportemail = 'support@daikho.pk';
 
 //FIrebase Storage

@@ -56,7 +56,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
     if (search == "error") throw Error();
 
     search = search.toLowerCase();
-    List<Channel> channels = List();
+    List<Channel> channels = [];
     final bestMatch = search.bestMatch(channelsPassed.keys.toList());
     if(bestMatch != null && bestMatch.bestMatch != null && bestMatch.bestMatch.rating > 0.0) {
       bestMatch.ratings.sort((a, b) => b.rating.compareTo(a.rating));
@@ -197,7 +197,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
             indexedScaledTileBuilder: (int index) => ScaledTile.fit(1),
             placeHolder: Container(
               child: StaggeredGridView.countBuilder(
-                crossAxisCount: 3,
+                crossAxisCount: (deviceSize.width/($defaultWidth)).floor(),
                 itemCount: channelsList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
@@ -221,6 +221,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        SizedBox(height: 10),
                         Stack(
                             alignment: Alignment.topRight,
                             children: <Widget>[

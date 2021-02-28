@@ -222,7 +222,7 @@ class _ListScreenState extends State<ListScreen> {
                 children: [
                   CachedNetworkImage(
                     imageUrl: show.posterUrl,
-                    height: deviceSize.height/3,
+                    height: deviceSize.height/(isWeb ? 2:3),
                     width: deviceSize.width,
                     fit:BoxFit.contain,
                     alignment: Alignment.topCenter,

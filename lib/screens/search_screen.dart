@@ -305,6 +305,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        SizedBox(height: 10),
                         Stack(
                           alignment: Alignment.topRight,
                           children: <Widget>[

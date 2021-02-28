@@ -56,7 +56,7 @@ class _PlayScreenLiveState extends State<PlayScreenLive> {
         showFullscreenButton: true,
         enableCaption: false,
         enableJavaScript: true,
-        desktopMode: kIsWeb,
+        desktopMode: isWeb,
         autoPlay: true,
         playsInline: true,
         //startAt: Duration(seconds: 0)
@@ -169,12 +169,11 @@ class _PlayScreenLiveState extends State<PlayScreenLive> {
             color: Colors.black,
             child: LayoutBuilder(
               builder: (context, constraints) {
-                if (kIsWeb && constraints.maxWidth > 800) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Expanded(child: player),
-                    ],
+                if (isWeb && constraints.maxWidth > 850) {
+                  return Column(
+                      children: [
+                        Expanded(child: player)
+                      ]
                   );
                 }
                 else {

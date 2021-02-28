@@ -317,12 +317,11 @@ class _PlayScreenState extends State<PlayScreen> {
             color: Colors.black,
             child: LayoutBuilder(
               builder: (context, constraints) {
-                if (isWeb && constraints.maxWidth > 800) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                if (isWeb && constraints.maxWidth > 850) {
+                  return Column(
                     children: [
-                      const Expanded(child: player),
-                    ],
+                      Expanded(child: player)
+                    ]
                   );
                 }
                 else {

@@ -1,3 +1,4 @@
+import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,10 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
       body: ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(25),
+            padding: EdgeInsets.symmetric(
+              vertical: 25,
+              horizontal: isWeb ? $webbuttonspadding:25,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -48,14 +52,19 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
                     fit: BoxFit.fitHeight,
                   ),
                 ),
-                Text(
-                  'daikho.pk',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: (isWeb ? $webbuttonspadding:10),
+                  ),
+                  child: Text(
+                    'daikho.pk',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 SizedBox(height: 30),
@@ -75,8 +84,12 @@ class _HelpAndSupportState extends State<HelpAndSupportScreen> {
                   text: 'FAQs',
                 ),
                 ProfileListItem(
-                  icon: LineAwesomeIcons.newspaper,
+                  icon: LineAwesomeIcons.university,
                   text: 'Privacy Policy',
+                ),
+                ProfileListItem(
+                  icon: LineAwesomeIcons.newspaper,
+                  text: 'Terms & Conditions',
                 ),
                 ProfileListItem(
                   icon: LineAwesomeIcons.phone,
@@ -117,6 +130,8 @@ class ProfileListItem extends StatelessWidget {
           launchUrl($faqurl);
         } else if (this.text == 'Privacy Policy') {
           launchUrl($privacypolicyurl);
+        } else if (this.text == 'Terms & Conditions') {
+          launchUrl($termscondiitonsurl);
         } else if (this.text == 'Contact Us') {
           Navigator.of(context).push(
               MyFadeRoute(builder: (context) => ContactUsScreen())

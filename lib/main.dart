@@ -122,6 +122,7 @@ class _MyAppState extends State<MyApp> {
         statusBarIconBrightness: Brightness.light
     ));
     return MaterialApp(
+      title: "Daikho.pk",
       builder: (context, widget) => ResponsiveWrapper.builder(
           ClampingScrollWrapper.builder(context, widget),
           maxWidth: 1200,

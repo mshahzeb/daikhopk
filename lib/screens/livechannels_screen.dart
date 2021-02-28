@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/models/livechannel.dart';
 import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/play_screen_live.dart';
+import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -55,7 +56,7 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
     if (search == "error") throw Error();
 
     search = search.toLowerCase();
-    List<LiveChannel> channels = List();
+    List<LiveChannel> channels = [];
     final bestMatch = search.bestMatch(channelsPassed.keys.toList());
     if(bestMatch != null && bestMatch.bestMatch != null && bestMatch.bestMatch.rating > 0.0) {
       bestMatch.ratings.sort((a, b) => b.rating.compareTo(a.rating));
@@ -197,7 +198,7 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
             indexedScaledTileBuilder: (int index) => ScaledTile.fit(1),
             placeHolder: Container(
               child: StaggeredGridView.countBuilder(
-                crossAxisCount: 3,
+                crossAxisCount: (deviceSize.width/($defaultWidth)).floor(),
                 itemCount: channelsList.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
@@ -211,6 +212,7 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        SizedBox(height: 10),
                         Stack(
                             alignment: Alignment.topRight,
                             children: <Widget>[

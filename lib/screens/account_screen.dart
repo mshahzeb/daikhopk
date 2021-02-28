@@ -4,11 +4,13 @@ import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/screens/viewinghistory_screen.dart';
 import 'package:daikhopk/utils/authentication.dart';
 import 'package:daikhopk/utils/customroute.dart';
+import 'package:daikhopk/utils/urlLauncher.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
+import '../constants.dart';
 import 'contactus_screen.dart';
 import 'login_screen.dart';
 
@@ -41,7 +43,10 @@ class _AccountScreenState extends State<AccountScreen> {
       body: Stack(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(25),
+            padding: EdgeInsets.symmetric(
+              vertical: 25,
+              horizontal: isWeb ? $webbuttonspadding:25,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -159,75 +164,86 @@ class ProfileListItem extends StatelessWidget {
               MyFadeRoute(builder: (context) => HelpAndSupportScreen())
           );
         } else if (this.text == 'Rate Us') {
-          rateMyApp.init().then((_){
-            //if(rateMyApp.shouldOpenDialog){ //conditions check if user already rated the app
-            if(true){
-              rateMyApp.showStarRateDialog(
-                context,
-                title: 'Like our App?',
-                message: 'Please Leave a Rating',
-                actionsBuilder: (_, stars){
-                  return [ // Returns a list of actions (that will be shown at the bottom of the dialog).
-                    TextButton(
-                      child: Text(
-                        'Submit',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w900,
-                          color: Colors.black,
+          if(isWeb) {
+            launchUrl($facebookurl);
+          } else {
+            rateMyApp.init().then((_) {
+              if (true) {
+                rateMyApp.showStarRateDialog(
+                  context,
+                  title: 'Like our App?',
+                  message: 'Please Leave a Rating',
+                  actionsBuilder: (_, stars) {
+                    return [
+                      // Returns a list of actions (that will be shown at the bottom of the dialog).
+                      TextButton(
+                        child: Text(
+                          'Submit',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w900,
+                            color: Colors.black,
+                          ),
                         ),
+                        onPressed: () async {
+                          print('Thanks for the ' +
+                              (stars == null ? '0' : stars.round().toString()) +
+                              ' star(s) !');
+                          if (stars != null && (stars >= 4)) {
+                            String message = 'Thank you!';
+                            var snackBar = SnackBar(content: Text(message),
+                                duration: Duration(milliseconds: 5000));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBar);
+                            Navigator.pop<RateMyAppDialogButton>(
+                                context, RateMyAppDialogButton.rate);
+                          } else if (stars != null && (stars <= 3)) {
+                            String message = 'Please tell us how can we make it better?';
+                            var snackBar = SnackBar(content: Text(message),
+                                duration: Duration(milliseconds: 5000));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBar);
+                            Navigator.pop<RateMyAppDialogButton>(
+                                context, RateMyAppDialogButton.rate);
+                            Navigator.of(context).push(
+                                MyFadeRoute(
+                                    builder: (context) => ContactUsScreen())
+                            );
+                          }
+                        },
                       ),
-                      onPressed: () async {
-                        print('Thanks for the ' + (stars == null ? '0' : stars.round().toString()) + ' star(s) !');
-                        if(stars != null && (stars >= 4)){
-                          String message = 'Thank you!' ;
-                          var snackBar = SnackBar(content: Text(message), duration: Duration(milliseconds: 5000));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
-                        } else if (stars != null && (stars <= 3) ) {
-                          String message = 'Please tell us how can we make it better?' ;
-                          var snackBar = SnackBar(content: Text(message), duration: Duration(milliseconds: 5000));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
-                          Navigator.of(context).push(
-                              MyFadeRoute(builder: (context) => ContactUsScreen())
-                          );
-                        }
-                        // You can handle the result as you want (for instance if the user puts 1 star then open your contact page, if he puts more then open the store page, etc...).
-                        // This allows to mimic the behavior of the default "Rate" button. See "Advanced > Broadcasting events" for more information :
-                        //await rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
-                        //Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
-                      },
+                    ];
+                  },
+                  dialogStyle: DialogStyle(
+                    titleAlign: TextAlign.center,
+                    messageAlign: TextAlign.center,
+                    messagePadding: EdgeInsets.only(bottom: 20.0),
+                    titleStyle: TextStyle(
+                      fontSize: 24,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black,
                     ),
-                  ];
-                },
-                dialogStyle: DialogStyle(
-                  titleAlign: TextAlign.center,
-                  messageAlign: TextAlign.center,
-                  messagePadding: EdgeInsets.only(bottom: 20.0),
-                  titleStyle: TextStyle(
-                    fontSize: 24,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w900,
-                    color: Colors.black,
+                    messageStyle: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
                   ),
-                  messageStyle: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                  starRatingOptions: StarRatingOptions(
+                    starsBorderColor: Colors.redAccent,
+                    starsFillColor: Colors.redAccent,
                   ),
-                ),
-                starRatingOptions: StarRatingOptions(
-                  starsBorderColor: Colors.redAccent,
-                  starsFillColor: Colors.redAccent,
-                ),
-                onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
-              );
-            }
-          });
+                  onDismissed: () =>
+                      rateMyApp.callEvent(
+                          RateMyAppEventType.laterButtonPressed),
+                );
+              }
+            });
+          }
         }
       },
       child: Container(
