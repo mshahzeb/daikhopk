@@ -68,6 +68,16 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     print('initState()');
 
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.black,
+        statusBarIconBrightness: Brightness.light
+    ));
+
     if (!isWeb) {
       FirebaseMessaging.instance
           .getInitialMessage()
@@ -113,14 +123,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.black,
-        statusBarIconBrightness: Brightness.light
-    ));
     return MaterialApp(
       title: "Daikho.pk",
       builder: (context, widget) => ResponsiveWrapper.builder(

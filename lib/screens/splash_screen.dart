@@ -167,8 +167,13 @@ Future<Shows> fetchDataHome() async {
     showsHome.featured.shuffle();
 
     if(lastplayedshowidsHome.length > 0) {
+      lastplayedshows.clear();
       lastplayedshowidsHome.forEach((element) {
-        lastplayedshows.putIfAbsent(showsHome.shows[int.parse(element)].showid, () => showsHome.shows[int.parse(element)]);
+        if(showsHome.shows[int.parse(element)] != null) {
+          lastplayedshows.putIfAbsent(
+              showsHome.shows[int.parse(element)].showid, () => showsHome
+              .shows[int.parse(element)]);
+        }
       });
     }
 

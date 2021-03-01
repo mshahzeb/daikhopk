@@ -81,6 +81,8 @@ class _PlayScreenState extends State<PlayScreen> {
     )..listen((value) {
       if (value.isReady && !value.hasPlayed) {
         if(!played) {
+          _controller.hideTopMenu();
+          _controller.hidePauseOverlay();
           if(show.embed == 1) {
             _controller.play();
           } else {
@@ -145,7 +147,10 @@ class _PlayScreenState extends State<PlayScreen> {
         _controller.play();
       });
       Future.delayed(const Duration(seconds: 5), () {
-        SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ]);
       });
       log('Exited Fullscreen');
     };
@@ -179,6 +184,13 @@ class _PlayScreenState extends State<PlayScreen> {
     }
 
     lastplayedshowidsHome.insert(0, show.showid.toString());
+    lastplayedshows.clear();
+    lastplayedshowidsHome.forEach((element) {
+      lastplayedshows.putIfAbsent(
+          showsHome.shows[int.parse(element)].showid, () => showsHome
+          .shows[int.parse(element)]);
+    });
+    
     DateTime currTime = DateTime.now();
     String formattedDatetime = DateFormat("yyyy-MM-dd HH:mm:ss").format(currTime);
     String showidstr = show.showid.toString();

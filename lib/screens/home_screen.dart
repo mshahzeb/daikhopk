@@ -120,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: HorizontalList(
                                               shows: lastplayedshows,
                                               channels: showsHome.channels,
+                                              order: true,
                                             ),
                                           ),
                                         ]
@@ -161,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             child: HorizontalList(
                                               shows: listdataHome[i].data,
                                               channels: showsHome.channels,
+                                              order: true,
                                             ),
                                           ),
                                         ],
