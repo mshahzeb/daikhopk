@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'dart:io' show Platform;
+import 'package:daikhopk/widgets/apple_sign_in_button.dart';
 import 'package:daikhopk/widgets/facebook_sign_in_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,9 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     Conditional.single(
                       context: context,
                       conditionBuilder: (BuildContext context) =>
-                      Platform.isIOS,
+                        Platform.isIOS,
                       widgetBuilder: (BuildContext context) =>
-                        SizedBox(height: 0),
+                        Center(child: AppleButton()),
                       fallbackBuilder: (BuildContext context) =>
                         Center(child: GoogleButton()),
                     ),
