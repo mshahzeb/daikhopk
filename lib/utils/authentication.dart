@@ -102,7 +102,7 @@ Future<String> signInWithFacebook() async {
     uid = user.uid;
     if(user.displayName != null) { name = user.displayName; } else { name = "You"; }
     if(user.email != null) { userEmail = user.email; } else { userEmail = "you@daikho.pk"; }
-    if(user.photoURL != null) { imageUrl = user.photoURL; } else { imageUrl = "You"; }
+    if(user.photoURL != null) { imageUrl = user.photoURL; } else { imageUrl = $defaultprofilepicture; }
     accountType = 'Facebook';
 
     assert(!user.isAnonymous);
@@ -128,13 +128,24 @@ Future<String> signInWithApple() async {
     switch (appleResult.status) {
       case AuthorizationStatus.authorized:
         try {
-          print("Successful Sign in");
+          //OAuthProvider  oAuthProvider = new OAuthProvider("apple.com");
+          //final AuthCredential Applecredential = oAuthProvider.credential(
+          //  accessToken: String.fromCharCodes(appleResult.credential.authorizationCode),
+          //  idToken: String.fromCharCodes(appleResult.credential.identityToken),
+          //);
 
-          OAuthProvider  oAuthProvider = new OAuthProvider("apple.com");
-          final AuthCredential credential = oAuthProvider.credential(
-            accessToken: String.fromCharCodes(appleResult.credential.authorizationCode),
-            idToken: String.fromCharCodes(appleResult.credential.identityToken),
-          );
+          //final UserCredential userCredential = await _auth.signInWithCredential(Applecredential);
+          //final User user = userCredential.user;
+
+          uid = appleResult.credential.user;
+          if(appleResult.credential.fullName.givenName != null) { name = appleResult.credential.fullName.givenName; } else { name = "You"; }
+          if(appleResult.credential.email != null) { userEmail = appleResult.credential.email; } else { userEmail = "you@daikho.pk"; }
+          imageUrl = $defaultprofilepicture;
+          accountType = 'Apple';
+
+          updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
+
+          return 'Apple sign in successful, User UID: ${uid}';
 
         } catch (e) {
           print("error");

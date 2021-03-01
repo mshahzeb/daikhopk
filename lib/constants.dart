@@ -34,6 +34,8 @@ final int $maxtrycounthttp = 2;
 final String $nodata = "0\n";
 final int $maxfeatured = 5;
 
+final String $defaultprofilepicture = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+
 //Circular Progress CircularProgressIndicator
 final Color $circularbackgroundcolor = Colors.black;
 final Color $circularstrokecolor = Colors.redAccent;
