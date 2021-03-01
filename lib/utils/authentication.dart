@@ -98,14 +98,11 @@ Future<String> signInWithFacebook() async {
   if (user != null) {
     // Checking if email and name is null
     assert(user.uid != null);
-    assert(user.email != null);
-    assert(user.displayName != null);
-    assert(user.photoURL != null);
 
     uid = user.uid;
-    name = user.displayName;
-    userEmail = user.email;
-    imageUrl = user.photoURL;
+    if(user.displayName != null) { name = user.displayName; } else { name = "You"; }
+    if(user.email != null) { userEmail = user.email; } else { userEmail = "you@daikho.pk"; }
+    if(user.photoURL != null) { imageUrl = user.photoURL; } else { imageUrl = "You"; }
     accountType = 'Facebook';
 
     assert(!user.isAnonymous);

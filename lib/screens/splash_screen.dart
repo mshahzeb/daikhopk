@@ -22,7 +22,8 @@ SharedPreferences prefs;
 Shows showsHome;
 Show showLocal;
 List<HorizontalListData> listdataHome;
-Future<bool> canAppleLogin;
+Future<bool> dataRequiredforLogin;
+bool canAppleLogin = false;
 
 Map <int, Show> lastplayedshows = new Map();
 var userlocal = new Map();
@@ -89,6 +90,8 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
   @override
   void initState() {
     super.initState();
+
+    CheckAppleLogin();
 
     animationController = new AnimationController(
         vsync: this, duration: new Duration(milliseconds: 500));
@@ -237,10 +240,13 @@ Future<Shows> fetchDataHome() async {
 
 Future<void> CheckAppleLogin() async {
   if(Platform.isIOS) {
-    canAppleLogin = AppleSignIn.isAvailable();
+
+    canAppleLogin = await AppleSignIn.isAvailable();
   } else {
-    canAppleLogin = Future<bool>.value(false);
+    canAppleLogin = false;
   }
+
+  dataRequiredforLogin = Future<bool>.value(true);
 }
 
 class HorizontalListData {

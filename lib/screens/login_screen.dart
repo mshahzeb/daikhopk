@@ -37,56 +37,67 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: canAppleLogin,
+      future: dataRequiredforLogin,
       builder: (context, snapshot) {
-        return WillPopScope(
-          onWillPop: _onBackPressed,
-          child: SafeArea(
-            child: Scaffold(
-              appBar: AppBar(
+        if (snapshot.hasData) {
+          return WillPopScope(
+            onWillPop: _onBackPressed,
+            child: SafeArea(
+              child: Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Colors.black,
+                  brightness: Brightness.dark,
+                ),
                 backgroundColor: Colors.black,
-                brightness: Brightness.dark,
-              ),
-              backgroundColor: Colors.black,
-              body:
-              Container(
-                  color: Colors.black,
-                  child: Stack(
-                    children: <Widget>[
-                      SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              height: deviceSize.height / 2,
-                              width: deviceSize.width,
-                              child: Image.asset(
-                                  $logopath,
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.fitHeight
+                body:
+                Container(
+                    color: Colors.black,
+                    child: Stack(
+                      children: <Widget>[
+                        SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                height: deviceSize.height / 2,
+                                width: deviceSize.width,
+                                child: Image.asset(
+                                    $logopath,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.fitHeight
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 10,),
-                            Conditional.single(
-                              context: context,
-                              conditionBuilder: (BuildContext context) =>
-                               (canAppleLogin == Future<bool>.value(true)),
-                              widgetBuilder: (BuildContext context) =>
-                                  Center(child: AppleButton()),
-                              fallbackBuilder: (BuildContext context) =>
-                                  Center(child: GoogleButton()),
-                            ),
-                            SizedBox(height: 25,),
-                            Center(child: FacebookButton()),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
+                              SizedBox(height: 10,),
+                              Conditional.single(
+                                context: context,
+                                conditionBuilder: (BuildContext context) =>
+                                  canAppleLogin,
+                                widgetBuilder: (BuildContext context) =>
+                                    Center(child: AppleButton()),
+                                fallbackBuilder: (BuildContext context) =>
+                                    Center(child: GoogleButton()),
+                              ),
+                              SizedBox(height: 25,),
+                              Center(child: FacebookButton()),
+                            ],
+                          ),
+                        )
+                      ],
+                    )
+                ),
               ),
             ),
-          ),
-        );
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: $circularbackgroundcolor,
+              valueColor: new AlwaysStoppedAnimation<Color>(
+                  $circularstrokecolor),
+              strokeWidth: $circularstrokewidth,
+            ),
+          );
+        }
       }
     );
   }
