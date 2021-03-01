@@ -124,14 +124,21 @@ Future<String> signInWithFacebook() async {
 
 Future<String> signInWithApple() async {
   try {
-    final AuthorizationResult result = await AppleSignIn.performRequests([
+    final AuthorizationResult appleResult = await AppleSignIn.performRequests([
       AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
     ]);
 
-    switch (result.status) {
+    switch (appleResult.status) {
       case AuthorizationStatus.authorized:
         try {
-          print("successfull sign in");
+          print("Successful Sign in");
+
+          OAuthProvider  oAuthProvider = new OAuthProvider("apple.com");
+          final AuthCredential credential = oAuthProvider.credential(
+            accessToken: String.fromCharCodes(appleResult.credential.authorizationCode),
+            idToken: String.fromCharCodes(appleResult.credential.identityToken),
+          );
+
         } catch (e) {
           print("error");
         }

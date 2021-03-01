@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:io' show Platform;
 import 'package:daikhopk/widgets/apple_sign_in_button.dart';
 import 'package:daikhopk/widgets/facebook_sign_in_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,53 +36,58 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onBackPressed,
-      child: SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
+    return FutureBuilder<bool>(
+      future: canAppleLogin,
+      builder: (context, snapshot) {
+        return WillPopScope(
+          onWillPop: _onBackPressed,
+          child: SafeArea(
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.black,
+                brightness: Brightness.dark,
+              ),
               backgroundColor: Colors.black,
-              brightness: Brightness.dark,
+              body:
+              Container(
+                  color: Colors.black,
+                  child: Stack(
+                    children: <Widget>[
+                      SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              height: deviceSize.height / 2,
+                              width: deviceSize.width,
+                              child: Image.asset(
+                                  $logopath,
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.fitHeight
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            Conditional.single(
+                              context: context,
+                              conditionBuilder: (BuildContext context) =>
+                               (canAppleLogin == Future<bool>.value(true)),
+                              widgetBuilder: (BuildContext context) =>
+                                  Center(child: AppleButton()),
+                              fallbackBuilder: (BuildContext context) =>
+                                  Center(child: GoogleButton()),
+                            ),
+                            SizedBox(height: 25,),
+                            Center(child: FacebookButton()),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+              ),
             ),
-            backgroundColor: Colors.black,
-            body:
-            Container(
-              color: Colors.black,
-              child: Stack(
-              children: <Widget>[
-                SingleChildScrollView(
-                  child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: deviceSize.height / 2,
-                      width: deviceSize.width,
-                      child: Image.asset(
-                        $logopath,
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.fitHeight
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    Conditional.single(
-                      context: context,
-                      conditionBuilder: (BuildContext context) =>
-                        Platform.isIOS,
-                      widgetBuilder: (BuildContext context) =>
-                        Center(child: AppleButton()),
-                      fallbackBuilder: (BuildContext context) =>
-                        Center(child: GoogleButton()),
-                    ),
-                    SizedBox(height: 25,),
-                    Center(child: FacebookButton()),
-                  ],
-                ),
-              )
-              ],
-            )
           ),
-        ),
-      ),
+        );
+      }
     );
   }
 }

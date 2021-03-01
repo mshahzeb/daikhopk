@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io' show Platform;
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
@@ -20,6 +22,7 @@ SharedPreferences prefs;
 Shows showsHome;
 Show showLocal;
 List<HorizontalListData> listdataHome;
+Future<bool> canAppleLogin;
 
 Map <int, Show> lastplayedshows = new Map();
 var userlocal = new Map();
@@ -232,6 +235,13 @@ Future<Shows> fetchDataHome() async {
   }
 }
 
+Future<void> CheckAppleLogin() async {
+  if(Platform.isIOS) {
+    canAppleLogin = AppleSignIn.isAvailable();
+  } else {
+    canAppleLogin = Future<bool>.value(false);
+  }
+}
 
 class HorizontalListData {
   String title;
