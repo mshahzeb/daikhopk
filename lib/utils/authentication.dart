@@ -138,7 +138,7 @@ Future<String> signInWithApple() async {
           //final User user = userCredential.user;
 
           uid = appleResult.credential.user;
-          if(appleResult.credential.fullName.givenName != null) { name = appleResult.credential.fullName.givenName; } else { name = "You"; }
+          if(appleResult.credential.fullName.givenName != null) { name = appleResult.credential.fullName.givenName + " " + appleResult.credential.fullName.familyName ?? ""; } else { name = "You"; }
           if(appleResult.credential.email != null) { userEmail = appleResult.credential.email; } else { userEmail = "you@daikho.pk"; }
           imageUrl = $defaultprofilepicture;
           accountType = 'Apple';
