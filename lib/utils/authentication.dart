@@ -1,3 +1,4 @@
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -119,6 +120,34 @@ Future<String> signInWithFacebook() async {
   }
 
   return null;
+}
+
+Future<String> signInWithApple() async {
+  try {
+    final AuthorizationResult result = await AppleSignIn.performRequests([
+      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+    ]);
+
+    switch (result.status) {
+      case AuthorizationStatus.authorized:
+        try {
+          print("successfull sign in");
+        } catch (e) {
+          print("error");
+        }
+        break;
+      case AuthorizationStatus.error:
+      // do something
+        break;
+
+      case AuthorizationStatus.cancelled:
+        print('User cancelled');
+        break;
+    }
+  } catch (error) {
+    print("error with apple sign in");
+  }
+
 }
 
 void signOut() async {

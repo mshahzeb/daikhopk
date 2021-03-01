@@ -1,10 +1,12 @@
 import 'dart:ui';
+import 'dart:io' show Platform;
 import 'package:daikhopk/widgets/facebook_sign_in_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/widgets/google_sign_in_button.dart';
+import 'package:flutter_conditional_rendering/conditional.dart';
 import '../constants.dart';
 
 class LoginScreen extends StatefulWidget{
@@ -38,6 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
       onWillPop: _onBackPressed,
       child: SafeArea(
         child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.black,
+              brightness: Brightness.dark,
+            ),
             backgroundColor: Colors.black,
             body:
             Container(
@@ -58,10 +64,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(height: 10,),
-                    Center(child: GoogleButton()),
+                    Conditional.single(
+                      context: context,
+                      conditionBuilder: (BuildContext context) =>
+                      Platform.isIOS,
+                      widgetBuilder: (BuildContext context) =>
+                        SizedBox(height: 0),
+                      fallbackBuilder: (BuildContext context) =>
+                        Center(child: GoogleButton()),
+                    ),
                     SizedBox(height: 25,),
                     Center(child: FacebookButton()),
-                    ],
+                  ],
                 ),
               )
               ],

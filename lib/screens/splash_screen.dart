@@ -116,6 +116,10 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
       height: MediaQuery.of(context).size.height,
       aspectRatio: MediaQuery.of(context).size.aspectRatio);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        brightness: Brightness.dark,
+      ),
       backgroundColor: Colors.black,
       body: Stack(
         fit: StackFit.expand,

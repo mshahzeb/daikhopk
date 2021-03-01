@@ -28,6 +28,7 @@ dependencies:
   firebase_messaging: ^8.0.0-dev.15
   firebase_messaging_web: ^0.1.0-dev.6
   google_sign_in: ^4.4.4
+  apple_sign_in: ^0.1.0
   flutter_facebook_auth: ^2.0.0
   shared_preferences: ^0.5.12+4
   youtube_player_iframe: ^1.1.0
