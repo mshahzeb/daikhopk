@@ -64,6 +64,8 @@ class _PlayScreenLiveState extends State<PlayScreenLive> {
     )..listen((value) {
       if (value.isReady && !value.hasPlayed) {
         if(!played) {
+          _controller.hideTopMenu();
+          _controller.hidePauseOverlay();
           _controller.play();
           played = true;
         }
@@ -93,12 +95,6 @@ class _PlayScreenLiveState extends State<PlayScreenLive> {
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
     _controller.stop();
     super.dispose();
   }

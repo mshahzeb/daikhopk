@@ -231,6 +231,7 @@ Future<Shows> fetchDataHome() async {
       listdataHome.add(HorizontalListData(listdataHomeCategories[i],sortedshows));
     }
 
+    errorHome = 0;
     return Shows.fromJson(jsonDecode(shows));
   }
   catch(e) {
