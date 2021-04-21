@@ -16,7 +16,7 @@ import '../constants.dart';
 import 'package:daikhopk/models/shows.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
-List<String> listdataHomeCategories = ['New Episodes','Released This Month','Currently Running','Most Watched - All time','Top Rated - All time'];
+List<String> listdataHomeCategories = ['New Episodes','Released Recently','Currently Running','Most Watched - All time','Top Rated - All time'];
 DeviceSize deviceSize;
 SharedPreferences prefs;
 Shows showsHome;
@@ -33,6 +33,7 @@ List<String> lastplayedshowidsHome = [];
 bool authSignedIn;
 int errorHome = 0;
 bool isWeb = kIsWeb;
+bool disclaimerShown = false;
 
 String messageTitle = "Empty";
 String notificationAlert = "alert";
@@ -91,7 +92,11 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
   void initState() {
     super.initState();
 
-    CheckAppleLogin();
+    if (!isWeb) {
+      CheckAppleLogin();
+    } else {
+      dataRequiredforLogin = Future<bool>.value(true);
+    }
 
     animationController = new AnimationController(
         vsync: this, duration: new Duration(milliseconds: 500));
@@ -197,16 +202,13 @@ Future<Shows> fetchDataHome() async {
 
       if(listdataHomeCategories[i] == "New Episodes") {
         sortedshows = new SplayTreeMap<int, Show>.from(
-          showsHome.shows, (a,b) => showsHome.shows[b].releaseDatetime.compareTo(showsHome.shows[a].releaseDatetime)
+          showsHome.shows, (a,b) => showsHome.shows[b].updateDatetime.compareTo(showsHome.shows[a].updateDatetime)
         );
       }
-      else if(listdataHomeCategories[i] == "Released This Month") {
-        sortedshows = new SplayTreeMap<int, Show>.from(showsHome.shows);
-        showsHome.shows.forEach((key, value) {
-          if(showsHome.shows[key].releaseDatetime.isBefore(currMonth)) {
-            sortedshows.remove(key);
-          }
-        });
+      else if(listdataHomeCategories[i] == "Released Recently") {
+        sortedshows = new SplayTreeMap<int, Show>.from(
+            showsHome.shows, (a,b) => showsHome.shows[b].releaseDatetime.compareTo(showsHome.shows[a].releaseDatetime)
+        );
       }
       else if(listdataHomeCategories[i] == "Currently Running") {
         sortedshows = new SplayTreeMap<int, Show>.from(
@@ -241,7 +243,6 @@ Future<Shows> fetchDataHome() async {
 
 Future<void> CheckAppleLogin() async {
   if(Platform.isIOS) {
-
     canAppleLogin = await AppleSignIn.isAvailable();
   } else {
     canAppleLogin = false;

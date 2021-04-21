@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:daikhopk/screens/helpandsupport_screen.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
@@ -199,6 +200,14 @@ class ProfileListItem extends StatelessWidget {
                                 snackBar);
                             Navigator.pop<RateMyAppDialogButton>(
                                 context, RateMyAppDialogButton.rate);
+                            if (!isWeb) {
+                              if(Platform.isAndroid) {
+                                launchUrl($playstorelink);
+                              } else if (Platform.isIOS) {
+                                launchUrl($appstorelink);
+                              }
+                            }
+
                           } else if (stars != null && (stars <= 3)) {
                             String message = 'Please tell us how can we make it better?';
                             var snackBar = SnackBar(content: Text(message),

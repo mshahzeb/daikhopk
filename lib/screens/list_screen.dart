@@ -390,15 +390,18 @@ class _ListScreenState extends State<ListScreen> {
                                         shrinkWrap: true,
                                         physics: ScrollPhysics(),
                                         children: <Widget> [
-                                          Text(
-                                            'Continue Watching',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontFamily: 'Roboto',
-                                              fontWeight: FontWeight.w900,
-                                              color: Colors.white,
+                                          Container(
+                                            margin: EdgeInsets.all(5),
+                                            child: Text(
+                                              'Continue Watching',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontFamily: 'Roboto',
+                                                fontWeight: FontWeight.w900,
+                                                color: Colors.white,
+                                              ),
+                                              textAlign: TextAlign.left,
                                             ),
-                                            textAlign: TextAlign.left,
                                           ),
                                           ListView.builder(
                                             physics: NeverScrollableScrollPhysics(),
@@ -462,15 +465,18 @@ class _ListScreenState extends State<ListScreen> {
                                     SizedBox(height: 0.0,),
                                   ),
                                   SizedBox(height: 20.0,),
-                                  Text(
-                                    'All Episodes',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: 'Roboto',
-                                      fontWeight: FontWeight.w900,
-                                      color: Colors.white,
+                                  Container(
+                                    margin: EdgeInsets.all(5),
+                                    child: Text(
+                                      'All Episodes',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                      textAlign: TextAlign.left,
                                     ),
-                                    textAlign: TextAlign.left,
                                   ),
                                   ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),

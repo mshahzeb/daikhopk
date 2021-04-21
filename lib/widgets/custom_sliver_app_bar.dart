@@ -84,7 +84,8 @@ class CustomSliverAppBar extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        alignment: Alignment.topCenter,
+                        alignment: Alignment.topLeft,
+                        constraints: BoxConstraints(maxWidth: 400),
                         padding: EdgeInsets.only(top: 20),
                         child: Text(
                           showsHome.shows[featured[index]].showname,

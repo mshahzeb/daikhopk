@@ -30,6 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
       refreshdata();
     }
 
+    if(!disclaimerShown) {
+      disclaimerShown = true;
+      Future.delayed(Duration.zero, () {
+        this._showDisclaimer(context);
+      });
+    }
+
     print('initState');
   }
 
@@ -46,6 +53,60 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> refreshdata() async {
     dataRequiredForHome = fetchDataHome();
     setState(() {});
+  }
+
+  void _showDisclaimer(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+              side: BorderSide(color: Colors.redAccent)),
+          backgroundColor: Colors.black,
+          scrollable: true,
+          title: Text(
+            'daikho.pk\n\nDISCLAIMER',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+          content: Text(
+            $disclaimer,
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+              fontSize: 16,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w300,
+              color: Colors.white,
+            ),
+          ),
+          actions: [
+            Container(
+              padding: const EdgeInsets.only(
+                  right: 10.0),
+              child: FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'I Understand',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
+    );
   }
 
   @override

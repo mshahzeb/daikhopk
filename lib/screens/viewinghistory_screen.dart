@@ -171,54 +171,22 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                 )
                               ]
                           ),
-                          Spacer(),
-                          Column(
-                              children: [
-                                Text(
-                                  'Viewing\nHours\n',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: 'Roboto',
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '150',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'Roboto',
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                )
-                              ]
-                          ),
                           SizedBox(width: 50,),
                         ],
                       ),
                       SizedBox(height: 20,),
-                      Text(
-                        'Recently Played Videos',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
+                      Container(
+                        margin: EdgeInsets.all(5),
+                        child: Text(
+                          'Recently Played Videos',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
-                        textAlign: TextAlign.left,
                       ),
                       ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
