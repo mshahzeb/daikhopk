@@ -52,7 +52,7 @@ class _PlayScreenLiveState extends State<PlayScreenLive> {
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
       params: YoutubePlayerParams(
-        showControls: true,
+        showControls: false,
         showFullscreenButton: true,
         enableCaption: false,
         enableJavaScript: true,
