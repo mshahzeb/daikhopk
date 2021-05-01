@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io' show Platform;
+import 'dart:async';
 import 'dart:developer';
 import 'package:android_intent/android_intent.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,6 +9,7 @@ import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,7 +19,6 @@ import 'package:daikhopk/constants.dart';
 import 'list_screen.dart';
 
 String videoId;
-YoutubePlayerController _controller;
 
 class PlayScreen extends StatefulWidget {
   final Show show;
@@ -40,6 +41,7 @@ class _PlayScreenState extends State<PlayScreen> {
   final Channel channel;
   final int seasonno;
   final int episodeno;
+  late YoutubePlayerController _controller;
 
   _PlayScreenState({@required final this.show, @required this.channel, @required final this.seasonno, @required final this.episodeno});
 
@@ -174,7 +176,7 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   void dispose() {
-    _controller.stop();
+    _controller.close();
     super.dispose();
   }
 
@@ -239,7 +241,7 @@ class _PlayScreenState extends State<PlayScreen> {
 
     String response = await postUrl($serviceURLgetstats, Json);
     var jsonresult = jsonDecode(response);
-    int playtime = jsonresult[0]['vid_lastplaytime'];
+    int playtime = jsonresult[0]['vid_lastplaytime'] ?? 0;
     if (playtime < 0) {
       playtime = 0;
     }
