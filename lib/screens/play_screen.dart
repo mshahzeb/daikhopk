@@ -56,6 +56,8 @@ class _PlayScreenState extends State<PlayScreen> {
   void initState() {
     super.initState();
 
+    print('PlayVideo InitState');
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -65,6 +67,8 @@ class _PlayScreenState extends State<PlayScreen> {
       videoId = YoutubePlayerController.convertUrlToId(show.seasons[seasonno].episodes[episodeno].episodeUrl);
     else
       videoId = show.seasons[seasonno].episodes[episodeno].episodeVideoId;
+
+    //print('PlayVideo ControllerInit');
 
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
@@ -155,6 +159,7 @@ class _PlayScreenState extends State<PlayScreen> {
       log('Exited Fullscreen');
     };
 
+    //print('PlayVideo UpdateVideoIdStats');
     UpdateVideoIdStats();
 
     if(show.seasons[seasonno].episodes[episodeno + 1] != null) {
@@ -163,6 +168,8 @@ class _PlayScreenState extends State<PlayScreen> {
     if(show.seasons[seasonno].episodes[episodeno - 1] != null) {
       previousepisode = episodeno - 1;
     }
+
+    print('PlayVideo InitDone');
   }
 
   @override
