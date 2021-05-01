@@ -243,8 +243,8 @@ class ProfileListItem extends StatelessWidget {
                     ),
                   ),
                   starRatingOptions: StarRatingOptions(
-                    starsBorderColor: Colors.redAccent,
-                    starsFillColor: Colors.redAccent,
+                    glow: true,
+                    glowColor: Colors.redAccent,
                   ),
                   onDismissed: () =>
                       rateMyApp.callEvent(

@@ -431,6 +431,12 @@ class _ListScreenState extends State<ListScreen> {
                                                     width: 100,
                                                     fit: BoxFit.fitWidth,
                                                     alignment: Alignment.topLeft,
+                                                    errorWidget: (context, url, error) => CachedNetworkImage(
+                                                      imageUrl: (showLocal.posterUrl),
+                                                      width: 100,
+                                                      fit: BoxFit.fitWidth,
+                                                      alignment: Alignment.topLeft,
+                                                    )
                                                   ),
                                                   title: Text(
                                                     'Episode ' +
@@ -512,6 +518,12 @@ class _ListScreenState extends State<ListScreen> {
                                                 width: 100,
                                                 fit: BoxFit.fitWidth,
                                                 alignment: Alignment.topLeft,
+                                                errorWidget: (context, url, error) => CachedNetworkImage(
+                                                    imageUrl: (showLocal.posterUrl),
+                                                    width: 100,
+                                                    fit: BoxFit.fitWidth,
+                                                    alignment: Alignment.topLeft,
+                                                )
                                               ),
                                               title: Text(
                                                 'Episode ' +

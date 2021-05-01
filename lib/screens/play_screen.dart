@@ -77,7 +77,7 @@ class _PlayScreenState extends State<PlayScreen> {
         showFullscreenButton: true,
         enableCaption: false,
         enableJavaScript: true,
-        desktopMode: isWeb,
+        desktopMode: !isWeb,
         autoPlay: true,
         playsInline: true,
         startAt: Duration(seconds: 0)

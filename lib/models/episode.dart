@@ -32,12 +32,11 @@ class Episode {
     _episodetitle = json['episodetitle'];
     _episodeUrl = json['episodeUrl'];
     _episodeVideoId = json['episodeVideoId'];
-    _episodeThumbnail = json['episodeThumbnail'];
     if(isWeb) {
       _episodeThumbnail = $firebasestorageurl + 'daikhopk-imagedata%2F' + showid.toString() + '%2F' + _episodeno.toString() + '.jpg?alt=media&' + $firebasetoken;
       //https://firebasestorage.googleapis.com/v0/b/daikhopk-17b2f.appspot.com/o/daikhopk-imagedata%2F10001%2Fposter.jpg?alt=media&token=7bd07c88-fee4-45a2-bb18-5903490ffe6c
     } else {
-      _episodeThumbnail = json['posterUrl'] ?? "";
+      _episodeThumbnail = json['episodeThumbnail'] ?? "";
     }
   }
 }

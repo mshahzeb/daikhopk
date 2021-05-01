@@ -85,11 +85,11 @@ Future<String> signInWithFacebook() async {
 
   await Firebase.initializeApp();
 
-  final AccessToken result = await FacebookAuth.instance.login();
+  final LoginResult result = await FacebookAuth.instance.login();
 
   // Create a credential from the access token
   final FacebookAuthCredential facebookAuthCredential =
-  FacebookAuthProvider.credential(result.token);
+  FacebookAuthProvider.credential(result.accessToken.toString());
 
   // Once signed in, return the UserCredential
   final UserCredential userCredential = await _auth.signInWithCredential(facebookAuthCredential);

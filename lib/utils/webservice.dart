@@ -20,7 +20,7 @@ Future<Response> fetchUrl(final String url) async {
 
   while (trycount < $maxtrycounthttp) {
     try {
-      response = await client.get(Uri.encodeFull(url), headers: {"Accept":"application/json", "Connection":"keep-alive"});
+      response = await client.get(Uri.parse(url), headers: {"Accept":"application/json", "Connection":"keep-alive"});
       if (response.statusCode == 200) {
         return response;
       } else {
@@ -78,7 +78,7 @@ Future<String> postUrl(final String url, final Map<String, dynamic> Json) async 
 
   while (trycount < $maxtrycounthttp) {
     try {
-      response = await client.post(Uri.encodeFull(url), headers: {
+      response = await client.post(Uri.parse(url), headers: {
         "Content-Type": "application/json",
         "Connection": "keep-alive"
       }, body: jsonEncode(Json));
