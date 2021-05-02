@@ -85,8 +85,8 @@ class _ListScreenState extends State<ListScreen> {
 
         String response = await postUrl($serviceURLgetstats, Json);
         var jsonresult = jsonDecode(response);
-        String result = jsonresult[0]['show_lastplayedepi'];
-        if((result != null) && result != "-1" && result != "0") {
+        String result = jsonresult[0]['show_lastplayedepi'] ?? "0";
+        if(result != "-1" && result != "0") {
           _lastplayedseason = int.parse(result.split('_')[0]);
           _lastplayedepisode = int.parse(result.split('_')[1]);
         } else {
@@ -105,6 +105,7 @@ class _ListScreenState extends State<ListScreen> {
         _selectedItem = _dropdownMenuItems[0].value!;
       }
 
+      error = 0;
       return show;
 
     } catch(e) {

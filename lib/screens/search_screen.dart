@@ -48,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
     showsPassed.forEach((key, value) {
       showssearch.putIfAbsent(showsPassed[key]!.showname, () => showsPassed[key]!.showid);
     });
-
+    showsList.shuffle();
     showsList_Init = showsList;
   }
 

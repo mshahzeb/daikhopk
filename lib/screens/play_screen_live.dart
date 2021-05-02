@@ -73,9 +73,18 @@ class _PlayScreenLiveState extends State<PlayScreenLive> {
     });
 
     _controller.onEnterFullscreen = () {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
       log('Entered Fullscreen');
     };
     _controller.onExitFullscreen = () {
+      _controller.play();
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
       log('Exited Fullscreen');
     };
 

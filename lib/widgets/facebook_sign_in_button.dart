@@ -29,7 +29,7 @@ class _FacebookButtonState extends State<FacebookButton> {
           });
           await signInWithFacebook().then((result) {
             print(result);
-            if (result != null) {
+            if (result == 'Success') {
               Navigator.of(context)
                   .pushAndRemoveUntil(
                   MaterialPageRoute(

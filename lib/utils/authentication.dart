@@ -52,11 +52,10 @@ Future<String> signInWithGoogle() async {
 
   final UserCredential userCredential =
       await _auth.signInWithCredential(credential);
-  final User user = userCredential.user!;
+  final User? user = userCredential.user!;
 
   if (user != null) {
     // Checking if email and name is null
-    assert(user.uid != null);
     assert(user.email != null);
     assert(user.displayName != null);
     assert(user.photoURL != null);
@@ -86,28 +85,21 @@ Future<String> signInWithFacebook() async {
 
   final LoginResult result = await FacebookAuth.instance.login();
 
-  // Create a credential from the access token
-  final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(result.accessToken.toString());
-
-  // Once signed in, return the UserCredential
-  final UserCredential userCredential = await _auth.signInWithCredential(facebookAuthCredential);
-  final User user = userCredential.user!;
-
-  if (user.uid != '') {
-    uid = user.uid;
-    if(user.displayName != null) { name = user.displayName!; } else { name = "You"; }
-    if(user.email != null) { userEmail = user.email!; } else { userEmail = "you@daikho.pk"; }
-    if(user.photoURL != null) { imageUrl = user.photoURL!; } else { imageUrl = $defaultprofilepicture; }
+  if(result.status == LoginStatus.success) {
+    Map<String, dynamic> user = await FacebookAuth.instance.getUserData();
+    assert(user.isNotEmpty);
+    final OAuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.token);
+    final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    final User? userFirebase = userCredential.user;
+    assert(userFirebase != null);
+    uid = userFirebase!.uid;
+    if(user['name'] != null) { name = user['name']; } else { name = "You"; }
+    if(user['email'] != null) { userEmail = user['email'] ; } else { userEmail = "you@daikho.pk"; }
+    if(user['picture']['data']['url'] != null) { imageUrl = user['picture']['data']['url']; } else { imageUrl = $defaultprofilepicture; }
     accountType = 'Facebook';
-
-    assert(!user.isAnonymous);
-
-    final User currentUser = _auth.currentUser!;
-    assert(user.uid == currentUser.uid);
-
     updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
 
-    return 'Facebook sign in successful, User UID: ${user.uid}';
+    return 'Success';
   }
 
   return 'None';
@@ -235,5 +227,6 @@ void updateUserDataCache(String uid, String name, String userEmail, String userI
     "lastLogin": formattedDatetime
   };
 
-  postUrl($serviceURLupdateuserinfo, Json);
+  String result = await postUrl($serviceURLupdateuserinfo, Json);
+  print(result);
 }

@@ -43,6 +43,7 @@ class _LiveChannelScreenState extends State<LiveChannelScreen> {
     channelsPassed.forEach((key, value) {
       channelsList.add(channelsPassed[key]!);
     });
+    channelsList_Init = channelsList;
   }
 
   void search(String search) async {

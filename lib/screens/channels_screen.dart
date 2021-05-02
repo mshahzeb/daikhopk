@@ -43,6 +43,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
     channelsPassed.forEach((key, value) {
       channelsList.add(channelsPassed[key]!);
     });
+    channelsList_Init = channelsList;
   }
 
   void search(String search) async {
