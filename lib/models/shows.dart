@@ -3,12 +3,12 @@ import 'package:daikhopk/models/channel.dart';
 import 'package:daikhopk/models/livechannel.dart';
 
 class Shows {
-  Map<int, Show> _shows;
-  Map<String, Channel> _channels;
-  Map<String, LiveChannel> _livechannels;
-  List<int> _featured;
+  Map<int, Show> _shows = Map();
+  Map<String, Channel> _channels = Map();
+  Map<String, LiveChannel> _livechannels = Map();
+  List<int> _featured = [];
 
-  Shows(this._shows, this._channels, this._featured);
+  Shows();
 
   Map<int, Show> get shows => _shows;
   set shows(Map<int, Show> shows) => _shows = shows;
@@ -39,7 +39,7 @@ class Shows {
       });
     }
     if (json['featured'] != null) {
-      _featured = new List();
+      _featured = [];
       json['featured'].forEach((v) {
         _featured.add(v['showid']);
       });

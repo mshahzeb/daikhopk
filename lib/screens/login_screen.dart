@@ -16,13 +16,13 @@ class LoginScreen extends StatefulWidget{
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  TextEditingController textControllerEmail;
-  FocusNode textFocusNodeEmail;
+  late TextEditingController textControllerEmail;
+  late  FocusNode textFocusNodeEmail;
 
-  TextEditingController textControllerPassword;
-  FocusNode textFocusNodePassword;
+  late TextEditingController textControllerPassword;
+  late FocusNode textFocusNodePassword;
 
-  String loginStatus;
+  late  String loginStatus;
   Color loginStringColor = Colors.green;
 
   @override

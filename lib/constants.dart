@@ -7,7 +7,7 @@ const int $middot = 0x00B7;
 final double $defaultWidth = 125;
 final double $defaultHeight = 75;
 final int $maxtiles = 20;
-final int $webbuttonspadding = 250;
+final double $webbuttonspadding = 250.00;
 
 // Web Service Configs
 final String $serverName = 'daikho.pk';

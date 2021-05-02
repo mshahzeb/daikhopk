@@ -6,11 +6,11 @@ import 'package:daikhopk/screens/list_screen.dart';
 import 'package:daikhopk/utils/customroute.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
   final List<int> featured;
-  CustomSliverAppBar({@required this.featured});
+  CustomSliverAppBar({required this.featured});
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +36,12 @@ class CustomSliverAppBar extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ListScreen(
-                        show: showsHome.shows[featured[index]],
-                        channel: showsHome.channels[showsHome.shows[featured[index]].channel],
+                        show: showsHome.shows[featured[index]]!,
+                        channel: showsHome.channels[showsHome.shows[featured[index]]!.channel]!,
                         refresh: true,
+                        lastplayedseasonLocal: 0,
+                        backroute: 0,
+                        lastplayedepisodeLocal: 0,
                       )
                       ),
                     );
@@ -48,7 +51,7 @@ class CustomSliverAppBar extends StatelessWidget {
                       Container(
                         alignment: Alignment.bottomCenter,
                         child: CachedNetworkImage(
-                          imageUrl: showsHome.shows[featured[index]].posterUrl,
+                          imageUrl: showsHome.shows[featured[index]]!.posterUrl,
                           //height: deviceSize.height/2,
                           width: deviceSize.width,
                           fit: BoxFit.contain,
@@ -61,10 +64,10 @@ class CustomSliverAppBar extends StatelessWidget {
                           onTap: () {
                             Map<int, Show> filteredshows = Map();
                             showsHome.shows.forEach((key, value) {
-                              if(showsHome.shows[key].channel == showsHome.channels[showsHome.shows[featured[index]].channel].channel) {
+                              if(showsHome.shows[key]!.channel == showsHome.channels[showsHome.shows[featured[index]]!.channel]!.channel) {
                                 filteredshows.putIfAbsent(
-                                    showsHome.shows[key].showid, () => showsHome
-                                    .shows[key]);
+                                    showsHome.shows[key]!.showid, () => showsHome
+                                    .shows[key]!);
                               }
                             });
 
@@ -76,7 +79,7 @@ class CustomSliverAppBar extends StatelessWidget {
                             );
                           },
                           child: CachedNetworkImage(
-                            imageUrl: showsHome.channels[showsHome.shows[featured[index]].channel].logoUrl,
+                            imageUrl: showsHome.channels[showsHome.shows[featured[index]]!.channel]!.logoUrl,
                             height: 50,
                             width: 50,
                             fit: BoxFit.fitHeight,
@@ -88,7 +91,7 @@ class CustomSliverAppBar extends StatelessWidget {
                         constraints: BoxConstraints(maxWidth: 400),
                         padding: EdgeInsets.only(top: 20),
                         child: Text(
-                          showsHome.shows[featured[index]].showname,
+                          showsHome.shows[featured[index]]!.showname,
                           style: TextStyle(
                             fontSize: 24,
                             fontFamily: 'Roboto',
@@ -101,7 +104,7 @@ class CustomSliverAppBar extends StatelessWidget {
                         alignment: Alignment.topRight,
                         padding: EdgeInsets.only(top: 30),
                         child: Text(
-                          numdisplay(showsHome.shows[featured[index]].viewCount) + ' Views',
+                          numdisplay(showsHome.shows[featured[index]]!.viewCount) + ' Views',
                           style: TextStyle(
                             fontSize: 15,
                             fontFamily: 'Roboto',

@@ -13,13 +13,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:daikhopk/constants.dart';
 
-String videoId;
-YoutubePlayerController _controller;
+String videoId = '';
 
 class PlayScreenLive extends StatefulWidget {
   final Show show;
   final LiveChannel channel;
-  PlayScreenLive({@required final this.show, @required final this.channel});
+  PlayScreenLive({required final this.show, required final this.channel});
 
   @override
   _PlayScreenLiveState createState() => _PlayScreenLiveState(
@@ -31,8 +30,9 @@ class PlayScreenLive extends StatefulWidget {
 class _PlayScreenLiveState extends State<PlayScreenLive> {
   final Show show;
   final LiveChannel channel;
+  late YoutubePlayerController _controller;
 
-  _PlayScreenLiveState({@required final this.show, @required this.channel});
+  _PlayScreenLiveState({required final this.show, required this.channel});
 
   final ValueNotifier<bool> _isMuted = ValueNotifier(false);
   bool played = false;

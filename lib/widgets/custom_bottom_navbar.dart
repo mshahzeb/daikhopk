@@ -10,7 +10,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
   final String currentscreen;
-  CustomBottomNavBar({@required final this.currentscreen});
+  CustomBottomNavBar({required final this.currentscreen});
 
   @override
   _CustomBottomNavBarState createState() => _CustomBottomNavBarState(
@@ -19,10 +19,10 @@ class CustomBottomNavBar extends StatefulWidget {
 }
 
 class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
-  final String currentscreen;
-  _CustomBottomNavBarState({@required final this.currentscreen});
+  String currentscreen = '';
+  _CustomBottomNavBarState({required final this.currentscreen});
 
-  bool refresh;
+  bool refresh = false;
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 15, fontWeight: FontWeight.w600, fontFamily: 'Roboto');

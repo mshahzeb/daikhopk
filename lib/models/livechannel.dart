@@ -1,10 +1,10 @@
 class LiveChannel {
-  String _channelid;
-  String _channel;
-  String _logoUrl;
-  String _videoId;
+  String _channelid = '';
+  String _channel = '';
+  String _logoUrl = '';
+  String _videoId ='';
 
-  LiveChannel(this._channelid, this._channel, this._logoUrl);
+  LiveChannel();
 
   String get channelid => _channelid; // ignore: unnecessary_getters_setters
   set channelid(String channelid) => _channelid = channelid; // ignore: unnecessary_getters_setters

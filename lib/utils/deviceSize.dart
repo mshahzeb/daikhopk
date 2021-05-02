@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DeviceSize {
-  final Size size;
-  final double width;
-  final double height;
-  final double aspectRatio;
-
-  DeviceSize({this.size, this.width, this.height, this.aspectRatio});
+  late Size size;
+  double width = 0.0;
+  double height = 0.0;
+  double aspectRatio = 0.0;
+  DeviceSize({required this.size, required this.width, required this.height, required this.aspectRatio});
 }

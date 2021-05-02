@@ -10,7 +10,7 @@ import '../constants.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool refresh;
-  HomeScreen({@required final this.refresh});
+  HomeScreen({required final this.refresh});
 
   @override
   _HomeScreenState createState() => _HomeScreenState(
@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final bool refresh;
-  _HomeScreenState({@required final this.refresh});
+  _HomeScreenState({required final this.refresh});
 
   @override
   void initState() {
@@ -30,8 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
       refreshdata();
     }
 
+    disclaimerShown = prefs.getBool('disclaimerShown') ?? false;
     if(!disclaimerShown) {
-      disclaimerShown = true;
       Future.delayed(Duration.zero, () {
         this._showDisclaimer(context);
       });
@@ -91,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: FlatButton(
                 onPressed: () {
                   Navigator.of(context).pop();
+                  prefs.setBool('disclaimerShown',true);
                 },
                 child: Text(
                   'I Understand',
@@ -150,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Conditional.single(
                                 context: context,
                                 conditionBuilder: (BuildContext context) =>
-                                ((lastplayedshowidsHome?.length ?? 0) > 0) == true,
+                                ((lastplayedshowidsHome.length) > 0) == true,
                                 widgetBuilder: (BuildContext context) =>
                                     Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,4 +1,3 @@
-import 'package:apple_sign_in/apple_sign_in_button.dart';
 import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/utils/authentication.dart';
 import 'package:flutter/material.dart';
@@ -28,23 +27,23 @@ class _AppleButtonState extends State<AppleButton> {
           setState(() {
             _isProcessing = true;
           });
-          await signInWithApple().then((result) {
-            print(result);
-            if (result != null) {
-              Navigator.of(context)
-                  .pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (_) => HomeScreen(refresh: false)
-                  ),
-                      (Route<dynamic> route) => false
-              );
-            }
-          }).catchError((error) {
-            print('Registration Error: $error');
-          });
-          setState(() {
-            _isProcessing = false;
-          });
+          // await signInWithApple().then((result) {
+          //   print(result);
+          //   if (result != null) {
+          //     Navigator.of(context)
+          //         .pushAndRemoveUntil(
+          //         MaterialPageRoute(
+          //             builder: (_) => HomeScreen(refresh: false)
+          //         ),
+          //             (Route<dynamic> route) => false
+          //     );
+          //   }
+          // }).catchError((error) {
+          //   print('Registration Error: $error');
+          // });
+          // setState(() {
+          //   _isProcessing = false;
+          // });
         },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

@@ -11,7 +11,7 @@ class HorizontalListItem extends StatelessWidget {
   final Show show;
   final Channel channel;
 
-  HorizontalListItem({@required final this.show, final this.channel});
+  HorizontalListItem({required final this.show, required final this.channel});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,8 @@ class HorizontalListItem extends StatelessWidget {
               channel: channel,
               refresh: true,
               backroute: 0,
+              lastplayedepisodeLocal: 0,
+              lastplayedseasonLocal: 0,
             )
         ),
         );

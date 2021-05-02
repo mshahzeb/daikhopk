@@ -12,7 +12,7 @@ class HorizontalList extends StatefulWidget {
   final Map<String, Channel> channels;
   final bool order;
 
-  HorizontalList({@required final this.shows, final this.channels, final this.order});
+  HorizontalList({required final this.shows, required final this.channels, required final this.order});
 
   @override
   _HorizontalListState createState() => _HorizontalListState(
@@ -27,7 +27,7 @@ class _HorizontalListState extends State<HorizontalList> {
   final Map<String, Channel> channels;
   final bool order;
 
-  _HorizontalListState({@required final this.shows, final this.channels, final this.order});
+  _HorizontalListState({required final this.shows, required final this.channels, required final this.order});
 
   Widget _buildListItem(BuildContext context, int index) {
     if((index < shows.length) && (index < $maxtiles)) {
@@ -39,8 +39,8 @@ class _HorizontalListState extends State<HorizontalList> {
       }
       final int key = shows.keys.elementAt(idx);
       return HorizontalListItem(
-        show: shows[key],
-        channel: channels[shows[key].channel],
+        show: shows[key]!,
+        channel: channels[shows[key]!.channel]!,
       );
     } else {
       return TextButton(

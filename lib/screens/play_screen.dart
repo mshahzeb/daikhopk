@@ -18,14 +18,14 @@ import 'package:daikhopk/constants.dart';
 
 import 'list_screen.dart';
 
-String videoId;
+String videoId = '';
 
 class PlayScreen extends StatefulWidget {
   final Show show;
   final Channel channel;
   final int seasonno;
   final int episodeno;
-  PlayScreen({@required final this.show, @required final this.channel, @required final this.seasonno, @required final this.episodeno});
+  PlayScreen({required final this.show, required final this.channel, required final this.seasonno, required final this.episodeno});
 
   @override
   _PlayScreenState createState() => _PlayScreenState(
@@ -43,15 +43,15 @@ class _PlayScreenState extends State<PlayScreen> {
   final int episodeno;
   late YoutubePlayerController _controller;
 
-  _PlayScreenState({@required final this.show, @required this.channel, @required final this.seasonno, @required final this.episodeno});
+  _PlayScreenState({required final this.show, required this.channel, required final this.seasonno, required final this.episodeno});
 
   final ValueNotifier<bool> _isMuted = ValueNotifier(false);
   bool played = false;
   int pos1 = 0;
   int pos2 = 0;
   int timeleft = 0;
-  int nextepisode;
-  int previousepisode;
+  int nextepisode = 0;
+  int previousepisode = 0;
   bool completed = false;
 
   @override
@@ -65,10 +65,10 @@ class _PlayScreenState extends State<PlayScreen> {
       DeviceOrientation.portraitDown,
     ]);
 
-    if(show.seasons[seasonno].episodes[episodeno].episodeVideoId == null)
-      videoId = YoutubePlayerController.convertUrlToId(show.seasons[seasonno].episodes[episodeno].episodeUrl);
+    if(show.seasons[seasonno]!.episodes[episodeno]!.episodeVideoId == null)
+      videoId = YoutubePlayerController.convertUrlToId(show.seasons[seasonno]!.episodes[episodeno]!.episodeUrl)!;
     else
-      videoId = show.seasons[seasonno].episodes[episodeno].episodeVideoId;
+      videoId = show.seasons[seasonno]!.episodes[episodeno]!.episodeVideoId;
 
     //print('PlayVideo ControllerInit');
 
@@ -93,17 +93,17 @@ class _PlayScreenState extends State<PlayScreen> {
             _controller.play();
           } else {
             if (show.embed == 2) {
-              _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
+              _launchYoutubeVideo(show.seasons[seasonno]!.episodes[episodeno]!.episodeUrl);
             } else {
               if (Platform.isAndroid) {
                 AndroidIntent intent = AndroidIntent(
                     action: 'action_view',
-                    data: show.seasons[seasonno].episodes[episodeno].episodeUrl,
+                    data: show.seasons[seasonno]!.episodes[episodeno]!.episodeUrl,
                     arguments: {'force_fullscreen': true}
                 );
                 intent.launch();
               } else {
-                _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
+                _launchYoutubeVideo(show.seasons[seasonno]!.episodes[episodeno]!.episodeUrl);
               }
             }
           }
@@ -115,12 +115,12 @@ class _PlayScreenState extends State<PlayScreen> {
           if(Platform.isAndroid) {
             AndroidIntent intent = AndroidIntent(
                 action: 'action_view',
-                data: show.seasons[seasonno].episodes[episodeno].episodeUrl,
+                data: show.seasons[seasonno]!.episodes[episodeno]!.episodeUrl,
                 arguments: {'force_fullscreen': true}
             );
             intent.launch();
           } else {
-            _launchYoutubeVideo(show.seasons[seasonno].episodes[episodeno].episodeUrl);
+            _launchYoutubeVideo(show.seasons[seasonno]!.episodes[episodeno]!.episodeUrl);
           }
         }
       }
@@ -164,10 +164,10 @@ class _PlayScreenState extends State<PlayScreen> {
     //print('PlayVideo UpdateVideoIdStats');
     UpdateVideoIdStats();
 
-    if(show.seasons[seasonno].episodes[episodeno + 1] != null) {
+    if(show.seasons[seasonno]!.episodes[episodeno + 1] != null) {
       nextepisode = episodeno + 1;
     }
-    if(show.seasons[seasonno].episodes[episodeno - 1] != null) {
+    if(show.seasons[seasonno]!.episodes[episodeno - 1] != null) {
       previousepisode = episodeno - 1;
     }
 
@@ -190,8 +190,7 @@ class _PlayScreenState extends State<PlayScreen> {
     lastplayedshows.clear();
     lastplayedshowidsHome.forEach((element) {
       lastplayedshows.putIfAbsent(
-          showsHome.shows[int.parse(element)].showid, () => showsHome
-          .shows[int.parse(element)]);
+          showsHome.shows[int.parse(element)]!.showid, () => showsHome.shows[int.parse(element)]!);
     });
     
     DateTime currTime = DateTime.now();
@@ -303,6 +302,7 @@ class _PlayScreenState extends State<PlayScreen> {
                         refresh: false,
                         lastplayedseasonLocal: seasonno,
                         lastplayedepisodeLocal: episodeno,
+                        backroute: 0,
                       )
               )
           );
@@ -429,7 +429,7 @@ class _PlayScreenState extends State<PlayScreen> {
                               splashColor: Colors.grey,
                               onPressed: () {
                                 String launchUrl;
-                                launchUrl = show.seasons[seasonno].episodes[episodeno].episodeUrl + '&t=' + _controller.value.position.inSeconds.toString();
+                                launchUrl = show.seasons[seasonno]!.episodes[episodeno]!.episodeUrl + '&t=' + _controller.value.position.inSeconds.toString();
                                 _launchYoutubeVideo(launchUrl);
                               },
                               shape: RoundedRectangleBorder(
@@ -478,12 +478,12 @@ class _PlayScreenState extends State<PlayScreen> {
                     ),
                     ListTile(
                       leading: CachedNetworkImage(
-                        imageUrl: (show.seasons[seasonno].episodes[episodeno]?.episodeThumbnail ?? "") == "" ? show.posterUrl : show.seasons[seasonno].episodes[episodeno].episodeThumbnail,
+                        imageUrl: (show.seasons[seasonno]!.episodes[episodeno]?.episodeThumbnail ?? "") == "" ? show.posterUrl : show.seasons[seasonno]!.episodes[episodeno]!.episodeThumbnail,
                         width: deviceSize.width/3,
                         fit: BoxFit.fitWidth,
                       ),
                       title: Text(
-                        'Episode ' + show.seasons[seasonno].episodes[episodeno].episodeno.toString(),
+                        'Episode ' + show.seasons[seasonno]!.episodes[episodeno]!.episodeno.toString(),
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Roboto',
@@ -493,7 +493,7 @@ class _PlayScreenState extends State<PlayScreen> {
                       textAlign: TextAlign.left,
                       ),
                       subtitle: Text(
-                        show.seasons[seasonno].episodes[episodeno].episodetitle,
+                        show.seasons[seasonno]!.episodes[episodeno]!.episodetitle,
                         style: TextStyle(
                           fontSize: 18,
                           fontFamily: 'Roboto',

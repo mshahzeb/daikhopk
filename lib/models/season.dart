@@ -1,10 +1,10 @@
 import 'episode.dart';
 
 class Season {
-  int _seasonno;
-  Map<int, Episode> _episodes;
+  int _seasonno = 0;
+  Map<int, Episode> _episodes = Map();
 
-  Season(this._seasonno, this._episodes);
+  Season();
 
   int get seasonno => _seasonno; // ignore: unnecessary_getters_setters
   set seasonno(int seasonno) => _seasonno = seasonno; // ignore: unnecessary_getters_setters

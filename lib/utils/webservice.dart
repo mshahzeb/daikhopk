@@ -4,7 +4,7 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import 'package:http/http.dart' as http;
-http.Client client;
+http.Client? client;
 
 Future<void> InitClient() async {
   if(client == null) {
@@ -20,7 +20,7 @@ Future<Response> fetchUrl(final String url) async {
 
   while (trycount < $maxtrycounthttp) {
     try {
-      response = await client.get(Uri.parse(url), headers: {"Accept":"application/json", "Connection":"keep-alive"});
+      response = await client!.get(Uri.parse(url), headers: {"Accept":"application/json", "Connection":"keep-alive"});
       if (response.statusCode == 200) {
         return response;
       } else {
@@ -42,12 +42,12 @@ Future<Response> fetchUrl(final String url) async {
 
 Future<String> fetchUrlCached(final int id) async {
   Response response;
-  String versionuuid;
-  String jsonversion;
-  String jsonstring;
+  String? versionuuid;
+  String? jsonversion;
+  String? jsonstring = '';
 
-  String jsonversion_key;
-  String jsonstring_key;
+  String jsonversion_key = '';
+  String jsonstring_key = '';
 
   response = await fetchUrl($serviceURLversion + "/" + id.toString());
   versionuuid = jsonDecode(response.body)['version'];
@@ -61,13 +61,13 @@ Future<String> fetchUrlCached(final int id) async {
     response = await fetchUrl($serviceURLshowdata + "/" + id.toString());
     jsonstring = response.body;
 
-    prefs.setString(jsonversion_key, versionuuid);
+    prefs.setString(jsonversion_key, versionuuid!);
     prefs.setString(jsonstring_key, jsonstring);
   } else {
     jsonstring = prefs.getString(jsonstring_key);
   }
 
-  return jsonstring;
+  return jsonstring!;
 }
 
 Future<String> postUrl(final String url, final Map<String, dynamic> Json) async {
@@ -78,7 +78,7 @@ Future<String> postUrl(final String url, final Map<String, dynamic> Json) async 
 
   while (trycount < $maxtrycounthttp) {
     try {
-      response = await client.post(Uri.parse(url), headers: {
+      response = await client!.post(Uri.parse(url), headers: {
         "Content-Type": "application/json",
         "Connection": "keep-alive"
       }, body: jsonEncode(Json));

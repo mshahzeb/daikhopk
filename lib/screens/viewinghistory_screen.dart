@@ -16,9 +16,9 @@ class ViewingHistoryScreen extends StatefulWidget {
 
 class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
 
-  Future<int> _dataRequiredForBuild;
-  List<String> lastplayedvideos = List();
-  List<dynamic> lastplayedvideostimes = List();
+  late Future<int> _dataRequiredForBuild;
+  List<String> lastplayedvideos = [];
+  List<dynamic> lastplayedvideostimes = [];
   int error = 0;
 
   @override
@@ -48,11 +48,12 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
               lastplayed, (a, b) => lastplayed[b].compareTo(lastplayed[a]));
           lastplayedvideos = lastplayedsorted.keys.toList();
           lastplayedvideostimes = lastplayedsorted.values.toList();
-          return 1;
         }
       }
+      return 1;
     } catch(e) {
       error = 1;
+      return 0;
     }
   }
 
@@ -206,10 +207,12 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           ListScreen(
-                                            show: showsHome.shows[showid],
-                                            channel: showsHome.channels[showsHome.shows[showid].channel],
+                                            show: showsHome.shows[showid]!,
+                                            channel: showsHome.channels[showsHome.shows[showid]!.channel]!,
                                             refresh: true,
                                             backroute: 1,
+                                            lastplayedepisodeLocal: 0,
+                                            lastplayedseasonLocal: 0,
                                           )
                                   ),
                                 );
@@ -218,13 +221,13 @@ class _ViewingHistoryScreenState extends State<ViewingHistoryScreen> {
                                 margin: EdgeInsets.all(5),
                                 child: ListTile(
                                   leading: CachedNetworkImage(
-                                    imageUrl: showsHome.shows[showid].posterUrl,
+                                    imageUrl: showsHome.shows[showid]!.posterUrl,
                                     width: 100,
                                     fit: BoxFit.fitWidth,
                                     alignment: Alignment.topLeft,
                                   ),
                                   title: Text(
-                                    showsHome.shows[showid].showname + ' ' + 'Episode ' + episodeno.toString(),
+                                    showsHome.shows[showid]!.showname + ' ' + 'Episode ' + episodeno.toString(),
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontFamily: 'Roboto',

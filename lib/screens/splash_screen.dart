@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io' show Platform;
-import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:daikhopk/models/show.dart';
 import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
@@ -17,20 +16,20 @@ import 'package:daikhopk/models/shows.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
 List<String> listdataHomeCategories = ['New Episodes','Released Recently','Currently Running','Most Watched - All time','Top Rated - All time'];
-DeviceSize deviceSize;
-SharedPreferences prefs;
-Shows showsHome;
-Show showLocal;
-List<HorizontalListData> listdataHome;
-Future<bool> dataRequiredforLogin;
+late DeviceSize deviceSize;
+late SharedPreferences prefs;
+late Shows showsHome;
+late Show showLocal;
+List<HorizontalListData> listdataHome = [];
+late Future<bool> dataRequiredforLogin;
 bool canAppleLogin = false;
 
 Map <int, Show> lastplayedshows = new Map();
 var userlocal = new Map();
-Future<Shows> dataRequiredForHome;
+late Future<Shows> dataRequiredForHome;
 
 List<String> lastplayedshowidsHome = [];
-bool authSignedIn;
+bool authSignedIn = false;
 int errorHome = 0;
 bool isWeb = kIsWeb;
 bool disclaimerShown = false;
@@ -59,8 +58,8 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
 
   var _visible = true;
 
-  AnimationController animationController;
-  Animation<double> animation;
+  late AnimationController animationController;
+  late Animation<double> animation;
 
   startTime() async {
     prefs = await SharedPreferences.getInstance();
@@ -186,8 +185,8 @@ Future<Shows> fetchDataHome() async {
       lastplayedshowidsHome.forEach((element) {
         if(showsHome.shows[int.parse(element)] != null) {
           lastplayedshows.putIfAbsent(
-              showsHome.shows[int.parse(element)].showid, () => showsHome
-              .shows[int.parse(element)]);
+              showsHome.shows[int.parse(element)]!.showid, () => showsHome
+              .shows[int.parse(element)]!);
         }
       });
     }
@@ -195,39 +194,39 @@ Future<Shows> fetchDataHome() async {
     //['New Episodes','Released This Month','Most Watched','Top Rated']
     listdataHome = [];
     for(var i=0; i < listdataHomeCategories.length; i ++) {
-      SplayTreeMap<int, Show> sortedshows;
+      SplayTreeMap<int, Show> sortedshows = SplayTreeMap();
       DateTime currDate = DateTime.now();
       //DateTime currMonth = new DateTime(currDate.year, currDate.month - 1, 1);
       DateTime currMonth = new DateTime(currDate.year - 1, 6, 1);
 
       if(listdataHomeCategories[i] == "New Episodes") {
         sortedshows = new SplayTreeMap<int, Show>.from(
-          showsHome.shows, (a,b) => showsHome.shows[b].updateDatetime.compareTo(showsHome.shows[a].updateDatetime)
+          showsHome.shows, (a,b) => showsHome.shows[b]!.updateDatetime.compareTo(showsHome.shows[a]!.updateDatetime)
         );
       }
       else if(listdataHomeCategories[i] == "Released Recently") {
         sortedshows = new SplayTreeMap<int, Show>.from(
-            showsHome.shows, (a,b) => showsHome.shows[b].releaseDatetime.compareTo(showsHome.shows[a].releaseDatetime)
+            showsHome.shows, (a,b) => showsHome.shows[b]!.releaseDatetime.compareTo(showsHome.shows[a]!.releaseDatetime)
         );
       }
       else if(listdataHomeCategories[i] == "Currently Running") {
         sortedshows = new SplayTreeMap<int, Show>.from(
-            showsHome.shows, (a,b) => showsHome.shows[b].releaseDatetime.compareTo(showsHome.shows[a].releaseDatetime)
+            showsHome.shows, (a,b) => showsHome.shows[b]!.releaseDatetime.compareTo(showsHome.shows[a]!.releaseDatetime)
         );
         showsHome.shows.forEach((key, value) {
-          if(showsHome.shows[key].completed == 0) {
+          if(showsHome.shows[key]!.completed == 0) {
             sortedshows.remove(key);
           }
         });
       }
       else if(listdataHomeCategories[i] == "Most Watched - All time") {
         sortedshows = new SplayTreeMap<int, Show>.from(
-            showsHome.shows, (a,b) => showsHome.shows[b].viewCount.compareTo(showsHome.shows[a].viewCount)
+            showsHome.shows, (a,b) => showsHome.shows[b]!.viewCount.compareTo(showsHome.shows[a]!.viewCount)
         );
       }
       else if(listdataHomeCategories[i] == "Top Rated - All time") {
         sortedshows = new SplayTreeMap<int, Show>.from(
-            showsHome.shows, (a,b) => showsHome.shows[b].likeCount.compareTo(showsHome.shows[a].likeCount)
+            showsHome.shows, (a,b) => showsHome.shows[b]!.likeCount.compareTo(showsHome.shows[a]!.likeCount)
         );
       }
       listdataHome.add(HorizontalListData(listdataHomeCategories[i],sortedshows));
@@ -238,12 +237,13 @@ Future<Shows> fetchDataHome() async {
   }
   catch(e) {
     errorHome = 1;
+    return Shows();
   }
 }
 
 Future<void> CheckAppleLogin() async {
   if(Platform.isIOS) {
-    canAppleLogin = await AppleSignIn.isAvailable();
+    // canAppleLogin = await AppleSignIn.isAvailable();
   } else {
     canAppleLogin = false;
   }

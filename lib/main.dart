@@ -2,7 +2,7 @@ import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/webservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:daikhopk/utils/prefer.dart';
+
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,8 +13,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
 }
 
-AndroidNotificationChannel channel;
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+late AndroidNotificationChannel channel;
+late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,11 +45,10 @@ void main() async {
       sound: true,
     );
 
-    String token = await FirebaseMessaging.instance.getToken();
+    String token = (await FirebaseMessaging.instance.getToken())!;
     print('FCM Token: ' + token);
   }
 
-  Prefs.init();
   runApp(MyApp());
 }
 
@@ -60,7 +59,7 @@ class MyApp extends StatefulWidget{
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale locale;
+  late Locale locale;
   bool localeLoaded = false;
 
   @override
@@ -83,15 +82,15 @@ class _MyAppState extends State<MyApp> {
     if (!isWeb) {
       FirebaseMessaging.instance
           .getInitialMessage()
-          .then((RemoteMessage message) {
+          .then((RemoteMessage? message) {
         if (message != null) {
 
         }
       });
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        RemoteNotification notification = message.notification;
-        AndroidNotification android = message.notification?.android;
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
 
         if (notification != null && android != null) {
           flutterLocalNotificationsPlugin.show(
@@ -119,7 +118,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    client.close();
+    client!.close();
     super.dispose();
   }
 
@@ -128,7 +127,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: "Daikho.pk",
       builder: (context, widget) => ResponsiveWrapper.builder(
-          ClampingScrollWrapper.builder(context, widget),
+          ClampingScrollWrapper.builder(context, widget!),
           maxWidth: 1200,
           minWidth: 450,
           defaultScale: true,

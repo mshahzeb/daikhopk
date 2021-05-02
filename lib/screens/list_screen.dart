@@ -26,7 +26,7 @@ class ListScreen extends StatefulWidget {
   final int lastplayedepisodeLocal;
   final int backroute;
 
-  ListScreen({@required final this.show, @required final this.channel, @required final this.refresh, final this.lastplayedseasonLocal, final this.lastplayedepisodeLocal, final this.backroute});
+  ListScreen({required final this.show, required final this.channel, required final this.refresh, required final this.lastplayedseasonLocal, required final this.lastplayedepisodeLocal, required final this.backroute});
 
   @override
   _ListScreenState createState() => _ListScreenState(
@@ -40,20 +40,20 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
-  final Show show;
-  final Channel channel;
-  final bool refresh;
-  final int lastplayedseasonLocal;
-  final int lastplayedepisodeLocal;
-  final int backroute;
+  late final Show show;
+  late final Channel channel;
+  bool refresh = false;
+  int lastplayedseasonLocal = 0;
+  int lastplayedepisodeLocal = 0;
+  int backroute = 0;
 
   int seasonno = 1;
 
   int error = 0;
-  int _lastplayedseason;
-  int _lastplayedepisode;
-  Future<Show> _dataRequiredForBuild;
-  _ListScreenState({@required final this.show, @required final this.channel, @required final this.refresh, final this.lastplayedseasonLocal, final this.lastplayedepisodeLocal, final this.backroute});
+  int _lastplayedseason = 0;
+  int _lastplayedepisode = 0;
+  late Future<Show> _dataRequiredForBuild;
+  _ListScreenState({required final this.show, required final this.channel, required this.refresh, required final this.lastplayedseasonLocal, required final this.lastplayedepisodeLocal, required final this.backroute});
 
   @override
   void initState() {
@@ -71,7 +71,7 @@ class _ListScreenState extends State<ListScreen> {
         Map<int, Show> temp = Shows
             .fromJson(jsonDecode(episodes))
             .shows;
-        showLocal = temp[temp.keys.first];
+        showLocal = temp[temp.keys.first]!;
 
         Map <String, dynamic> Json = {
           "uid": userlocal['uid'],
@@ -100,15 +100,16 @@ class _ListScreenState extends State<ListScreen> {
 
       if(_lastplayedseason > 0) {
         seasonno = _lastplayedseason;
-        _selectedItem = _dropdownMenuItems[_lastplayedseason-1].value;
+        _selectedItem = _dropdownMenuItems[_lastplayedseason-1].value!;
       } else {
-        _selectedItem = _dropdownMenuItems[0].value;
+        _selectedItem = _dropdownMenuItems[0].value!;
       }
 
       return show;
 
     } catch(e) {
       error = 1;
+      return show;
     }
   }
 
@@ -131,11 +132,11 @@ class _ListScreenState extends State<ListScreen> {
     setState(() {});
   }
 
-  List<DropdownMenuItem<ListItem>> _dropdownMenuItems;
-  ListItem _selectedItem;
+  List<DropdownMenuItem<ListItem>> _dropdownMenuItems = [];
+  late ListItem _selectedItem;
 
   List<DropdownMenuItem<ListItem>> buildDropDownMenuItems() {
-    List<DropdownMenuItem<ListItem>> items = List();
+    List<DropdownMenuItem<ListItem>> items = [];
     for (var i=1; i <= show.totalseasons; i++) {
       items.add(
         DropdownMenuItem(
@@ -191,10 +192,9 @@ class _ListScreenState extends State<ListScreen> {
                 onTap: () {
                   Map<int, Show> filteredshows = Map();
                   showsHome.shows.forEach((key, value) {
-                    if(showsHome.shows[key].channel == channel.channel) {
+                    if(showsHome.shows[key]!.channel == channel.channel) {
                       filteredshows.putIfAbsent(
-                          showsHome.shows[key].showid, () => showsHome
-                          .shows[key]);
+                          showsHome.shows[key]!.showid, () => showsHome.shows[key]!);
                     }
                   });
 
@@ -253,7 +253,7 @@ class _ListScreenState extends State<ListScreen> {
                             )
                           ),
                         fallbackBuilder: (BuildContext context) =>
-                          SizedBox(width: 0.0,),
+                          SizedBox(width: 0.0,), context: context,
                       ),
                       SizedBox(width: 10.0,),
                       Container(
@@ -370,7 +370,7 @@ class _ListScreenState extends State<ListScreen> {
                                                 ),
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    _selectedItem = value;
+                                                    _selectedItem = value!;
                                                     seasonno = value.value;
                                                   });
                                                 }
@@ -379,7 +379,7 @@ class _ListScreenState extends State<ListScreen> {
                                         ]
                                       ),
                                     fallbackBuilder: (BuildContext context) =>
-                                        SizedBox(height: 0.0,),
+                                        SizedBox(height: 0.0,), context: context,
                                   ),
                                   SizedBox(height: 10),
                                   Conditional.single(
@@ -427,7 +427,7 @@ class _ListScreenState extends State<ListScreen> {
                                                 margin: EdgeInsets.all(5),
                                                 child: ListTile(
                                                   leading: CachedNetworkImage(
-                                                    imageUrl: (showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode]?.episodeThumbnail ?? "") == "" ? show.posterUrl : showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode].episodeThumbnail,
+                                                    imageUrl: (showLocal.seasons[_lastplayedseason]!.episodes[_lastplayedepisode]!.episodeThumbnail),
                                                     width: 100,
                                                     fit: BoxFit.fitWidth,
                                                     alignment: Alignment.topLeft,
@@ -440,7 +440,7 @@ class _ListScreenState extends State<ListScreen> {
                                                   ),
                                                   title: Text(
                                                     'Episode ' +
-                                                        showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode].episodeno
+                                                        showLocal.seasons[_lastplayedseason]!.episodes[_lastplayedepisode]!.episodeno
                                                             .toString(),
                                                     style: TextStyle(
                                                       fontSize: 18,
@@ -451,7 +451,7 @@ class _ListScreenState extends State<ListScreen> {
                                                     textAlign: TextAlign.left,
                                                   ),
                                                   subtitle: Text(
-                                                    showLocal.seasons[_lastplayedseason].episodes[_lastplayedepisode].episodetitle,
+                                                    showLocal.seasons[_lastplayedseason]!.episodes[_lastplayedepisode]!.episodetitle,
                                                     style: TextStyle(
                                                       fontSize: 16,
                                                       fontFamily: 'Roboto',
@@ -468,7 +468,7 @@ class _ListScreenState extends State<ListScreen> {
                                       ]
                                     ),
                                     fallbackBuilder: (BuildContext context) =>
-                                    SizedBox(height: 0.0,),
+                                    SizedBox(height: 0.0,), context: context,
                                   ),
                                   SizedBox(height: 20.0,),
                                   Container(
@@ -487,10 +487,10 @@ class _ListScreenState extends State<ListScreen> {
                                   ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemCount: showLocal.seasons[seasonno].episodes.length,
+                                    itemCount: showLocal.seasons[seasonno]!.episodes.length,
                                     itemBuilder: (context, index) {
-                                      int key = showLocal.seasons[seasonno].episodes.keys.elementAt(index);
-                                      if(showLocal.seasons[seasonno].episodes[key] != null) {
+                                      int key = showLocal.seasons[seasonno]!.episodes.keys.elementAt(index);
+                                      if(showLocal.seasons[seasonno]!.episodes[key] != null) {
                                         return GestureDetector(
                                           behavior: HitTestBehavior.translucent,
                                           onTap: () {
@@ -510,11 +510,7 @@ class _ListScreenState extends State<ListScreen> {
                                             margin: EdgeInsets.all(5),
                                             child: ListTile(
                                               leading: CachedNetworkImage(
-                                                imageUrl: (showLocal.seasons[seasonno].episodes[key]
-                                                    ?.episodeThumbnail ?? "") == ""
-                                                    ? show.posterUrl
-                                                    : showLocal.seasons[seasonno].episodes[key]
-                                                    .episodeThumbnail,
+                                                imageUrl: (showLocal.seasons[seasonno]!.episodes[key]!.episodeThumbnail),
                                                 width: 100,
                                                 fit: BoxFit.fitWidth,
                                                 alignment: Alignment.topLeft,
@@ -527,7 +523,7 @@ class _ListScreenState extends State<ListScreen> {
                                               ),
                                               title: Text(
                                                 'Episode ' +
-                                                    showLocal.seasons[seasonno].episodes[key].episodeno
+                                                    showLocal.seasons[seasonno]!.episodes[key]!.episodeno
                                                         .toString(),
                                                 style: TextStyle(
                                                   fontSize: 18,
@@ -538,7 +534,7 @@ class _ListScreenState extends State<ListScreen> {
                                                 textAlign: TextAlign.left,
                                               ),
                                               subtitle: Text(
-                                                showLocal.seasons[seasonno].episodes[key].episodetitle,
+                                                showLocal.seasons[seasonno]!.episodes[key]!.episodetitle,
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   fontFamily: 'Roboto',

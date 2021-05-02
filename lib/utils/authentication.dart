@@ -1,4 +1,4 @@
-import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,11 +12,11 @@ import '../constants.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
-String uid;
-String name;
-String userEmail;
-String imageUrl;
-String accountType;
+String uid = '';
+String name = '';
+String userEmail = '';
+String imageUrl = '';
+String accountType = '';
 
 /// For checking if the user is already signed into the
 /// app using Google Sign In
@@ -26,14 +26,14 @@ Future getUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool authSignedIn = prefs.getBool('auth') ?? false;
 
-  final User user = _auth.currentUser;
+  final User user = _auth.currentUser!;
 
   if (authSignedIn == true) {
     if (user != null) {
       uid = user.uid;
-      name = user.displayName;
-      userEmail = user.email;
-      imageUrl = user.photoURL;
+      name = user.displayName!;
+      userEmail = user.email!;
+      imageUrl = user.photoURL!;
     }
   }
 }
@@ -41,7 +41,7 @@ Future getUser() async {
 Future<String> signInWithGoogle() async {
   await Firebase.initializeApp();
 
-  final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+  final GoogleSignInAccount googleSignInAccount = (await googleSignIn.signIn())!;
   final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
 
@@ -52,7 +52,7 @@ Future<String> signInWithGoogle() async {
 
   final UserCredential userCredential =
       await _auth.signInWithCredential(credential);
-  final User user = userCredential.user;
+  final User user = userCredential.user!;
 
   if (user != null) {
     // Checking if email and name is null
@@ -62,15 +62,14 @@ Future<String> signInWithGoogle() async {
     assert(user.photoURL != null);
 
     uid = user.uid;
-    name = user.displayName;
-    userEmail = user.email;
-    imageUrl = user.photoURL;
+    name = user.displayName!;
+    userEmail = user.email!;
+    imageUrl = user.photoURL!;
     accountType = 'Google';
 
     assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
 
-    final User currentUser = _auth.currentUser;
+    final User currentUser = _auth.currentUser!;
     assert(user.uid == currentUser.uid);
 
     updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
@@ -78,7 +77,7 @@ Future<String> signInWithGoogle() async {
     return 'Google sign in successful, User UID: ${user.uid}';
   }
 
-  return null;
+  return 'None';
 }
 
 Future<String> signInWithFacebook() async {
@@ -88,27 +87,22 @@ Future<String> signInWithFacebook() async {
   final LoginResult result = await FacebookAuth.instance.login();
 
   // Create a credential from the access token
-  final FacebookAuthCredential facebookAuthCredential =
-  FacebookAuthProvider.credential(result.accessToken.toString());
+  final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(result.accessToken.toString());
 
   // Once signed in, return the UserCredential
   final UserCredential userCredential = await _auth.signInWithCredential(facebookAuthCredential);
-  final User user = userCredential.user;
+  final User user = userCredential.user!;
 
-  if (user != null) {
-    // Checking if email and name is null
-    assert(user.uid != null);
-
+  if (user.uid != '') {
     uid = user.uid;
-    if(user.displayName != null) { name = user.displayName; } else { name = "You"; }
-    if(user.email != null) { userEmail = user.email; } else { userEmail = "you@daikho.pk"; }
-    if(user.photoURL != null) { imageUrl = user.photoURL; } else { imageUrl = $defaultprofilepicture; }
+    if(user.displayName != null) { name = user.displayName!; } else { name = "You"; }
+    if(user.email != null) { userEmail = user.email!; } else { userEmail = "you@daikho.pk"; }
+    if(user.photoURL != null) { imageUrl = user.photoURL!; } else { imageUrl = $defaultprofilepicture; }
     accountType = 'Facebook';
 
     assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
 
-    final User currentUser = _auth.currentUser;
+    final User currentUser = _auth.currentUser!;
     assert(user.uid == currentUser.uid);
 
     updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
@@ -116,58 +110,60 @@ Future<String> signInWithFacebook() async {
     return 'Facebook sign in successful, User UID: ${user.uid}';
   }
 
-  return null;
+  return 'None';
 }
 
-Future<String> signInWithApple() async {
-  try {
-    final AuthorizationResult appleResult = await AppleSignIn.performRequests([
-      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
-    ]);
-
-    switch (appleResult.status) {
-      case AuthorizationStatus.authorized:
-        try {
-          //OAuthProvider  oAuthProvider = new OAuthProvider("apple.com");
-          //final AuthCredential Applecredential = oAuthProvider.credential(
-          //  accessToken: String.fromCharCodes(appleResult.credential.authorizationCode),
-          //  idToken: String.fromCharCodes(appleResult.credential.identityToken),
-          //);
-
-          //final UserCredential userCredential = await _auth.signInWithCredential(Applecredential);
-          //final User user = userCredential.user;
-
-          uid = appleResult.credential.user;
-          if(appleResult.credential.fullName.givenName != null) { name = appleResult.credential.fullName.givenName + " " + appleResult.credential.fullName.familyName ?? ""; } else { name = "You"; }
-          if(appleResult.credential.email != null) { userEmail = appleResult.credential.email; } else { userEmail = "you@daikho.pk"; }
-          imageUrl = $defaultprofilepicture;
-          accountType = 'Apple';
-
-          updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
-
-          return 'Apple sign in successful, User UID: ${uid}';
-
-        } catch (e) {
-          print("error");
-        }
-        break;
-      case AuthorizationStatus.error:
-      // do something
-        break;
-
-      case AuthorizationStatus.cancelled:
-        print('User cancelled');
-        break;
-    }
-  } catch (error) {
-    print("error with apple sign in");
-  }
-
-}
+// Future<String> signInWithApple() async {
+//   try {
+//     final AuthorizationResult appleResult = await AppleSignIn.performRequests([
+//       AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+//     ]);
+//
+//     switch (appleResult.status) {
+//       case AuthorizationStatus.authorized:
+//         try {
+//           //OAuthProvider  oAuthProvider = new OAuthProvider("apple.com");
+//           //final AuthCredential Applecredential = oAuthProvider.credential(
+//           //  accessToken: String.fromCharCodes(appleResult.credential.authorizationCode),
+//           //  idToken: String.fromCharCodes(appleResult.credential.identityToken),
+//           //);
+//
+//           //final UserCredential userCredential = await _auth.signInWithCredential(Applecredential);
+//           //final User user = userCredential.user;
+//
+//           uid = appleResult.credential.user;
+//           if(appleResult.credential.fullName.givenName != null) { name = appleResult.credential.fullName.givenName + " " + appleResult.credential.fullName.familyName ?? ""; } else { name = "You"; }
+//           if(appleResult.credential.email != null) { userEmail = appleResult.credential.email; } else { userEmail = "you@daikho.pk"; }
+//           imageUrl = $defaultprofilepicture;
+//           accountType = 'Apple';
+//
+//           updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
+//
+//           return 'Apple sign in successful, User UID: ${uid}';
+//
+//         } catch (e) {
+//           print("error");
+//         }
+//         break;
+//       case AuthorizationStatus.error:
+//       // do something
+//         break;
+//
+//       case AuthorizationStatus.cancelled:
+//         print('User cancelled');
+//         break;
+//     }
+//     return 'None';
+//   } catch (error) {
+//     print("error with apple sign in");
+//     return 'None';
+//   }
+//
+// }
 
 void signOut() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String accountType = prefs.getString('accountType');
+  String accountType = prefs.getString('accountType')!;
 
   if(accountType == "Google") {
     signOutGoogle();
@@ -178,11 +174,11 @@ void signOut() async {
     signOutFacebook();
   }
 
-  uid = null;
-  name = null;
-  userEmail = null;
-  imageUrl = null;
-  accountType = null;
+  uid = '';
+  name = '';
+  userEmail = '';
+  imageUrl = '';
+  accountType = '';
 
   prefs.clear();
   userlocal.clear();
@@ -205,6 +201,7 @@ Future<String> signOutFacebook() async {
   await _auth.signOut();
 
   print("User signed out of Facebook account");
+  return 'None';
 }
 
 void updateUserDataCache(String uid, String name, String userEmail, String userImageUrl, String accountType) async {

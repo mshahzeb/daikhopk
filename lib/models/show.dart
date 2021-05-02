@@ -4,24 +4,24 @@ import 'package:daikhopk/screens/splash_screen.dart';
 import '../constants.dart';
 
 class Show {
-  int _showid;
-  String _showname;
-  String _showtype;
-  String _posterUrl;
-  String _trailerUrl;
-  String _trailerVideoId;
-  int _embed;
-  String _channel;
-  int _totalseasons;
-  int _totalepisodes;
-  int _completed;
-  DateTime _releaseDatetime;
-  DateTime _updateDatetime;
-  int _viewCount;
-  int _likeCount;
-  Map<int, Season> _seasons;
+  int _showid = 0;
+  String _showname = '';
+  String _showtype = '';
+  String _posterUrl = '';
+  String _trailerUrl = '';
+  String _trailerVideoId = '';
+  int _embed = 0;
+  String _channel = '';
+  int _totalseasons = 0;
+  int _totalepisodes = 0;
+  int _completed = 0;
+  late DateTime _releaseDatetime;
+  late DateTime _updateDatetime;
+  int _viewCount = 0;
+  int _likeCount = 0;
+  Map<int, Season> _seasons = Map();
 
-  Show(this._showid, this._showname, this._showtype, this._posterUrl, this._trailerUrl, this._trailerVideoId, this._embed, this._channel, this._totalseasons, this._totalepisodes, this._completed, this._releaseDatetime, this._updateDatetime, this._viewCount, this._likeCount, this._seasons);
+  Show();
 
   int get showid => _showid; // ignore: unnecessary_getters_setters
   set showid(int showid) => _showid = showid; // ignore: unnecessary_getters_setters
@@ -71,7 +71,7 @@ class Show {
       _posterUrl = $firebasestorageurl + 'daikhopk-imagedata%2F' + 'daikho_icon_blackbgsquare.png?alt=media&' + $firebasetoken;
     }
     _trailerVideoId = json['trailerVideoId']?? "";
-    _trailerUrl = 'https://www.youtube.com/watch?v=' + _trailerVideoId?? "";
+    _trailerUrl = 'https://www.youtube.com/watch?v=' + _trailerVideoId;
     _embed = json['embed']?? 0;
     _channel = json['channel']?? "";
     _totalseasons = json['totalseasons']?? 0;

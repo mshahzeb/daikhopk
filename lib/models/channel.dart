@@ -1,10 +1,10 @@
 class Channel {
-  String _channelid;
-  String _channel;
-  String _logoUrl;
-  int _shows;
+  String _channelid = '';
+  String _channel = '';
+  String _logoUrl = '';
+  int _shows = 0;
 
-  Channel(this._channelid, this._channel, this._logoUrl);
+  Channel();
 
   String get channelid => _channelid; // ignore: unnecessary_getters_setters
   set channelid(String channelid) => _channelid = channelid; // ignore: unnecessary_getters_setters

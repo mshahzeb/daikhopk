@@ -76,7 +76,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       fontWeight: FontWeight.w300
                   ),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Please enter some text';
                     }
                     return null;
@@ -89,7 +89,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     onPressed: () {
                       // Validate returns true if the form is valid, or false
                       // otherwise.
-                      if (_formKey1.currentState.validate()) {
+                      if (_formKey1.currentState!.validate()) {
                         FocusScopeNode currentFocus = FocusScope.of(context);
                         if (!currentFocus.hasPrimaryFocus) {
                           currentFocus.unfocus();
@@ -155,7 +155,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         fontWeight: FontWeight.w300
                     ),
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value!.isEmpty) {
                         return 'Please enter some text';
                       }
                       return null;
@@ -168,7 +168,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       onPressed: () {
                         // Validate returns true if the form is valid, or false
                         // otherwise.
-                        if (_formKey2.currentState.validate()) {
+                        if (_formKey2.currentState!.validate()) {
                           FocusScopeNode currentFocus = FocusScope.of(context);
                           if (!currentFocus.hasPrimaryFocus) {
                             currentFocus.unfocus();

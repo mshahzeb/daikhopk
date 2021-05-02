@@ -3,14 +3,14 @@ import 'package:daikhopk/screens/splash_screen.dart';
 import '../constants.dart';
 
 class Episode {
-  int _episodeid;
-  int _episodeno;
-  String _episodetitle;
-  String _episodeUrl;
-  String _episodeVideoId;
-  String _episodeThumbnail;
+  int _episodeid = 0;
+  int _episodeno = 0;
+  String _episodetitle = '';
+  String _episodeUrl = '';
+  String _episodeVideoId = '';
+  String _episodeThumbnail = '';
 
-  Episode(this._episodeid, this._episodeno, this._episodetitle, this._episodeUrl);
+  Episode();
 
   int get episodeid => _episodeid; // ignore: unnecessary_getters_setters
   set episodeid(int episodeid) =>_episodeid = episodeid; // ignore: unnecessary_getters_setters

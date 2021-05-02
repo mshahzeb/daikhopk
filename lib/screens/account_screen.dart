@@ -46,7 +46,7 @@ class _AccountScreenState extends State<AccountScreen> {
           Padding(
             padding: EdgeInsets.symmetric(
               vertical: 25,
-              horizontal: isWeb ? $webbuttonspadding:25,
+              horizontal: isWeb ? $webbuttonspadding:25.00,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -140,9 +140,9 @@ class ProfileListItem extends StatelessWidget {
   final bool hasNavigation;
 
   const ProfileListItem({
-    Key key,
-    this.icon,
-    this.text,
+    Key? key,
+    required this.icon,
+    required this.text,
     this.hasNavigation = true,
   }) : super(key: key);
 
