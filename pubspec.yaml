@@ -32,7 +32,7 @@ dependencies:
   flutter_facebook_auth: ^3.3.3+1
   shared_preferences: ^2.0.5
   youtube_player_iframe: ^2.0.0
-  url_launcher: ^6.0.0
+  url_launcher: ^6.0.3
   flutter_conditional_rendering: ^2.0.0
   flutter_swiper_null_safety: ^1.0.1
   material_floating_search_bar: ^0.3.4
