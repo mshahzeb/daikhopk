@@ -105,53 +105,36 @@ Future<String> signInWithFacebook() async {
   return 'None';
 }
 
-// Future<String> signInWithApple() async {
-//   try {
-//     final AuthorizationResult appleResult = await AppleSignIn.performRequests([
-//       AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
-//     ]);
-//
-//     switch (appleResult.status) {
-//       case AuthorizationStatus.authorized:
-//         try {
-//           //OAuthProvider  oAuthProvider = new OAuthProvider("apple.com");
-//           //final AuthCredential Applecredential = oAuthProvider.credential(
-//           //  accessToken: String.fromCharCodes(appleResult.credential.authorizationCode),
-//           //  idToken: String.fromCharCodes(appleResult.credential.identityToken),
-//           //);
-//
-//           //final UserCredential userCredential = await _auth.signInWithCredential(Applecredential);
-//           //final User user = userCredential.user;
-//
-//           uid = appleResult.credential.user;
-//           if(appleResult.credential.fullName.givenName != null) { name = appleResult.credential.fullName.givenName + " " + appleResult.credential.fullName.familyName ?? ""; } else { name = "You"; }
-//           if(appleResult.credential.email != null) { userEmail = appleResult.credential.email; } else { userEmail = "you@daikho.pk"; }
-//           imageUrl = $defaultprofilepicture;
-//           accountType = 'Apple';
-//
-//           updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
-//
-//           return 'Apple sign in successful, User UID: ${uid}';
-//
-//         } catch (e) {
-//           print("error");
-//         }
-//         break;
-//       case AuthorizationStatus.error:
-//       // do something
-//         break;
-//
-//       case AuthorizationStatus.cancelled:
-//         print('User cancelled');
-//         break;
-//     }
-//     return 'None';
-//   } catch (error) {
-//     print("error with apple sign in");
-//     return 'None';
-//   }
-//
-// }
+Future<String> signInWithApple() async {
+  final credential = await SignInWithApple.getAppleIDCredential(
+    scopes: [
+      AppleIDAuthorizationScopes.email,
+      AppleIDAuthorizationScopes.fullName,
+    ]
+  );
+
+  if(credential.identityToken != null) {
+    OAuthProvider  oAuthProvider = new OAuthProvider("apple.com");
+    final AuthCredential Applecredential = oAuthProvider.credential(
+     accessToken: credential.authorizationCode,
+     idToken: credential.identityToken,
+    );
+    final UserCredential userCredential = await _auth.signInWithCredential(Applecredential);
+    final User? user = userCredential.user;
+
+    uid = user!.uid;
+    if(credential.givenName != null) { name = credential.givenName.toString() + " " + credential.familyName.toString() ?? ""; } else { name = "You"; }
+    if(credential.email != null) { userEmail = credential.email!; } else { userEmail = "you@daikho.pk"; }
+    imageUrl = $defaultprofilepicture;
+    accountType = 'Apple';
+
+    updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
+
+    return 'Success';
+  }
+
+  return 'None';
+}
 
 void signOut() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();

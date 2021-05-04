@@ -244,6 +244,7 @@ Future<Shows> fetchDataHome() async {
 Future<void> CheckAppleLogin() async {
   if(Platform.isIOS) {
     // canAppleLogin = await AppleSignIn.isAvailable();
+    canAppleLogin = true;
   } else {
     canAppleLogin = false;
   }
