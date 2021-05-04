@@ -124,14 +124,14 @@ class _PlayScreenState extends State<PlayScreen> {
           }
         }
       }
-      if(nextepisode != null && played && (value.metaData.duration.inSeconds > 0) && (value.position.inSeconds >= (value.metaData.duration.inSeconds - 10))) {
+      if(nextepisode != 0 && played && (value.metaData.duration.inSeconds > 0) && (value.position.inSeconds >= (value.metaData.duration.inSeconds - 10))) {
         pos1 = value.position.inSeconds;
         if(pos1 != pos2) {
           pos2 = pos1;
           timeleft = value.metaData.duration.inSeconds - pos1;
           if(timeleft == 10 || timeleft == 5) {
             ShowSnackBarMessage('Next Episode in ' + timeleft.toString() + ' seconds', 4000);
-          } else if(timeleft == 0) {
+          } else if(timeleft <= 1) {
             ShowSnackBarMessage('Playing Next Episode', 5000);
             ChangeEpisode(nextepisode);
             completed = true;
@@ -354,7 +354,7 @@ class _PlayScreenState extends State<PlayScreen> {
                             IconButton(
                               icon: const Icon(Icons.skip_previous),
                               onPressed: () {
-                                if(previousepisode != null) {
+                                if(previousepisode != 0) {
                                   ChangeEpisode(previousepisode);
                                 } else {
                                   ShowSnackBarMessage('This is the first available Episode', 3000);
@@ -398,7 +398,7 @@ class _PlayScreenState extends State<PlayScreen> {
                             IconButton(
                               icon: const Icon(Icons.skip_next, color: Colors.white,),
                               onPressed: () {
-                                if(nextepisode != null) {
+                                if(nextepisode != 0) {
                                   ChangeEpisode(nextepisode);
                                 } else {
                                   ShowSnackBarMessage('This is the last available Episode', 3000);

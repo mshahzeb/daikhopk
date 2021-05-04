@@ -214,7 +214,7 @@ Future<Shows> fetchDataHome() async {
             showsHome.shows, (a,b) => showsHome.shows[b]!.releaseDatetime.compareTo(showsHome.shows[a]!.releaseDatetime)
         );
         showsHome.shows.forEach((key, value) {
-          if(showsHome.shows[key]!.completed == 0) {
+          if(showsHome.shows[key]!.completed == 1) {
             sortedshows.remove(key);
           }
         });

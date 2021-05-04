@@ -488,7 +488,7 @@ class _ListScreenState extends State<ListScreen> {
                                                   show: showLocal,
                                                   channel: channel,
                                                   seasonno: seasonno,
-                                                  episodeno: showLocal.seasons[seasonno]!.episodes[showLocal.seasons[seasonno]!.episodes.length]!.episodeno,
+                                                  episodeno: showLocal.seasons[seasonno]!.episodes.values.last.episodeno,
                                                 )
                                         ),
                                       );
@@ -497,7 +497,7 @@ class _ListScreenState extends State<ListScreen> {
                                       margin: EdgeInsets.all(5),
                                       child: ListTile(
                                         leading: CachedNetworkImage(
-                                            imageUrl: (showLocal.seasons[seasonno]!.episodes[showLocal.seasons[seasonno]!.episodes.length]!.episodeThumbnail),
+                                            imageUrl: (showLocal.seasons[seasonno]!.episodes.values.last.episodeThumbnail),
                                             width: 100,
                                             fit: BoxFit.fitWidth,
                                             alignment: Alignment.topLeft,
@@ -510,7 +510,7 @@ class _ListScreenState extends State<ListScreen> {
                                         ),
                                         title: Text(
                                           'Episode ' +
-                                              showLocal.seasons[seasonno]!.episodes[showLocal.seasons[seasonno]!.episodes.length]!.episodeno
+                                              showLocal.seasons[seasonno]!.episodes.values.last.episodeno
                                                   .toString(),
                                           style: TextStyle(
                                             fontSize: 18,
@@ -521,7 +521,7 @@ class _ListScreenState extends State<ListScreen> {
                                           textAlign: TextAlign.left,
                                         ),
                                         subtitle: Text(
-                                          showLocal.seasons[seasonno]!.episodes[showLocal.seasons[seasonno]!.episodes.length]!.episodetitle,
+                                          showLocal.seasons[seasonno]!.episodes.values.last.episodetitle,
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontFamily: 'Roboto',

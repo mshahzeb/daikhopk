@@ -123,7 +123,7 @@ Future<String> signInWithApple() async {
     final User? user = userCredential.user;
 
     uid = user!.uid;
-    if(credential.givenName != null) { name = credential.givenName.toString() + " " + credential.familyName.toString() ?? ""; } else { name = "You"; }
+    if(credential.givenName != null) { name = credential.givenName.toString() + " " + credential.familyName.toString(); } else { name = "You"; }
     if(credential.email != null) { userEmail = credential.email!; } else { userEmail = "you@daikho.pk"; }
     imageUrl = $defaultprofilepicture;
     accountType = 'Apple';
