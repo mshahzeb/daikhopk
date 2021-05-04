@@ -38,6 +38,15 @@ class _SearchScreenState extends State<SearchScreen> {
   int ratingssort = 0;
   int viewssort = 0;
 
+  String? _selectedItemSort;
+  List<DropdownMenuItem<String>> _dropdownMenuItemsSort = [];
+  String? _selectedItemOrder;
+  List<DropdownMenuItem<String>> _dropdownMenuItemsOrderSelected = [];
+  List<DropdownMenuItem<String>> _dropdownMenuItemsOrderReleased = [];
+  List<DropdownMenuItem<String>> _dropdownMenuItemsOrderRatingViews = [];
+  String? _selectedItemFilter;
+  List<DropdownMenuItem<String>> _dropdownMenuItemsFilter = [];
+
   @override
   void initState() {
     super.initState();
@@ -49,7 +58,118 @@ class _SearchScreenState extends State<SearchScreen> {
       showssearch.putIfAbsent(showsPassed[key]!.showname, () => showsPassed[key]!.showid);
     });
     showsList.shuffle();
-    showsList_Init = showsList;
+    showsList.forEach((element) {
+      showsList_Init.add(element);
+    });
+    buildDropDownMenuItems();
+  }
+
+  void buildDropDownMenuItems() {
+    _dropdownMenuItemsSort.clear();
+    _dropdownMenuItemsOrderReleased.clear();
+    _dropdownMenuItemsOrderRatingViews.clear();
+    _dropdownMenuItemsFilter.clear();
+
+    _dropdownMenuItemsSort.add(
+      DropdownMenuItem(
+        child: Text("Released"),
+        value: "Released",
+      ),
+    );
+    _dropdownMenuItemsOrderReleased.add(
+      DropdownMenuItem(
+        child: Text("Latest"),
+        value: "Latest",
+      ),
+    );
+    _dropdownMenuItemsOrderReleased.add(
+      DropdownMenuItem(
+        child: Text("Oldest"),
+        value: "Oldest",
+      ),
+    );
+
+    _dropdownMenuItemsSort.add(
+      DropdownMenuItem(
+        child: Text("Rating"),
+        value: "Rating",
+      ),
+    );
+    _dropdownMenuItemsSort.add(
+      DropdownMenuItem(
+        child: Text("Views"),
+        value: "Views",
+      ),
+    );
+    _dropdownMenuItemsOrderRatingViews.add(
+      DropdownMenuItem(
+        child: Text("Highest"),
+        value: "Highest",
+      ),
+    );
+    _dropdownMenuItemsOrderRatingViews.add(
+      DropdownMenuItem(
+        child: Text("Lowest"),
+        value: "Lowest",
+      ),
+    );
+
+    _dropdownMenuItemsFilter.add(
+      DropdownMenuItem(
+        child: Text("All"),
+        value: "All",
+      ),
+    );
+    _dropdownMenuItemsFilter.add(
+      DropdownMenuItem(
+        child: Text("Running"),
+        value: "Running",
+      ),
+    );
+    _dropdownMenuItemsFilter.add(
+      DropdownMenuItem(
+        child: Text("Completed"),
+        value: "Completed",
+      ),
+    );
+  }
+
+  void sortdata() {
+    if(_selectedItemSort != null) {
+      if(_selectedItemOrder != null){
+        if(_selectedItemSort == 'Released') {
+          if(_selectedItemOrder == 'Latest') {showsList.sort((a, b) => b.releaseDatetime.compareTo(a.releaseDatetime));}
+          if(_selectedItemOrder == 'Oldest') {showsList.sort((a, b) => a.releaseDatetime.compareTo(b.releaseDatetime));}
+        }
+        else if (_selectedItemSort == 'Rating') {
+          if(_selectedItemOrder == 'Highest') {showsList.sort((a, b) => b.likeCount.compareTo(a.likeCount));}
+          if(_selectedItemOrder == 'Lowest') {showsList.sort((a, b) => a.likeCount.compareTo(b.likeCount));}
+        }
+        else if (_selectedItemSort == 'Views') {
+          if(_selectedItemOrder == 'Highest') {showsList.sort((a, b) => b.viewCount.compareTo(a.viewCount));}
+          if(_selectedItemOrder == 'Lowest') {showsList.sort((a, b) => a.viewCount.compareTo(b.viewCount));}
+        }
+      }
+    }
+  }
+
+  void filterdata() {
+    if(_selectedItemFilter != null) {
+      showsList.clear();
+      showsList_Init.forEach((element) {
+        showsList.add(element);
+      });
+      if(_selectedItemFilter == 'All') {
+      }
+      else if(_selectedItemFilter == 'Running') {
+        showsList.removeWhere((element) => element.completed == 1);
+      }
+      else if(_selectedItemFilter == 'Completed') {
+        showsList.removeWhere((element) => element.completed == 0);
+      }
+    }
+    _selectedItemSort = null;
+    _selectedItemOrder = null;
   }
 
   void search(String search) async {
@@ -126,72 +246,202 @@ class _SearchScreenState extends State<SearchScreen> {
                 ],
                 body: Container(
                   padding: EdgeInsets.only(top: 80.00),
-                  child: StaggeredGridView.countBuilder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    crossAxisCount: (deviceSize.width/($defaultWidth)).floor(),
-                    itemCount: showsList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MyFadeRoute(builder: (context) =>
-                                ListScreen(
-                                  show: showsList[index],
-                                  channel: showsHome.channels[showsList[index].channel]!,
-                                  refresh: true,
-                                  backroute: 1,
-                                  lastplayedseasonLocal: 0,
-                                  lastplayedepisodeLocal: 0,
-                                )
+                  child: Stack(
+                    children: [
+                      StaggeredGridView.countBuilder(
+                        padding: EdgeInsets.only(top: 50.00),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        physics: ScrollPhysics(),
+                        crossAxisCount: (deviceSize.width/($defaultWidth)).floor(),
+                        itemCount: showsList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MyFadeRoute(builder: (context) =>
+                                    ListScreen(
+                                      show: showsList[index],
+                                      channel: showsHome.channels[showsList[index].channel]!,
+                                      refresh: true,
+                                      backroute: 1,
+                                      lastplayedseasonLocal: 0,
+                                      lastplayedepisodeLocal: 0,
+                                    )
+                                ),
+                              );
+                            },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                SizedBox(height: 10),
+                                Stack(
+                                    alignment: Alignment.topRight,
+                                    children: <Widget>[
+                                      CachedNetworkImage(
+                                        imageUrl: showsList[index].posterUrl,
+                                        height: $defaultHeight,
+                                        width: $defaultWidth,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                      CachedNetworkImage(
+                                        imageUrl: showsHome.channels[showsList[index].channel]!.logoUrl,
+                                        height: 25,
+                                        width: 25,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    ]
+                                ),
+                                SizedBox(
+                                  height: 50,
+                                  width: $defaultWidth,
+                                  child: Text(
+                                    showsList[index].showname,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Roboto',
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         },
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            SizedBox(height: 10),
-                            Stack(
-                                alignment: Alignment.topRight,
-                                children: <Widget>[
-                                  CachedNetworkImage(
-                                    imageUrl: showsList[index].posterUrl,
-                                    height: $defaultHeight,
-                                    width: $defaultWidth,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                  CachedNetworkImage(
-                                    imageUrl: showsHome.channels[showsList[index].channel]!.logoUrl,
-                                    height: 25,
-                                    width: 25,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                ]
-                            ),
-                            SizedBox(
-                              height: 50,
-                              width: $defaultWidth,
-                              child: Text(
-                                showsList[index].showname,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Roboto',
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
+                        //staggeredTileBuilder: (int index) => new StaggeredTile.count(2, index.isEven ? 2 : 1),
+                        //staggeredTileBuilder: (int index) => new StaggeredTile.count(2, 1),
+                        staggeredTileBuilder: (int index) => new StaggeredTile.fit(1),
+                        mainAxisSpacing: 10.0,
+                        crossAxisSpacing: 10.0,
+                      ),
+                      Container(
+                        width: deviceSize.width,
+                        height: 50.00,
+                        decoration: new BoxDecoration(color: Colors.black),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget> [
+                              Container(
+                                height: 50,
+                                //width: 100,
+                                child: DropdownButton<String>(
+                                    hint:  Text(
+                                      'Sort By',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    value: _selectedItemSort,
+                                    items: _dropdownMenuItemsSort,
+                                    icon: Icon(Icons.arrow_downward, color: Colors.white,),
+                                    dropdownColor: Colors.black,
+                                    underline: Container(
+                                      height: 2,
+                                      color: Colors.white,
+                                    ),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedItemSort = value!;
+                                        if(_selectedItemSort == 'Released') {
+                                          _selectedItemOrder = 'Latest';
+                                          _dropdownMenuItemsOrderSelected = _dropdownMenuItemsOrderReleased;
+                                        } else {
+                                          _selectedItemOrder = 'Highest';
+                                          _dropdownMenuItemsOrderSelected = _dropdownMenuItemsOrderRatingViews;
+                                        }
+                                        sortdata();
+                                      });
+                                    }
                                 ),
                               ),
-                            ),
-                          ],
+                              SizedBox(width: 50.00),
+                              Container(
+                                height: 50,
+                                //width: 100,
+                                child: DropdownButton<String>(
+                                    hint:  Text(
+                                      'Sort Order',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    value: _selectedItemOrder,
+                                    items: _dropdownMenuItemsOrderSelected,
+                                    icon: Icon(Icons.arrow_downward, color: Colors.white,),
+                                    dropdownColor: Colors.black,
+                                    underline: Container(
+                                      height: 2,
+                                      color: Colors.white,
+                                    ),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedItemOrder = value!;
+                                        sortdata();
+                                      });
+                                    }
+                                ),
+                              ),
+                              SizedBox(width: 50.00),
+                              Container(
+                                height: 50,
+                                //width: 100,
+                                child: DropdownButton<String>(
+                                    hint:  Text(
+                                      'Filter',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    value: _selectedItemFilter,
+                                    items: _dropdownMenuItemsFilter,
+                                    icon: Icon(Icons.arrow_downward, color: Colors.white,),
+                                    dropdownColor: Colors.black,
+                                    underline: Container(
+                                      height: 2,
+                                      color: Colors.white,
+                                    ),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedItemFilter = value!;
+                                        filterdata();
+                                      });
+                                    }
+                                ),
+                              ),
+                            ]
                         ),
-                      );
-                    },
-                    //staggeredTileBuilder: (int index) => new StaggeredTile.count(2, index.isEven ? 2 : 1),
-                    //staggeredTileBuilder: (int index) => new StaggeredTile.count(2, 1),
-                    staggeredTileBuilder: (int index) => new StaggeredTile.fit(1),
-                    mainAxisSpacing: 10.0,
-                    crossAxisSpacing: 10.0,
+                      ),
+                    ],
                   )
                 ),
                 builder: (context, transition) {

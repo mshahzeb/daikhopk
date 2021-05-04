@@ -404,30 +404,25 @@ class _ListScreenState extends State<ListScreen> {
                                               textAlign: TextAlign.left,
                                             ),
                                           ),
-                                          ListView.builder(
-                                            physics: NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: 1,
-                                            itemBuilder: (context, index) {
-                                            return GestureDetector(
-                                              behavior: HitTestBehavior.translucent,
-                                              onTap: () {
-                                                Navigator.of(context).pushReplacement(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          PlayScreen(
-                                                              show: showLocal,
-                                                              channel: channel,
-                                                              seasonno: _lastplayedseason,
-                                                              episodeno: _lastplayedepisode,
-                                                          )
-                                                  ),
-                                                );
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.all(5),
-                                                child: ListTile(
-                                                  leading: CachedNetworkImage(
+                                          GestureDetector(
+                                            behavior: HitTestBehavior.translucent,
+                                            onTap: () {
+                                              Navigator.of(context).pushReplacement(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PlayScreen(
+                                                          show: showLocal,
+                                                          channel: channel,
+                                                          seasonno: _lastplayedseason,
+                                                          episodeno: _lastplayedepisode,
+                                                        )
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.all(5),
+                                              child: ListTile(
+                                                leading: CachedNetworkImage(
                                                     imageUrl: (showLocal.seasons[_lastplayedseason]!.episodes[_lastplayedepisode]!.episodeThumbnail),
                                                     width: 100,
                                                     fit: BoxFit.fitWidth,
@@ -438,40 +433,106 @@ class _ListScreenState extends State<ListScreen> {
                                                       fit: BoxFit.fitWidth,
                                                       alignment: Alignment.topLeft,
                                                     )
+                                                ),
+                                                title: Text(
+                                                  'Episode ' +
+                                                      showLocal.seasons[_lastplayedseason]!.episodes[_lastplayedepisode]!.episodeno
+                                                          .toString(),
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontFamily: 'Roboto',
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white,
                                                   ),
-                                                  title: Text(
-                                                    'Episode ' +
-                                                        showLocal.seasons[_lastplayedseason]!.episodes[_lastplayedepisode]!.episodeno
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontFamily: 'Roboto',
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Colors.white,
-                                                    ),
-                                                    textAlign: TextAlign.left,
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                                subtitle: Text(
+                                                  showLocal.seasons[_lastplayedseason]!.episodes[_lastplayedepisode]!.episodetitle,
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontFamily: 'Roboto',
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Color(0xffaaaaaa),
                                                   ),
-                                                  subtitle: Text(
-                                                    showLocal.seasons[_lastplayedseason]!.episodes[_lastplayedepisode]!.episodetitle,
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontFamily: 'Roboto',
-                                                      fontWeight: FontWeight.w400,
-                                                      color: Color(0xffaaaaaa),
-                                                    ),
-                                                    textAlign: TextAlign.left,
-                                                  ),
+                                                  textAlign: TextAlign.left,
                                                 ),
                                               ),
-                                            );
-                                          }
-                                        ),
+                                            ),
+                                          ),
                                       ]
                                     ),
                                     fallbackBuilder: (BuildContext context) =>
                                     SizedBox(height: 0.0,), context: context,
                                   ),
                                   SizedBox(height: 20.0,),
+                                  Container(
+                                    margin: EdgeInsets.all(5),
+                                    child: Text(
+                                      'Latest Episode',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.white,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PlayScreen(
+                                                  show: showLocal,
+                                                  channel: channel,
+                                                  seasonno: seasonno,
+                                                  episodeno: showLocal.seasons[seasonno]!.episodes[showLocal.seasons[seasonno]!.episodes.length]!.episodeno,
+                                                )
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.all(5),
+                                      child: ListTile(
+                                        leading: CachedNetworkImage(
+                                            imageUrl: (showLocal.seasons[seasonno]!.episodes[showLocal.seasons[seasonno]!.episodes.length]!.episodeThumbnail),
+                                            width: 100,
+                                            fit: BoxFit.fitWidth,
+                                            alignment: Alignment.topLeft,
+                                            errorWidget: (context, url, error) => CachedNetworkImage(
+                                              imageUrl: (showLocal.posterUrl),
+                                              width: 100,
+                                              fit: BoxFit.fitWidth,
+                                              alignment: Alignment.topLeft,
+                                            )
+                                        ),
+                                        title: Text(
+                                          'Episode ' +
+                                              showLocal.seasons[seasonno]!.episodes[showLocal.seasons[seasonno]!.episodes.length]!.episodeno
+                                                  .toString(),
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: 'Roboto',
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        subtitle: Text(
+                                          showLocal.seasons[seasonno]!.episodes[showLocal.seasons[seasonno]!.episodes.length]!.episodetitle,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'Roboto',
+                                            fontWeight: FontWeight.w400,
+                                            color: Color(0xffaaaaaa),
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                   Container(
                                     margin: EdgeInsets.all(5),
                                     child: Text(
