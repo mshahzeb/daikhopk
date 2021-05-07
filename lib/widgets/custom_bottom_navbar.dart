@@ -1,4 +1,5 @@
 import 'package:daikhopk/screens/account_screen.dart';
+import 'package:daikhopk/screens/category_screen.dart';
 import 'package:daikhopk/screens/channels_screen.dart';
 import 'package:daikhopk/screens/home_screen.dart';
 import 'package:daikhopk/screens/livechannels_screen.dart';
@@ -24,9 +25,19 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
 
   bool refresh = false;
 
+  static const Widget LiveWidget = Text(
+    'Index 3: Live',
+    style: optionStyle,
+  );
+  static const Widget CategoryWidget = Text(
+    'Index 3: Category'
+        '',
+    style: optionStyle,
+  );
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 15, fontWeight: FontWeight.w600, fontFamily: 'Roboto');
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Account',
       style: optionStyle,
@@ -39,10 +50,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
       'Index 2: Home',
       style: optionStyle,
     ),
-    Text(
-      'Index 3: Live',
-      style: optionStyle,
-    ),
+    isIOS ? CategoryWidget : LiveWidget,
     Text(
       'Index 4: Explore',
       style: optionStyle,
@@ -83,12 +91,19 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         break;
 
         case 3: {
-          Navigator.of(context).push(
-              MyFadeRoute(builder: (context) => LiveChannelScreen(
-                channelsPassed: showsHome.livechannels,
-                searchHint: "Search for Live Channels",
-              ))
-          );
+          if(isIOS) {
+            Navigator.of(context).push(
+                MyFadeRoute(builder: (context) => CategoryScreen(
+                ))
+            );
+          } else {
+            Navigator.of(context).push(
+                MyFadeRoute(builder: (context) => LiveChannelScreen(
+                  channelsPassed: showsHome.livechannels,
+                  searchHint: "Search for Live Channels",
+                ))
+            );
+          }
         }
         break;
 
@@ -97,6 +112,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
             MyFadeRoute(builder: (context) => SearchScreen(
               showsPassed: showsHome.shows,
               searchHint: 'Show, Channel or Year Released',
+              shuffle: true,
             ))
           );
         }
@@ -109,7 +125,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
         type : BottomNavigationBarType.fixed,        
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
               LineAwesomeIcons.user,
@@ -140,7 +156,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
               color: Colors.amberAccent,
               size: 25.0,
             ),
-            label: 'Live',
+            label: isIOS ? 'Category' : 'Live',
           ),
           BottomNavigationBarItem(
             icon: Icon(

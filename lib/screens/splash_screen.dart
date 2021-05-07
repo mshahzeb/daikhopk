@@ -32,6 +32,7 @@ List<String> lastplayedshowidsHome = [];
 bool authSignedIn = false;
 int errorHome = 0;
 bool isWeb = kIsWeb;
+bool isIOS = Platform.isIOS;
 bool disclaimerShown = false;
 
 String messageTitle = "Empty";
@@ -191,7 +192,7 @@ Future<Shows> fetchDataHome() async {
       });
     }
 
-    //['New Episodes','Released This Month','Most Watched','Top Rated']
+    //['New Episodes','Released Recently','Currently Running','Most Watched - All time','Top Rated - All time']
     listdataHome = [];
     for(var i=0; i < listdataHomeCategories.length; i ++) {
       SplayTreeMap<int, Show> sortedshows = SplayTreeMap();

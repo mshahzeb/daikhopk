@@ -59,6 +59,7 @@ class _HorizontalListState extends State<HorizontalList> {
               MyFadeRoute(builder: (context) => SearchScreen(
                 showsPassed: shows,
                 searchHint: 'Show, Channel or Year Released',
+                shuffle: true,
               ))
           );
         },

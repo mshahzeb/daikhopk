@@ -203,6 +203,7 @@ class _ListScreenState extends State<ListScreen> {
                       MyFadeRoute(builder: (context) => SearchScreen(
                         showsPassed: filteredshows,
                         searchHint: 'Show or Year Released',
+                        shuffle: true,
                       ))
                   );
                 },

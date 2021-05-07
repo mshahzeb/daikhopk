@@ -14,20 +14,23 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 class SearchScreen extends StatefulWidget {
   Map<int, Show> showsPassed;
   String searchHint;
-  SearchScreen({required this.showsPassed, required this.searchHint});
+  bool shuffle;
+  SearchScreen({required this.showsPassed, required this.searchHint, required this.shuffle});
 
   @override
   _SearchScreenState createState() => _SearchScreenState(
     showsPassed: showsPassed,
     searchHint: searchHint,
+    shuffle: shuffle,
   );
 }
 
 class _SearchScreenState extends State<SearchScreen> {
   Map<int, Show> showsPassed;
   String searchHint;
+  bool shuffle;
 
-  _SearchScreenState({required this.showsPassed, required this.searchHint});
+  _SearchScreenState({required this.showsPassed, required this.searchHint, required this.shuffle});
 
   Map<String, int> showssearch = Map();
   List<Show> showsList = [];
@@ -57,7 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
     showsPassed.forEach((key, value) {
       showssearch.putIfAbsent(showsPassed[key]!.showname, () => showsPassed[key]!.showid);
     });
-    showsList.shuffle();
+    if(shuffle) { showsList.shuffle(); }
     showsList.forEach((element) {
       showsList_Init.add(element);
     });

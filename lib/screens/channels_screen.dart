@@ -138,6 +138,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                                 MyFadeRoute(builder: (context) => SearchScreen(
                                   showsPassed: filteredshows,
                                   searchHint: 'Show or Year Released',
+                                  shuffle: true,
                                 ))
                             );
                           },
@@ -211,6 +212,7 @@ class _ChannelScreenState extends State<ChannelScreen> {
                                         MyFadeRoute(builder: (context) => SearchScreen(
                                           showsPassed: filteredshows,
                                           searchHint: 'Show or Year Released',
+                                          shuffle: true,
                                         ))
                                     );
                                   },

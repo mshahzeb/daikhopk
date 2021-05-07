@@ -75,6 +75,7 @@ class CustomSliverAppBar extends StatelessWidget {
                                 MyFadeRoute(builder: (context) => SearchScreen(
                                   showsPassed: filteredshows,
                                   searchHint: 'Show or Year Released',
+                                  shuffle: true,
                                 ))
                             );
                           },
