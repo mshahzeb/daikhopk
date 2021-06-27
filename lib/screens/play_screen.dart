@@ -157,7 +157,9 @@ class _PlayScreenState extends State<PlayScreen> {
     };
 
     //print('PlayVideo UpdateVideoIdStats');
-    UpdateVideoIdStats();
+    if (userlocal['accountType'] != 'anonymous') {
+      UpdateVideoIdStats();
+    }
 
     if(show.seasons[seasonno]!.episodes[episodeno + 1] != null) {
       nextepisode = episodeno + 1;
@@ -238,9 +240,12 @@ class _PlayScreenState extends State<PlayScreen> {
     int playtime = jsonresult[0]['vid_lastplaytime'] ?? 0;
     if (playtime < 0) {
       playtime = 0;
+    } else if (playtime > 10) {
+      await Future.delayed(Duration(seconds: 2)
+      );
+      _controller.seekTo(Duration(seconds: playtime)
+      );
     }
-    await Future.delayed(Duration(seconds: 2));
-    _controller.seekTo(Duration(seconds: playtime));
   }
 
   void UpdateVideoIdLastPlayTime(int duration) async {
@@ -287,7 +292,9 @@ class _PlayScreenState extends State<PlayScreen> {
       controller: _controller,
       child: WillPopScope(
         onWillPop: ()async {
-          UpdateVideoIdLastPlayTime(_controller.value.position.inSeconds);
+          if (userlocal['accountType'] != 'anonymous') {
+            UpdateVideoIdLastPlayTime(_controller.value.position.inSeconds);
+          }
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                   builder: (context) =>
@@ -424,8 +431,16 @@ class _PlayScreenState extends State<PlayScreen> {
                               splashColor: Colors.grey,
                               onPressed: () {
                                 String launchUrl;
-                                launchUrl = show.seasons[seasonno]!.episodes[episodeno]!.episodeUrl + '&t=' + _controller.value.position.inSeconds.toString();
-                                _launchYoutubeVideo(launchUrl);
+                                int currseconds = _controller.value.position.inSeconds;
+                                launchUrl = '';
+                                if (currseconds < 10)  {
+                                  launchUrl = show.seasons[seasonno]!.episodes[episodeno]!.episodeUrl;
+                                } else if (currseconds >= 10) {
+                                  launchUrl = show.seasons[seasonno]!.episodes[episodeno]!.episodeUrl + '&t=' + _controller.value.position.inSeconds.toString();
+                                }
+                                if(launchUrl != '') {
+                                  _launchYoutubeVideo(launchUrl);
+                                }
                               },
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),

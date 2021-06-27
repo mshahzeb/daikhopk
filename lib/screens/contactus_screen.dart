@@ -3,6 +3,7 @@ import 'package:daikhopk/screens/splash_screen.dart';
 import 'package:daikhopk/utils/urlLauncher.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:flutter/material.dart';
+import 'package:daikhopk/utils/webservice.dart';
 
 class ContactUsScreen extends StatefulWidget {
   @override
@@ -14,6 +15,17 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   final _formKey2 = GlobalKey<FormState>();
   var msgController1 = TextEditingController();
   var msgController2 = TextEditingController();
+
+  void sendMessage(final String message, final String type) async {
+    if(type == 'contactus') {
+      Map <String, dynamic> Json = {
+        "uid": userlocal['uid'],
+        "email": userlocal['userEmail'],
+        "message": message
+      };
+      String response = await postUrl($serviceURLcontact + '/' + type, Json);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,11 +102,14 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       // Validate returns true if the form is valid, or false
                       // otherwise.
                       if (_formKey1.currentState!.validate()) {
+
+                        sendMessage(msgController1.text,'contactus');
+
                         FocusScopeNode currentFocus = FocusScope.of(context);
                         if (!currentFocus.hasPrimaryFocus) {
                           currentFocus.unfocus();
                         }
-  
+
                         msgController1.clear();
                         // If the form is valid, display a Snackbar.
                         String message = 'We have received your message! We will get back to you soon.';
@@ -168,13 +183,14 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       onPressed: () {
                         // Validate returns true if the form is valid, or false
                         // otherwise.
+                        sendMessage(msgController2.text,'contactus');
                         if (_formKey2.currentState!.validate()) {
                           FocusScopeNode currentFocus = FocusScope.of(context);
                           if (!currentFocus.hasPrimaryFocus) {
                             currentFocus.unfocus();
                           }
-  
-                          msgController2.clear();
+                          msgController2
+                          .clear();
                           // If the form is valid, display a Snackbar.
                           String message = 'We have received your message! We will get back to you soon.';
                           var snackBar = SnackBar(content: Text(message), duration: Duration(milliseconds: 5000));

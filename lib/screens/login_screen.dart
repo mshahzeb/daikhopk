@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:daikhopk/widgets/apple_sign_in_button.dart';
 import 'package:daikhopk/widgets/facebook_sign_in_button.dart';
+import 'package:daikhopk/widgets/guest_sign_in_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -79,6 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               SizedBox(height: 25,),
                               Center(child: FacebookButton()),
+                              SizedBox(height: 70,),
+                              Center(child: GuestButton()),
                             ],
                           ),
                         )

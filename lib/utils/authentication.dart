@@ -180,7 +180,6 @@ Future<String> signOutFacebook() async {
 }
 
 void updateUserDataCache(String uid, String name, String userEmail, String userImageUrl, String accountType) async {
-
   DateTime currTime = DateTime.now();
   String formattedDatetime = DateFormat("yyyy-MM-dd HH:mm:ss").format(currTime);
 
@@ -201,15 +200,39 @@ void updateUserDataCache(String uid, String name, String userEmail, String userI
 
   dataRequiredForHome = fetchDataHome();
 
-  Map <String, dynamic> Json = {
-    "uid": uid,
-    "name": name,
-    "userEmail": userEmail,
-    "userImageUrl": userImageUrl,
-    "accounType": accountType,
-    "lastLogin": formattedDatetime
-  };
+  if (accountType != 'anonymous') {
+    Map <String, dynamic> Json = {
+      "uid": uid,
+      "name": name,
+      "userEmail": userEmail,
+      "userImageUrl": userImageUrl,
+      "accounType": accountType,
+      "lastLogin": formattedDatetime
+    };
 
-  String result = await postUrl($serviceURLupdateuserinfo, Json);
-  print(result);
+    String result = await postUrl($serviceURLupdateuserinfo, Json);
+    print(result);
+  }
+}
+
+Future<String> signInGuest() async {
+  await Firebase.initializeApp();
+
+  final UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+  final User? user = userCredential.user!;
+
+  if (user != null && user.isAnonymous) {
+
+    uid = user.uid;
+    name = 'Guest';
+    userEmail = 'you@daikho.pk';
+    imageUrl = $defaultprofilepicture;
+    accountType = 'anonymous';
+
+    updateUserDataCache(uid, name, userEmail, imageUrl, accountType);
+
+    return 'Anonymous sign in successful, User UID: ${user.uid}';
+  }
+
+  return 'None';
 }

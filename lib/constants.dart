@@ -24,6 +24,7 @@ final String $serviceURLshowdata = $serviceURLshowapi + '/showdata/data';
 final String $serviceURLupdateuserinfo = $serviceURLusrapi + '/updateuserinfo';
 final String $serviceURLupdatestats = $serviceURLusrapi + '/updatestat';
 final String $serviceURLgetstats = $serviceURLusrapi + '/getstat';
+final String $serviceURLcontact = $serviceURLusrapi + '/contact';
 
 //Default Values
 final String $logopath = 'assets/logo/daikho_logo.png';
@@ -52,6 +53,15 @@ daikho.pk is a free content delivery platform focused primarily on Pakistani tel
 final String $disclaimer = '''
 daikho.pk is a free content delivery platform focused primarily on Pakistani television content. It is the largest collection of Pakistani TV Serials & TV Series.
 \nOur platform only links the content that is available to watch freely on public platforms on the internet and does not own any of the content. All rights are reserved with the content owners. We comply with all the Terms & Services of the respective platform’s videos embedding policies. All views of the videos on our platform are attributed to the content owners on their respective platforms.
+''';
+
+final String $features = '''
+By signing in you get!
+
+ - Save your Watching History
+ - Continue from where you left off
+ - Personalized Recommendations
+ - Get all your recently watched shows in one place
 ''';
 
 final String $faqurl = 'https://daikho.pk/#FAQs';

@@ -157,23 +157,25 @@ Future<Shows> fetchDataHome() async {
     String featured = shows;
 
     if(authSignedIn) {
-      Map <String, dynamic> Json = {
-        "uid": userlocal['uid'],
-        "stats": [
-          {
-            "stat": "show_lastplayed"
-          },
-        ]
-      };
-      String response = await postUrl($serviceURLgetstats, Json);
-      if (response != $nodata) {
-        var jsonresult = jsonDecode(response);
-        if(jsonresult[0]['show_lastplayed'] != "0") {
-          final lastplayed = new Map<String, dynamic>.from(
-              jsonresult[0]['show_lastplayed']);
-          final lastplayedsorted = new SplayTreeMap<String, dynamic>.from(
-              lastplayed, (a, b) => lastplayed[b].compareTo(lastplayed[a]));
-          lastplayedshowidsHome = lastplayedsorted.keys.toList();
+      if (userlocal['accountType'] != 'anonymous') {
+        Map <String, dynamic> Json = {
+          "uid": userlocal['uid'],
+          "stats": [
+            {
+              "stat": "show_lastplayed"
+            },
+          ]
+        };
+        String response = await postUrl($serviceURLgetstats, Json);
+        if (response != $nodata) {
+          var jsonresult = jsonDecode(response);
+          if (jsonresult[0]['show_lastplayed'] != "0") {
+            final lastplayed = new Map<String, dynamic>.from(
+                jsonresult[0]['show_lastplayed']);
+            final lastplayedsorted = new SplayTreeMap<String, dynamic>.from(
+                lastplayed, (a, b) => lastplayed[b].compareTo(lastplayed[a]));
+            lastplayedshowidsHome = lastplayedsorted.keys.toList();
+          }
         }
       }
     }
