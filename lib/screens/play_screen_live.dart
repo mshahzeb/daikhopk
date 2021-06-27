@@ -88,7 +88,9 @@ class _PlayScreenLiveState extends State<PlayScreenLive> {
       log('Exited Fullscreen');
     };
 
-    UpdateVideoIdStats();
+    if(userlocal['accountType'] != 'anonymous') {
+      UpdateVideoIdStats();
+    }
   }
 
   @override

@@ -60,7 +60,9 @@ class _ListScreenState extends State<ListScreen> {
     super.initState();
 
     _dataRequiredForBuild = fetchData();
-    UpdateShowIdStats();
+    if (userlocal['accountType'] != 'anonymous') {
+      UpdateShowIdStats();
+    }
   }
 
   Future<Show> fetchData() async {

@@ -8,6 +8,7 @@ import 'package:daikhopk/utils/customroute.dart';
 import 'package:daikhopk/utils/urlLauncher.dart';
 import 'package:daikhopk/widgets/custom_bottom_navbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
@@ -89,7 +90,15 @@ class _AccountScreenState extends State<AccountScreen> {
                   ),
                 ),
                 SizedBox(height: 50),
-                ProfileListItems(),
+                Conditional.single(
+                  context: context,
+                  conditionBuilder: (BuildContext context) =>
+                  (userlocal['accountType'] != 'anonymous'),
+                  widgetBuilder: (BuildContext context) =>
+                      ProfileListItems(),
+                  fallbackBuilder: (BuildContext context) =>
+                      ProfileListItemsAnonymous(),
+                ),
               ],
             ),
           )
@@ -134,6 +143,33 @@ class ProfileListItems extends StatelessWidget {
   }
 }
 
+class ProfileListItemsAnonymous extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView(
+        children: <Widget>[
+          ProfileListItem(
+            icon: LineAwesomeIcons.alternate_sign_in,
+            text: 'Sign In to Enjoy More Features!',
+          ),
+          SizedBox(height: 10.0),
+          Text(
+            $features,
+            textAlign: TextAlign.justify,
+            style: TextStyle(
+              fontSize: 16,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w300,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class ProfileListItem extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -150,7 +186,7 @@ class ProfileListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if(this.text == 'Logout') {
+        if(this.text == 'Logout' || this.text == 'Sign In to Enjoy More Features!') {
           signOut();
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) {
@@ -164,7 +200,7 @@ class ProfileListItem extends StatelessWidget {
           Navigator.of(context).push(
               MyFadeRoute(builder: (context) => HelpAndSupportScreen())
           );
-        } else if (this.text == 'Rate Us') {
+        }  else if (this.text == 'Rate Us') {
           if(isWeb) {
             launchUrl($facebookurl);
           } else {

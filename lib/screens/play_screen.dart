@@ -185,10 +185,15 @@ class _PlayScreenState extends State<PlayScreen> {
 
     lastplayedshowidsHome.insert(0, show.showid.toString());
     lastplayedshows.clear();
-    lastplayedshowidsHome.forEach((element) {
-      lastplayedshows.putIfAbsent(
-          showsHome.shows[int.parse(element)]!.showid, () => showsHome.shows[int.parse(element)]!);
-    });
+    try {
+      lastplayedshowidsHome.forEach((element) {
+        lastplayedshows.putIfAbsent(
+            showsHome.shows[int.parse(element)]!.showid, () =>
+        showsHome.shows[int.parse(element)]!);
+      });
+    } catch(e) {
+      print(e);
+    }
     
     DateTime currTime = DateTime.now();
     String formattedDatetime = DateFormat("yyyy-MM-dd HH:mm:ss").format(currTime);
